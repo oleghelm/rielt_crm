@@ -1,0 +1,14 @@
+{{ form_start(form) }}
+
+    {{ form_row(form.name, {'label': "Назва"}) }}
+    {{ form_row(form.sort, {'label': "Порядок"}) }}
+    {{ form_row(form.multiple) }}
+    {{ form_row(form.useInFilter, {'label': "Використовувати в фільтрі"}) }}
+    {{ form_row(form.type, {'label': 'Тип'}) }}
+    {{ form_row(form.filter) }}
+    {{ form_row(form.detail) }}
+
+    <button class="btn btn-primary" name="submitType" value="apply" type="submit" formnovalidate><i class="fa fa-save"></i></button>&nbsp;
+    <button class="btn btn-success" name="submitType" value="save" type="submit" formnovalidate><i class="fa fa-save"></i>&nbsp;<i class="fa fa-plus"></i>&nbsp;<i class="fa fa-sign-out"></i></button>&nbsp;
+    <a href="{{path('admin_param_list')}}" class="btn btn-warning"><i class="fa fa-sign-out"></i></a>
+{{ form_end(form) }}

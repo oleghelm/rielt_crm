@@ -1,0 +1,73 @@
+#AppBundle\Entity\Genus:
+#    genus_{1..10}:
+#        name: <genus()>
+#        subFamily: '@sub.family_*'
+#        speciesCount: <numberBetween(100,100000)>
+#        funFact: <sentence()>
+#        isPublished: <boolean(75)>
+#        firstDiscoveredAt: <dateTimeBetween('-6 months', 'now')>
+#        
+#AppBundle\Entity\SubFamily:
+#    sub.family_{1..10}:
+#        name: <userName()>
+#        
+#AppBundle\Entity\GenusNote:
+#    genus.note_{1..100}:
+#        username: <userName()>
+#        userAvatarFilename: '50%? leanna.jpeg : ryan.jpeg'
+#        note: <paragraph()>
+#        createdAt: <dateTimeBetween('-6 months', 'now')>
+#        genus: '@genus_*'
+        
+AppBundle\Entity\User:
+    user_{1..10}:
+        name: <genus()>
+        photo: '50%? leanna.jpeg : ryan.jpeg'
+        info: <sentence()>
+        phones: <phones()>
+        email: oleg123hedsiuk+<current()>@gmail.com
+        plainPassword: qweqwe
+        roles: ['ROLE_ADMIN']
+        
+AppBundle\Entity\Client:
+    client_{1..50}:
+        name: <genus()>
+        info: <sentence()>
+        phones: <phones()>
+        email: client+<current()>@gmail.com
+        user: '@user_*'
+        lastUpdate: <dateTimeBetween('-1 months', 'now')>
+
+AppBundle\Entity\Object:
+    object_{1..50}:
+        name: <sentence()>
+        info: <sentence()>
+        address: <sentence()>
+        user: '@user_*'
+        client: '@client_*'
+        lastUpdate: <dateTimeBetween('-1 months', 'now')>
+        price: <numberBetween(100,100000)>
+        status: <status()>
+        
+AppBundle\Entity\Param:
+    param_{1..4}:
+        name: <genus()>
+        useInFilter: <boolean(50)>
+        type: '50%? select : select_multiple'
+        sort: <numberBetween(1,10)>
+    param_{5..6}:
+        name: <genus()>
+        useInFilter: <boolean(50)>
+        type: '50%? text : text'
+        sort: <numberBetween(1,10)>
+    param_{7..8}:
+        name: <genus()>
+        useInFilter: <boolean(50)>
+        type: '50%? integet : integet'
+        sort: <numberBetween(1,10)>
+        
+AppBundle\Entity\Property:
+    property_{1..50}:
+        name: <numberBetween(10,100)>
+        param: '@param_*'
+        sort: <numberBetween(1,10)>

@@ -1,0 +1,28 @@
+{% for msg in app.session.flashBag.get('success') %}
+    <div class="alert alert-success">
+        {{ msg }}
+    </div>
+{% endfor %}
+{{ form_start(form,{'attr':{'class':'ajax-page-formsubmit','action':path('crm_ticket_edit',{'id':item.id}),'data-list-update':'.tickets-list'}}) }}
+        <div class="row">
+            <div class="col-lg-3 col-sm-3 col-xs-12">{{ form_row(form.task) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-12">{{ form_row(form.date) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-12">{{ form_row(form.time) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-12">{{ form_row(form.client) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-12">{{ form_row(form.clientName) }}</div>
+        </div>       
+        <div class="row">
+            <div class="col-lg-12 ">{{ form_row(form.place) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-12">{{ form_row(form.result) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-12">{{ form_row(form.status) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-12">{{ form_row(form.user) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-12">{{ form_row(form.object) }}</div>
+        </div>       
+        <div class="row">
+            <div class="col-lg-12 ">{{ form_row(form.info) }}</div>
+        </div>       
+<button class="btn btn-primary" name="submitType" value="apply" type="submit" formnovalidate><i class="fa fa-save"></i></button>&nbsp;
+{#<button class="btn btn-success" name="submitType" value="save" type="submit" formnovalidate><i class="fa fa-save"></i>&nbsp;<i class="fa fa-plus"></i>&nbsp;<i class="fa fa-sign-out"></i></button>&nbsp;#}
+{#<a href="{{path('crm_ticket_list')}}" class="btn btn-warning"><i class="fa fa-sign-out"></i></a>#}
+<a href="javascript:void(0);" class="btn btn-warning close-popup"><i class="fa fa-sign-out"></i></a>
+{{ form_end(form) }}

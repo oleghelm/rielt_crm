@@ -1,0 +1,79 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+{#        <h1>Вітаю у RieltCRM</h1>#}
+        <h3>Завдання</h3>
+        <div class="row">
+            <div class="col-md-12 col sm-12">
+                <hr />
+                <h4>Поточні <a href="{{ path('crm_ticket_new')}}" class="btn btn-xs btn-success ajax-page-load"><i class="fa fa-plus"></i></a></h4>
+                <div class="ajax-list ajax-onready-load tickets-list" data-list-src="{{path('crm_user_future_tickets',{'id': app.user.id})}}"></div>
+            </div>
+            <div class="col-md-12 col sm-12">
+                <hr />
+                <h4>Доступні</h4>
+                <div class="ajax-list ajax-onready-load tickets-list" data-list-src="{{path('crm_user_free_tickets',{'id': app.user.id})}}"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col sm-12">
+                <hr />
+                <h3>Позвон клієнтів(більше 2 тиждні без активності)</h3>
+                <div class="ajax-list ajax-onready-load bids-list" data-list-src="{{path('crm_bid_checklastactive_list',{'id': app.user.id})}}"></div>
+            </div>
+            <div class="col-md-6 col sm-12">
+                <hr />
+                <h3>Позвон об'єктів(більше 2 тиждні без активності)</h3>
+                <div class="ajax-list ajax-onready-load objects-list" data-list-src="{{path('crm_object_checklastactive_list',{'id': app.user.id})}}"></div>
+            </div>
+        </div>
+        <div class="row">
+            {#<div class="col-md-6 col sm-12">
+                <hr />
+                <h3>Завдання на сьогодні</h3>
+                {% set items = todayTickets %}
+                {{ include('crm/ticket/_list.html.twig') }}
+            </div>
+            <div class="col-md-6 col sm-12">
+                <hr />
+                <h3>Доступні завдання</h3>
+                {% set items = freeTickets %}
+                {{ include('crm/ticket/_list.html.twig') }}
+            </div>#}
+{#            <div class="col-md-6 col sm-12">
+                <hr />
+                <h3>Оголошення по фірмі</h3>
+            </div>#}
+           {# <div class="col-md-6 col sm-12">
+                <hr />
+                <h3>Позвон клієнтів(більше 2 тиждні без активності)</h3>
+                {% set items = callBids %}
+                {{ include('crm/bid/_list_lastActive_tickets.html.twig') }}
+            </div>#}
+            <div class="col-md-12 col sm-12">
+                <hr />
+                <h3>Важливі об'єкти</h3>
+                {% set items = importantObjects %}
+                {{ include('crm/object/_list_important.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+{#    <script src="{{ asset('js/react.js') }}"></script>#}
+{#    <script src="{{ asset('js/react-dom.js') }}"></script>#}
+{#    <script src="{{ asset('js/browser.min.js') }}"></script>#}
+{#    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>#}
+{#    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js"></script>#}
+{#    <script src="//cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>#}
+{#    <script type="text/babel" src="{{ asset('js/tickets.react.js') }}"></script>#}
+    {#<script type="text/babel">
+        var ticketsUrl = '{{ path('crm_user_tickets', {'id': app.user.id}) }}';
+        ReactDOM.render(
+                <TicketsSection url={ticketsUrl} />,
+                document.getElementById('tickets_crm_main')
+        );
+    </script>#}
+{% endblock %}

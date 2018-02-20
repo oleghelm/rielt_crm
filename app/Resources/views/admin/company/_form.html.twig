@@ -1,0 +1,18 @@
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.email) }}
+    {%if(item and item.preview)%}
+        <img src="{{company_photo_directory}}/{{item.preview}}" alt="" />
+    {%endif%}
+    {{ form_row(form.preview) }}
+    {%if(item and item.logo)%}
+        <img src="{{company_photo_directory}}/{{item.logo}}" alt="" />
+    {%endif%}
+    {{ form_row(form.logo) }}
+    {{ form_row(form.info) }}
+    {{ form_row(form.phones) }}
+    <button class="btn btn-success" type="submit" formnovalidate>Зберегти</button>&nbsp;
+    <a href="{{path('admin_company_list')}}" class="btn btn-primary">Відміна</a>
+    <div style="display:none;">
+    </div>
+{{ form_end(form) }}

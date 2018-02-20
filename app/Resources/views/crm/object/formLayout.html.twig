@@ -1,0 +1,29 @@
+{% extends 'desk.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" />#}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+{#    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>#}
+{#    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>#}
+    <script type="text/javascript">
+        jQuery(document).ready(function(){
+            function checkNewClientForm(){
+                if($('input[name="new_client"]').prop('checked')){
+                    $(".new_client_form").slideDown('fast');
+                    $(".check_old_client").slideUp('fast');
+                } else {
+                    $(".check_old_client").slideDown('fast');
+                    $(".new_client_form").slideUp('fast');
+                }
+            }
+            checkNewClientForm()
+            $('input[name="new_client"]').change(function(){
+                checkNewClientForm()
+            })
+        })
+    </script>
+{% endblock %}

@@ -1,0 +1,58 @@
+<h1>{{client.name}}</h1>
+<table class='table table-hover'>
+    <tr>
+        <th>І'мя</th>
+        <td>{{client.name}}</td>
+    </tr>
+    <tr>
+        <th>Тип</th>
+        <td>
+            {% if(client.owner) %}
+                Власник
+            {% else %}
+                Клієнт
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>Статус</th>
+        <td>
+            {% if(client.status == 'active') %}
+                Активний
+            {% elseif(client.status == 'pasive') %}
+                Тимчасово призупинено
+            {% elseif(client.status == 'archive') %}
+                В архіві
+            {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>E-mail</th>
+        <td>{{client.email}}</td>
+    </tr>
+    {% if(client.user) %}
+    <tr>
+        <th>Хто веде</th>
+        <td>{{client.user.name}}</td>
+    </tr>
+    {% endif %}
+    
+    {% if(client.canEdit(app.user)) %}
+    <tr>
+        <th>Телефони</th>
+        <td>
+            {% for phone in client.phones %}
+                <a href="tel:{{phone}}">{{phone}}</a><br>
+            {% endfor %}
+        </td>
+    </tr>
+    {% endif %}
+    <tr>
+        <th>Останній контакт</th>
+        <td>{{client.lastUpdate|date('d.m.Y')}}</td>
+    </tr>
+    <tr>
+        <th>Загальна інформація</th>
+        <td>{{client.info}}</td>
+    </tr>
+</table>

@@ -1,0 +1,25 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+{#                <h1>{{location.name}}</h1>#}
+                <h2> <small>{{location.levelname}}</small> <b>{{location.name}}</b> 
+                {% if(location.location) %}
+                    <a href="{{ path('admin_location_show',{'id':location.location.id}) }}" class="btn btn-primary btn-sm" ><i class="fa fa-arrow-up"></i></a> 
+                {% endif %}
+{#                    <a href="{{ path('admin_location_list') }}" class="btn btn-primary btn-sm" ><i class="fa fa-arrow-left"></i></a> #}
+                    <a href="{{ path('admin_location_edit', {'id': location.id}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a></h2>
+{#                            <a href="{{path('admin_location_delete', {'id': location.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>#}
+                {% if(location.level != 5 and location.level != 7) %}
+                <h3>Підпорядковані одиниці <a href="{{ path('admin_location_new',{'location_id':location.id})}}" class="btn btn-sm btn-success"><i class="fa fa-plus"></i></a></h3>
+                {% endif %}
+                {% if(location.locations and location.locations|length > 0) %}
+                    {% set locations = location.locations %}
+                    {{ include('admin/location/_list.html.twig') }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

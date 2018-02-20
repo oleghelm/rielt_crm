@@ -1,0 +1,26 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Genus</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for genus in genuses %}
+                <tr>
+                    <td>
+                        <a href="{{ path('admin_genus_edit', {'id': genus.id}) }}">
+                            {{ genus.name }}
+                        </a>
+                    </td>
+                    <td>{{genus.subFamily}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('admin_genus_new')}}">
+        New
+    </a>
+{% endblock %}

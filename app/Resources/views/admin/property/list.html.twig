@@ -1,0 +1,38 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('admin_property_new')}}" class="btn btn-success"><i class="fa fa-plus"></i></a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{knp_pagination_sortable(propertys, 'id', 'p.id')}}</th>
+                <th>{{knp_pagination_sortable(propertys, 'Назва', 'p.name')}}</th>
+                <th>{{knp_pagination_sortable(propertys, 'Порядок', 'p.sort')}}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for property in propertys %}
+                <tr>
+                    <td>
+                        {{ property.id}}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_property_edit', {'id': property.id}) }}">
+                            {{ property.name }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ property.sort }}
+                    </td>
+                    <td>
+{#                        <a href="{{ path('admin_property_show', {'id': property.id}) }}" class="btn btn-success btn-sm" ><i class="fa fa-user"></i></a>#}
+                        <a href="{{ path('admin_property_edit', {'id': property.id}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>
+                        <a href="{{ path('admin_property_delete', {'id': property.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ knp_pagination_render(propertys) }}
+{% endblock %}

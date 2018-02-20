@@ -1,0 +1,177 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <h1>{{object.name}}</h1>
+         </div>
+         {% if(object.photos) %}
+             <div class="{%if(not app.request.get('ajax'))%}col-sm-5{%endif%} col-xs-12">
+                 <div class="object-gallery">
+                          {% for photo in object.photos %}
+                              <a class="photo" href="{{photo}}" class='fancybox'  data-fancybox="gallery">
+                                  <img src="{{photo}}" alt="" height="" />
+                              </a>
+                          {% endfor %}
+                 </div>
+              </div>
+         {% endif %}
+         <div class="{%if(not app.request.get('ajax'))%}col-sm-7{%endif%} col-xs-12">
+             <table class='table table-hover'>
+                 <tr>
+                     <td colspan="2">
+{#                            <a href="{{ path('crm_object_list') }}" class="btn btn-primary btn-sm" ><i class="fa fa-arrow-left"></i></a>#}
+                          <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="window.history.back()" ><i class="fa fa-arrow-left"></i></a>
+                          <a href="{{ path('crm_object_edit', {'id': object.id}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>
+                          <a href="{{path('crm_object_changestatus', {'id': object.id,'status':'saled'})}}"  title="Продано" class="btn btn-success btn-sm" onclick="if (confirm('Ви впевнені, що хочете встанови статус продано?')) {} else {return false;}"><i class="fa fa-money"></i></a>
+                          <a href="{{path('crm_object_changestatus', {'id': object.id,'status':'reserved'})}}"  title="Зарезервувати" class="btn btn-warning btn-sm" onclick="if (confirm('Ви впевнені, що хочете встанови статус продано?')) {} else {return false;}"><i class="fa fa-clock-o"></i></a>
+                          <a href="{{path('crm_object_changestatus', {'id': object.id,'status':'archive'})}}"  title="В архів" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете перенести у архів?')) {} else {return false;}"><i class="fa fa-archive"></i></a>
+                          <a href="{{path('crm_object_delete', {'id': object.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>
+                     </td>
+                 </tr>
+                 <tr>
+                     <th>І'мя</th>
+                     <td>{{object.name}}</td>
+                 </tr>
+                 <tr>
+                     <th>Код</th>
+                     <td>{{object.code}}</td>
+                 </tr>
+                 <tr>
+                     <th>Компанія</th>
+                     <td>{{object.company}}</td>
+                 </tr>
+                 <tr>
+                     <th>Ціна</th>
+                     <td>{{object.price}}</td>
+                 </tr>
+                 <tr>
+                     <th>Площа</th>
+                     <td>{{object.area}}</td>
+                 </tr>
+                 <tr>
+                     <th>Кількість кімнат</th>
+                     <td>{{object.rooms}}</td>
+                 </tr>
+                 <tr>
+                     <th>Тип</th>
+                     <td>
+                         {% if(object.type=='simple_sale') %}
+                             Продаж
+                         {% elseif(object.type=='simple_rent') %}
+                             Оренда
+                         {% elseif(object.type=='comercial_sale') %}
+                             Комерція продаж
+                         {% elseif(object.type=='comercial_rent') %}
+                             Комерція оренда
+                         {% endif %}
+                     </td>
+                 </tr>
+                 <tr>
+                     <th>Статус</th>
+                     <td>
+                         {% if(object.status=='insale') %}
+                             В продажу
+                         {% elseif(object.status=='reserved') %}
+                             Зарезервовано
+                         {% elseif(object.status=='saled') %}
+                             Продано
+                         {% elseif(object.status=='archive') %}
+                             В архіві
+                         {% endif %}
+                     </td>
+                 </tr>
+                 {% if(object.user) %}
+                 <tr>
+                     <th>Хто веде</th>
+                     <td>
+                         {{object.user.name}}
+                     </td>
+                 </tr>
+                 {% endif %}
+                 {% if(object.client) %}
+                 <tr>
+                     <th>Який клієнт</th>
+                     <td>
+                         <a href="{{path("crm_client_show",{'id':object.client.id,'ajax':'Y'})}}" class='ajax-page-load'>{{object.client.name}}</a>
+                     </td>
+                 </tr>
+                 {% endif %}
+                 {% if(object.location) %}
+                 <tr>
+                     <th>Останній контакт</th>
+                     <td>{{object.location.name}}</td>
+                 </tr>
+                 {% endif %}
+
+                 <tr>
+                     <th>Важливий</th>
+                     <td>
+                         {% if(object.important) %}
+                             Так
+                         {% else %}
+                             Ні
+                         {% endif %}
+                     </td>
+                 </tr>
+                 <tr>
+                     <th>Рекламується</th>
+                     <td>
+                         {% if(object.advertising) %}
+                             Так
+                         {% else %}
+                             Ні
+                         {% endif %}
+                     </td>
+                 </tr>
+                 <tr>
+                     <th>Ексклюзив</th>
+                     <td>
+                         {% if(object.exclusive) %}
+                             Так
+                         {% else %}
+                             Ні
+                         {% endif %}
+                     </td>
+                 </tr>
+
+
+                 <tr>
+                     <th>Останній контакт</th>
+                     <td>{{object.lastUpdate|date('d.m.Y')}}</td>
+                 </tr>
+
+                 <tr>
+                     <th>Адреса</th>
+                     <td>{{object.address}}</td>
+                 </tr>
+                 <tr>
+                     <th>Загальна інформація</th>
+                     <td>{{object.info}}</td>
+                 </tr>
+
+
+             </table>
+         </div>
+         <div class="clearfix"></div>
+         <div class="col-md-7 col-xs-12">
+             <h2>Інші параметри</h2>
+            <table class='table table-hover'>
+                {% for param in params %}
+                <tr>
+                    <td>{{ param.name }}</td>
+                    <td>
+                         {% if(param.multiple) %}
+                             <ul>
+                                 {% for prop in param.val %}
+                                     <li>{{prop}}</li>
+                                 {% endfor %}
+                             </ul>
+                         {% else %}
+                             {{param.val}}
+                         {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>

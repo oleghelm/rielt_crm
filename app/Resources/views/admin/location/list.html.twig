@@ -1,0 +1,34 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('admin_location_new')}}" class="btn btn-success"><i class="fa fa-plus"></i></a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{knp_pagination_sortable(locations, 'id', 'l.id')}}</th>
+                <th>{{knp_pagination_sortable(locations, 'Назва', 'l.name')}}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for location in locations %}
+                <tr>
+                    <td>
+                        {{ location.id}}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_location_show', {'id': location.id}) }}">
+                            {{ location.name }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_location_show', {'id': location.id}) }}" class="btn btn-success btn-sm" ><i class="fa fa-user"></i></a>
+                        <a href="{{ path('admin_location_edit', {'id': location.id}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>
+{#                        <a href="{{ path('admin_location_delete', {'id': location.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>#}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ knp_pagination_render(locations) }}
+{% endblock %}

@@ -1,0 +1,18 @@
+<div class="status-btns">
+    <h4>Змінити статус</h4>
+    <br>
+    <a href="{{ path('crm_ticket_status_set', {'id': item.id, 'status':'done'}) }}" class="btn btn-success ajax-page-load" data-list-update=".tickets-list">Успішно <i class="fa fa-check"></i></a>
+    <br>
+    <a href="{{ path('crm_ticket_status_set', {'id': item.id, 'status':'cancel'}) }}" class="btn btn-danger ajax-page-load" data-list-update=".tickets-list">Відміна <i class="fa fa-times"></i></a>
+    <br>
+    <a href="javascript:void(0);" class="btn btn-warning ajax-page-load" onclick="$(this).next().slideDown()" >Перенос <i class="fa fa-callendar"></i></a>
+    <div class="" style="display:none;">
+        {{ form_start(form,{'attr':{'class':'ajax-page-formsubmit','action':path('crm_ticket_status_set', {'id': item.id, 'status':'replace'}) ,'data-list-update':'.tickets-list'} }) }}
+            {{ form_row(form.date) }}
+            {{ form_row(form.time) }}
+            <button class="btn btn-warning" name="submitType" value="apply" type="submit" formnovalidate>Перенести<i class="fa fa-save"></i></button>
+        {{ form_end(form) }}
+    </div>
+{#    <a href="{{ path('crm_ticket_status_set', {'id': item.id, 'status':'replace'}) }}" class="btn btn-warning ajax-page-load" >Перенос <i class="fa fa-callendar"></i></a>#}
+    <br>
+</div>

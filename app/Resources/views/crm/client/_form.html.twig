@@ -1,0 +1,15 @@
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">{{ form_row(form.name, {'label': "Прізвище, ім'я"}) }}</div>
+        <div class="col-sm-3 col-xs-6">{{ form_row(form.status) }}</div>
+        <div class="col-sm-3 col-xs-6">{{ form_row(form.owner) }}</div>
+        <div class="col-sm-3 col-xs-6">{{ form_row(form.email, {'label': 'Email'}) }}</div>
+        <div class="col-sm-3 col-xs-6">{{ form_row(form.user, {'label': 'Хто веде'}) }}</div>
+        <div class="col-sm-3 col-xs-6">{{ form_row(form.lastUpdate, {'label': 'Останній контакт'}) }}</div>
+        <div class="col-sm-12 col-xs-12">{{ form_row(form.phones) }}</div>
+        <div class="col-sm-12 col-xs-12">{{ form_row(form.info) }}</div>
+    </div>
+
+    <button class="btn btn-success" type="submit" formnovalidate>Зберегти</button>&nbsp;
+    <a href="{{path('crm_client_list')}}" class="btn btn-primary">Відміна</a>
+{{ form_end(form) }}

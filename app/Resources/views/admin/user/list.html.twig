@@ -1,0 +1,35 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Працівники</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>
+                        <a href="{{ path('admin_user_edit', {'id': user.id}) }}">
+                            {{ user.name }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if user.photo %}
+                            <img src="{{user_photo_directory}}/{{ user.photo }}" alt="" height="40" />
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{path('admin_user_delete', {'id': user.id})}}" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('admin_user_new')}}" class="btn btn-success">
+        Створити
+    </a>
+{% endblock %}

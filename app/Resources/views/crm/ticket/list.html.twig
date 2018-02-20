@@ -1,0 +1,33 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid listfilterform">
+    {{ form_start(form, {'action': path('crm_ticket_list')}) }}
+        <div class="row">
+            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(form['date_from']) }}</div>
+            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(form['date_to']) }}</div>
+            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(form['user']) }}</div>
+            <div class="col-lg-2 col-sm-3 col-xs-6">
+                <br />
+                <button type="submit" formnovalidate name="setFIlter" value="Y" class="btn btn-success"><i class="fa fa-search"></i></button>
+                <a href="{{ path('crm_ticket_list',{'removeFilter':'Y'})}}" class="btn btn-success"><i class="fa fa-times"></i></a>
+                <br />
+            </div>
+        </div>
+    {{ form_end(form) }}
+    </div>
+    
+    <div class="ajax-list">
+        <div class="container-fluid listfilterform">
+            <h1>Список завдань</h1>
+            <a href="{{ path('crm_ticket_new')}}" class="btn btn-success ajax-page-load">
+                Створити
+            </a>
+        {#    &nbsp;&nbsp;Сортувати: &nbsp;&nbsp; {{knp_pagination_sortable(items, 'По статусу', 't.status' )}} &nbsp;&nbsp; {{knp_pagination_sortable(items, 'по даті', 't.date' )}}#}
+        </div>
+        <div class="container-fluid tickets-list" {#data-list-src="{{app.request.requestUri}}"#}>
+            {{ include('crm/ticket/_list.html.twig') }}
+        </div>
+        {{ knp_pagination_render(items) }}
+    </div>
+{% endblock %}

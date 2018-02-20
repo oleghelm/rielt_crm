@@ -1,0 +1,78 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>{{param.name}}</h1>
+                <table class='table table-striped table-hover'>
+                    <tr>
+                        <th>І'мя</th>
+                        <td>{{param.name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Порядок</th>
+                        <td>{{param.sort}}</td>
+                    </tr>
+                    <tr>
+                        <th>Тип</th>
+                        <td>
+                            {%if(param.type=="select")%}
+                                Параметр
+                            {%elseif(param.type=="text")%}
+                                Текст
+                            {%elseif(param.type=="integer")%}
+                                Число
+                            {%endif%}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Множина вибору</th>
+                        <td>
+                            {%if(param.multiple)%}
+                                Так
+                            {%else%}
+                                Ні
+                            {%endif%}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Показувати у фільтрі</th>
+                        <td>
+                            {%if(param.useInFilter)%}
+                                Так
+                            {%else%}
+                                Ні
+                            {%endif%}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <a href="{{ path('admin_param_list') }}" class="btn btn-primary btn-sm" ><i class="fa fa-arrow-left"></i></a>
+                            <a href="{{ path('admin_param_edit', {'id': param.id}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>
+                            <a href="{{path('admin_param_delete', {'id': param.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>
+                        </td>
+                    </tr>
+                </table>
+                {% if(param.type == 'select') %}
+                    {% if(param.properties) %}
+                    <h3>Властивості</h3>
+                    <a href="{{ path('admin_property_new',{'param_id':param.id,'return_url':path('admin_param_show', {'id': param.id})})}}" class="btn btn-success"><i class="fa fa-plus"></i></a>
+                    <table class='table table-striped table-hover'>
+                        {% for property in param.properties  %}
+                        <tr>
+                            <td><a href="{{path('admin_property_edit',{'id': property.id})}}">{{property.name}}</a></td>
+                            <td>
+{#                                <a href="{{ path('admin_property_show', {'id': property.id}) }}" class="btn btn-success btn-sm" ><i class="fa fa-user"></i></a>#}
+                                <a href="{{ path('admin_property_edit', {'id': property.id,'return_url':path('admin_param_show', {'id': param.id})}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>
+                                <a href="{{ path('admin_property_delete', {'id': property.id,'return_url':path('admin_param_show', {'id': param.id})})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

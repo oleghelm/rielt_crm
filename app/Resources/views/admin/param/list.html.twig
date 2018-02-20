@@ -1,0 +1,38 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('admin_param_new')}}" class="btn btn-success"><i class="fa fa-plus"></i></a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{{knp_pagination_sortable(params, 'id', 'p.id')}}</th>
+                <th>{{knp_pagination_sortable(params, 'Назва', 'p.name')}}</th>
+                <th>{{knp_pagination_sortable(params, 'Порядок', 'p.sort')}}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for param in params %}
+                <tr>
+                    <td>
+                        {{ param.id}}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_param_show', {'id': param.id}) }}">
+                            {{ param.name }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ param.sort }}
+                    </td>
+                    <td>
+                        <a href="{{ path('admin_param_show', {'id': param.id}) }}" class="btn btn-success btn-sm" ><i class="fa fa-user"></i></a>
+                        <a href="{{ path('admin_param_edit', {'id': param.id}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>
+                        <a href="{{ path('admin_param_delete', {'id': param.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ knp_pagination_render(params) }}
+{% endblock %}

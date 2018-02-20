@@ -1,0 +1,8 @@
+<div class="row">
+{% for formRow in paramsForm.children %}
+    {% if(not formRow.rendered) %}
+        <div class="col-lg-7 col-sm-10 col-xs-12">{{ form_row(paramsForm[formRow.vars.name]) }}</div>
+    {% endif %}
+{% endfor %}
+</div>
+{{ form_widget(paramsForm) }}

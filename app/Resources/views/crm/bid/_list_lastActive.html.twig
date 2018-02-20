@@ -1,0 +1,26 @@
+<table class='table table-striped'>
+    <thead>
+        <th>{{knp_pagination_sortable(items, 'Назва', 'bp.name')}}</th>
+        <th>{{knp_pagination_sortable(items, 'Останній контакт', 'bp.lastUpdate')}}</th>
+        <th>{{knp_pagination_sortable(items, 'Клієнт', 'bp.client.name')}}</th>
+        <th></th>
+    </thead>
+    {% for item in items %}
+    <tr>
+        <td>{{item.name}}</td>
+        <td>{{item.lastUpdate|date('d.m.Y')}}</td>
+        <td>{{item.client.name}}</td>
+        <td>
+            <ul>
+                {% for phone in item.client.phones %}
+                    <li>{{phone}}</li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td>
+            <a href="{{path('crm_tools_lastActive_update_bid',{'id':item.id,'return_url': app.request.requestUri})}}" class='btn btn-primary'>Оновити до сьогодні</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{{ knp_pagination_render(items) }}

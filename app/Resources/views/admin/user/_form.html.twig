@@ -1,0 +1,37 @@
+{{ form_start(userForm) }}
+{#                    {{ form_widget(userForm) }}#}
+    {{ form_row(userForm.name) }}
+    {{ form_row(userForm.email, {'label': 'Email'}) }}
+    {%if(user and user.photo)%}
+        <img src="{{user_photo_directory}}/{{user.photo}}" alt="" />
+    {%endif%}
+    {{ form_row(userForm.photo) }}
+    {{ form_row(userForm.info) }}
+    {{ form_row(userForm.phones) }}
+    {{ form_row(userForm.roles) }}
+    {#<div class="form-group">
+        {{ form_label(userForm.phones) }}
+        <ul class="no-mapped" id="userForm-phones" data-prototype="{{ form_widget(userForm.phones.vars.prototype)|e }}<a href='javascript:void(0);' class='btn btn-warning input-group-addon removeCollectionValue'><i class='fa fa-remove'></i></a>" data-count="{{userForm.phones|length}}">
+            {% for phoneField in userForm.phones %}
+                
+                <li class="input-group">
+                    {{ form_errors(phoneField) }}
+                    {{ form_widget(phoneField) }}
+                    <a href="javascript:void(0);" class="btn btn-warning input-group-addon removeCollectionValue"><i class="fa fa-remove"></i></a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a href="javascript:void(0);" class="btn btn-success addCollectionValue" data-collection-id="userForm-phones">Додати телефон <i class="fa fa-plus"></i></a>
+    </div>#}
+    {{ form_row(userForm.plainPassword.first, {
+        'label': 'Password'
+    }) }}
+    {{ form_row(userForm.plainPassword.second, {
+        'label': 'Repeat Password'
+    }) }}
+
+    <button class="btn btn-success" type="submit" formnovalidate>Зберегти</button>&nbsp;
+    <a href="{{path('admin_user_list')}}" class="btn btn-primary">Відміна</a>
+    <div style="display:none;">
+    </div>
+{{ form_end(userForm, {'render_rest': true}) }}

@@ -1,0 +1,22 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Назва</th>
+            <th>id</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for location_item in locations %}
+            <tr>
+                <td><small>{{ location_item.levelname }}</small> <a href="{{ path('admin_location_show', {'id': location_item.id}) }}">{{ location_item.name }}</a></td>
+                <td>{{ location_item.id}}</td>
+                <td>
+                    <a href="{{ path('admin_location_show', {'id': location_item.id}) }}" class="btn btn-success btn-sm" ><i class="fa fa-user"></i></a>
+                    <a href="{{ path('admin_location_edit', {'id': location_item.id,'location_id':location_item.location.id}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>
+{#                        <a href="{{ path('admin_location_delete', {'id': location.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>#}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

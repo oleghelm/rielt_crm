@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang='uk'>
+    <head>
+        <meta charset="utf-8">
+        <title>{% block title %}RieltCRM{% endblock %}</title>
+
+            <link rel="stylesheet" href="{{ asset('vendor/bootstrap/css/bootstrap.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/bootstrap-datetimepicker.min.css') }}">
+{#            <link rel="stylesheet" href="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/build/css/bootstrap-datetimepicker.css" />#}
+            <link rel="stylesheet" href="{{ asset('vendor/fontawesome/css/font-awesome.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/fancybox.min.css') }}">
+            <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+        {% block stylesheets %}
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {#<div class="search-bar">
+            <form method="GET" action="" class="js-sea-search sea-search">
+                <input type="search" name="q" placeholder="Search Sea Creatures" autocomplete="off" class="search-input">
+            </form>
+        </div>#}
+    <nav class="navbar navbar-default no-margin">
+    <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header fixed-brand">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  id="menu-toggle">
+                      <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+                    </button>
+                    <a class="navbar-brand" href="#"><i class="fa fa-rocket fa-4"></i> RieltCRM</a>
+                </div><!-- navbar-header-->
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li class="active" ><button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2"> <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span></button></li>
+                                <li class="pull-right"><a href="{{ path('security_logout') }}">Logout</a></li>
+                            </ul>
+                </div><!-- bs-example-navbar-collapse-1 -->
+    </nav>
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav nav-pills nav-stacked" id="menu">
+
+                
+                
+                {#<li class="active">
+                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-dashboard fa-stack-1x "></i></span> Dashboard</a>
+                       <ul class="nav-pills nav-stacked" style="list-style-type:none;">
+                        <li><a href="#">link1</a></li>
+                        <li><a href="#">link2</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span> Shortcut</a>
+                </li>
+                <li>
+                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-cloud-download fa-stack-1x "></i></span>Overview</a>
+                </li>
+                <li>
+                    <a href="#"> <span class="fa-stack fa-lg pull-left"><i class="fa fa-cart-plus fa-stack-1x "></i></span>Events</a>
+                </li>
+                <li>
+                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-youtube-play fa-stack-1x "></i></span>About</a>
+                </li>
+                <li>
+                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-wrench fa-stack-1x "></i></span>Services</a>
+                </li>#}
+                <li>
+                    <a href="{{path('crm_index')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-server fa-stack-1x "></i></span>CRM</a>
+                </li>
+                <li>
+                    <a href="{{path('crm_client_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-users fa-stack-1x "></i></span>Клієнти</a>
+                </li>
+                <li>
+                    <a href="{{path('crm_object_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-building-o fa-stack-1x "></i></span>Об'єкти</a>
+                </li>
+                    {#<ul>
+                    </ul>#}
+{#                            <li><a href="{{path('crm_object_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span>Всі</a></li>#}
+                            <li><a href="{{path('crm_object_list_sale')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-cart-plus fa-stack-1x "></i></span>Продаж</a></li>
+                            <li><a href="{{path('crm_object_list_rent')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-book fa-stack-1x "></i></span>Оренда</a></li>
+                            <li><a href="{{path('crm_object_list_com_sale')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-briefcase fa-stack-1x "></i></span>Комерційний продаж</a></li>
+                            <li><a href="{{path('crm_object_list_com_rent')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-bullhorn fa-stack-1x "></i></span>Комерційна оренда</a></li>
+                <li>
+                    <a href="{{path('crm_bid_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-sticky-note-o fa-stack-1x "></i></span>Заявки</a>
+                </li>
+                <li>
+                    <a href="{{path('crm_tools_lastActive')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-clock-o fa-stack-1x "></i></span>Відслідкувати активність</a>
+                </li>
+                <li>
+                    <a href="{{path('crm_ticket_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-laptop fa-stack-1x "></i></span>Поставлені завдання</a>
+                </li>
+                {% if is_granted('ROLE_ADMIN') %}
+                <li>
+                    <hr />
+                </li>
+                <li>
+                    <a href="{{path('admin_index')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-dashboard fa-stack-1x "></i></span>Admin</a>
+                </li>
+                <li>
+                    <a href="{{path('admin_user_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-user fa-stack-1x "></i></span>Працівники</a>
+                </li>
+                <li>
+                    <a href="{{path('admin_param_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-wrench fa-stack-1x "></i></span>Параметри</a>
+                </li>
+{#                <li>
+                    <a href="{{path('admin_property_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-gear fa-stack-1x "></i></span>Властивості параметрів</a>
+                </li>#}
+                <li>
+                    <a href="{{path('admin_company_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-briefcase fa-stack-1x "></i></span>Компанії</a>
+                </li>
+                <li>
+                    <a href="{{path('admin_location_level_0')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-map-marker fa-stack-1x "></i></span>Райони розташування</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+        <div id="page-content-wrapper">
+            <div class="container-fluid xyz">
+                <div class="row">
+                    <div class="col-lg-12">
+                        {% for msg in app.session.flashBag.get('success') %}
+                            <div class="alert alert-success">
+                                {{ msg }}
+                            </div>
+                        {% endfor %}
+                        {% block body %}{% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+{#            <p class="footer-text">Made with <span class="heart"><3</span> <a href="https://knpuniversity.com">KnpUniversity</a></p>#}
+    </div>
+        {% block javascripts %}
+{#            <script src="//code.jquery.com/jquery-2.1.4.min.js"></script>#}
+            <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+            <script src="{{ asset('js/fancybox.min.js') }}"></script>
+            <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+            <script src="{{ asset('js/moment-with-locales.js') }}"></script>
+            <script src="{{ asset('js/bootstrap-datetimepicker.min.js') }}"></script>
+{#            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>#}
+{#            <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>#}
+{#            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>#}
+{#            <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>#}
+            
+{#            <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>#}
+{#            <script type="text/javascript" src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>#}
+
+            
+            <script src="{{ asset('js/main.js') }}"></script>
+        {% endblock %}
+        <div class="hidden">
+        <div id="ajax-page-popup"></div>
+        </div>
+    </body>
+</html>

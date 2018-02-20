@@ -1,0 +1,193 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="client")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ClientRepository")
+ */
+class Client
+{    
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+    
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $name;
+    
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $photo;
+    
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $status;
+    
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $info;
+    
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $owner;
+    
+    /**
+     * @ORM\Column(type="json_array", nullable=true)
+     */
+    private $phones = [];
+    
+    /**
+     * @ORM\Column(type="string", unique=true, nullable=true)
+     */
+    private $email;
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="clients")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $user;
+    
+    /**
+     * @Assert\NotBlank()
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $lastUpdate;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Object", mappedBy="client")
+     * @ORM\OrderBy({"id" = "DESC"})
+     */
+    private $objects;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Bid", mappedBy="client")
+     * @ORM\OrderBy({"id" = "DESC"})
+     */
+    private $bids;
+            
+    function getId() {
+        return $this->id;
+    }
+
+    function getName() {
+        return $this->name;
+    }
+
+    function getPhoto() {
+        return $this->photo;
+    }
+
+    function getInfo() {
+        return $this->info;
+    }
+
+    function getPhones() {
+        return $this->phones;
+    }
+
+    function getEmail() {
+        return $this->email;
+    }
+
+    function getUser() {
+        return $this->user;
+    }
+
+    function setId($id) {
+        $this->id = $id;
+    }
+
+    function setName($name) {
+        $this->name = $name;
+    }
+
+    function setPhoto($photo) {
+        $this->photo = $photo;
+    }
+
+    function setInfo($info) {
+        $this->info = $info;
+    }
+
+    function setPhones($phones) {
+        $this->phones = $phones;
+    }
+
+    function setEmail($email) {
+        $this->email = $email;
+    }
+
+    function setUser(User $user) {
+        $this->user= $user;
+    }
+    
+    function getLastUpdate() {
+        return $this->lastUpdate;
+    }
+
+    function setLastUpdate($lastUpdate) {
+        $this->lastUpdate = $lastUpdate;
+    }
+
+    /**
+     * @return ArrayCollection|Object[]
+     */
+    function getObjects() {
+        return $this->objects;
+    }
+
+    function setObjects($objects) {
+        $this->objects = $objects;
+    }
+ 
+    function getBids() {
+        return $this->bids;
+    }
+
+    function setBids($bids) {
+        $this->bids = $bids;
+    }
+    
+    function getStatus() {
+        return $this->status;
+    }
+
+    function setStatus($status) {
+        $this->status = $status;
+    }
+    
+    function getOwner() {
+        return $this->owner;
+    }
+
+    function setOwner($owner) {
+        $this->owner = $owner;
+    }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
+    
+    public function canEdit(User $user){
+        if($this->getUser() && $this->getUser()->getId() == $user->getId())
+            return true;
+        if(in_array('ROLE_SUPERADMIN', $user->getRoles()))
+            return true;
+        return false;
+    }
+}

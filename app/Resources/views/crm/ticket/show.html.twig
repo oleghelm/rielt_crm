@@ -1,0 +1,50 @@
+{#{{dump(ticket)}}#}
+<table class="table">
+    {% if(ticket.user) %}
+    <tr>
+        <th>Працівник</th>
+        <td>{{ticket.user.name}}</td>
+    </tr>
+    {% endif %}
+    <tr>
+        <th>Дата</th>
+        <td>{{ticket.date|date("d.m.Y")}}</td>
+    </tr>
+    <tr>
+        <th>Час</th>
+        <td>{{ticket.time}}</td>
+    </tr>
+    <tr>
+        <th>Завдання</th>
+        <td>{{ticket.task}}</td>
+    </tr>
+    <tr>
+        <th>Місце</th>
+        <td>{{ticket.place}}</td>
+    </tr>
+    <tr>
+        <th>Опис</th>
+        <td>{{ticket.info}}</td>
+    </tr>
+    {% if(ticket.client) %}
+    <tr>
+        <th>Клієнт</th>
+        <td>{{ticket.client.name}}</td>
+    </tr>
+    {% endif %}
+    {% if(ticket.object) %}
+    <tr>
+        <th>Об'єкт</th>
+        <td>{{ticket.object.name}}</td>
+    </tr>
+    {% endif %}
+    <tr>
+        <th>Статус</th>
+        <td>{{ticket.status}}</td>
+    </tr>
+    <tr>
+        <th></th>
+        <td><a href="{{ path('crm_ticket_edit', {'id': ticket.id}) }}" class="btn btn-warning btn-sm ajax-page-load" ><i class="fa fa-edit"></i></a></td>
+    </tr>
+    
+</table>

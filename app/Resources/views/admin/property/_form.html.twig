@@ -1,0 +1,14 @@
+{{ form_start(form) }}
+
+    {{ form_row(form.name, {'label': "Значення"}) }}
+    {{ form_row(form.sort, {'label': "Порядок"}) }}
+    {{ form_row(form.param, {'label': "Параметр"}) }}
+
+    <button class="btn btn-primary" name="submitType" value="apply" type="submit" formnovalidate><i class="fa fa-save"></i></button>&nbsp;
+    <button class="btn btn-success" name="submitType" value="save" type="submit" formnovalidate><i class="fa fa-save"></i>&nbsp;<i class="fa fa-plus"></i>&nbsp;<i class="fa fa-sign-out"></i></button>&nbsp;
+    {% if(app.request.get('return_url')!="") %}
+        <a href="{{app.request.get('return_url')}}" class="btn btn-warning"><i class="fa fa-sign-out"></i></a>
+    {% else %}
+        <a href="{{path('crm_object_list')}}" class="btn btn-warning"><i class="fa fa-sign-out"></i></a>
+    {% endif %}
+{{ form_end(form) }}

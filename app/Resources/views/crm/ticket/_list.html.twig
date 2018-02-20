@@ -1,0 +1,71 @@
+<div class="row ticket-items">
+    {% set currDate = null %}
+    {% for item in items %}
+        {% if(currDate != item.date) %}
+            {% set currDate = item.date %}
+            <div class="col-md-12 col-sm-12 com-xs-12">
+                <h4>{{currDate|date("d.m.Y")}}</h4>
+{#                <hr />#}
+            </div>
+            <div class="clearfix"></div>
+        {% endif %}
+{#        <div class="col-md-6 col-sm-6 com-xs-12">#}
+            <div class="ticket-item status-{{ item.status }}">
+                <div class="inforow">
+                    <div class="title">Ріелтор</div>
+                    <div class="val">
+                        {% if(item.user) %}
+                            {{ item.user.name }}
+                        {% else %}
+                            не призначений
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="inforow">
+                    <div class="title">Дата/Час</div>
+                    <div class="val">{{  item.date|date("d.m.Y") }} / {{ item.time }}</div>
+                </div>
+                <div class="inforow">
+                    <div class="title">Тип</div>
+                    <div class="val">
+                        {% if(item.task == 'meet') %}
+                            Зустріч
+                        {% elseif(item.task == 'show') %}
+                            Показ об'єкту
+                        {% elseif(item.task == 'creating') %}
+                            Оформлення нового об'єкту
+                        {% elseif(item.task == 'docs') %}
+                            Оформлення документів
+                        {% elseif(item.task == 'standup') %}
+                            Збори в офісі
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="inforow">
+                    <div class="title">Статус</div>
+                    <div class="val">
+                        {% if(item.status == 'new') %}
+                            Новий
+                        {% elseif(item.status == 'inwork') %}
+                            В роботі
+                        {% elseif(item.status == 'replace') %}
+                            Перенесено
+                        {% elseif(item.status == 'done') %}
+                            Виконано
+                        {% elseif(item.status == 'cancel') %}
+                            Відмінено
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="inforow buttons">
+                    <a href="{{ path('crm_ticket_status', {'id': item.id}) }}" class="btn btn-primary btn-sm ajax-page-load" ><i class="fa fa-unsorted"></i></a>
+                    <a href="{{ path('crm_ticket_show', {'id': item.id}) }}" class="btn btn-success btn-sm ajax-page-load" ><i class="fa fa-arrows"></i></a>
+                    {% if(not item.user) %}
+                        <a href="{{ path('crm_ticket_user_set', {'id': item.id,'user_id':app.user.id}) }}" class="btn btn-primary btn-sm ajax-grab-ticket" data-list-update=".tickets-list" ><i class="fa fa-hand-grab-o"></i></a>
+                    {% endif %}
+                </div>
+                <div class="clearfix"></div>
+            </div>
+{#        </div>#}
+    {% endfor %}
+</div>

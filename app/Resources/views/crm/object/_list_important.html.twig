@@ -1,0 +1,89 @@
+    <table class="table table-hover table-responsive-objects">
+        <thead>
+            <tr>
+                <th>Код</th>
+                <th>Статус</th>
+                <th>Район</th>
+                <th>Ціна</th>
+                <th>К-сть кімнат</th>
+                <th>Площа</th>
+                <th>Тип будинку</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for object in items %}
+                <tr class="
+                    {% if(object.status=='reserved') %}
+                        warning
+                    {% elseif(object.status=='insale') %}
+                        
+                    {% elseif(object.status=='saled') %}
+                        success
+                    {% elseif(object.status=='archive') %}
+                        active
+                    {% endif %}
+                    ">
+                    <td>
+                        <a href="{{ path('crm_object_show', {'id': object.id}) }}">
+                        {{ object.code }}
+                        </a>
+                        <div class="pull-right">
+                            {% if(object.photos|length > 0) %}
+                                <i class="fa fa-image" title="Є фото"></i>
+                            {% else %}
+                                <i class="fa fa-image" title="Нема фото" style="color:#ddd;"></i>
+                            {% endif %}
+                            {% if(object.exclusive) %}
+                                <i class="fa fa-star" title="Ексклюзив"></i>
+                            {% else %}
+                                <i class="fa fa-star" title="Не ексклюзив" style="color:#ddd;"></i>
+                            {% endif %}
+                            {% if(object.important) %}
+                                <i class="fa fa-warning" title="Важливий"></i>
+                            {% else %}
+                                <i class="fa fa-warning" title="Не важливий" style="color:#ddd;"></i>
+                            {% endif %}
+                            {% if(object.advertising) %}
+                                <i class="fa fa-bullhorn" title="Рекламується"></i>
+                            {% else %}
+                                <i class="fa fa-bullhorn" title="Не рекламується" style="color:#ddd;"></i>
+                            {% endif %}
+                            
+                        </div>
+                    </td>
+                    <td>
+                        {% if(object.status=='insale') %}
+                            В продажу
+                        {% elseif(object.status=='reserved') %}
+                            Зарезервовано
+                        {% elseif(object.status=='saled') %}
+                            Продано
+                        {% elseif(object.status=='archive') %}
+                            В архіві
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if(object.location) %}
+                            {{ object.location.name }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {{ object.price }}
+                    </td>
+                    <td>
+                        {{ object.rooms }}
+                    </td>
+                    <td>
+                        {{ object.area }}
+                    </td>
+                    <td>
+                        {{ object.getParamVal(24) }}
+                    </td>
+                    <td>
+                        <a href="{{ path('crm_object_show', {'id': object.id}) }}" class="btn btn-success btn-sm" ><i class="fa fa-user"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>

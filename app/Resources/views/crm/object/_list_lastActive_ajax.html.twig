@@ -1,0 +1,26 @@
+<table class='table table-responsive-calls'>
+    <thead>
+        <th>Назва</th>
+{#        <th>Дата</th>#}
+        <th>Клієнт</th>
+        <th width="120"></th>
+        <th width="5%"></th>
+    </thead>
+    {% for item in items %}
+    <tr class="object_row_{{item.id}}">
+        <td><a href="{{path('crm_object_show',{'id':item.id,'ajax':'Y'})}}" class="ajax-page-load">{{item.name}}</a></td>
+{#        <td>{{item.lastUpdate|date('d.m.Y')}}</td>#}
+        <td><a href="{{path('crm_client_show',{'id':item.client.id,'ajax':'Y'})}}" class="ajax-page-load">{{item.client.name}}</a></td>
+        <td>
+            <ul>
+                {% for phone in item.client.phones %}
+                    <li><a href="tel:{{phone}}">{{phone}}</a></li>
+                {% endfor %}
+            </ul>
+        </td>
+        <td>
+            <a href="{{path('crm_tools_lastActive_update_object',{'id':item.id,'ajax':'Y'})}}" class='btn btn-primary ajax-call-done' data-for_hide="object_row_{{item.id}}"><i class="fa fa-check"></i></a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>

@@ -1,0 +1,35 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Компанії</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+                <tr>
+                    <td>
+                        <a href="{{ path('admin_company_edit', {'id': item.id}) }}">
+                            {{ item.name }}
+                        </a>
+                    </td>
+                    <td>
+                        {% if item.preview %}
+                            <img src="{{company_photo_directory}}/{{ item.preview }}" alt="" height="40" />
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{{path('admin_company_delete', {'id': item.id})}}" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('admin_company_new')}}" class="btn btn-success">
+        Створити
+    </a>
+{% endblock %}
