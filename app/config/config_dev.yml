@@ -36,6 +36,14 @@ monolog:
         #chromephp:
         #    type: chromephp
         #    level: info
-
+doctrine:
+    dbal:
+        driver: pdo_mysql
+        host: 127.0.0.1
+        port: ~
+        dbname: symfony
+        user: root
+        password: root
+        charset: UTF8
 #swiftmailer:
 #    delivery_addresses: ['me@example.com']

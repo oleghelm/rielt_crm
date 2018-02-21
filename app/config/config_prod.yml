@@ -20,3 +20,13 @@ monolog:
         console:
             type: console
             process_psr_3_messages: false
+
+doctrine:
+    dbal:
+        driver: pdo_mysql
+        host: 127.0.0.1
+        port: ~
+        dbname: rieltkmu_crm
+        user: rieltkmu_crm
+        password: ugskmppnla1j
+        charset: UTF8
