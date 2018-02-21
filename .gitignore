@@ -15,7 +15,9 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+/web/.htaccess
 /web/images/company/
 /web/images/user/avatars/
 rielt_id_rsa
 rielt_id_rsa.pub
+.htaccess
