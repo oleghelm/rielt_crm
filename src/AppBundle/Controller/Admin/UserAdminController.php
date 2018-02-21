@@ -87,6 +87,10 @@ class UserAdminController extends Controller
             //work with file
             $file = $user->getPhoto();
             if($file){
+                if(file_exists($this->getParameter('user_photo_directory').'/'.$old_photo)){
+                    unlink($this->getParameter('user_photo_directory').'/'.$old_photo);
+                }
+                $fileUploader->setCurrentDir($this->getParameter('user_photo_directory'));
                 $fileName = $fileUploader->upload($file);
                 $user->setPhoto($fileName);
             } else {

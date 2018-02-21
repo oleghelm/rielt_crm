@@ -91,7 +91,7 @@
                 <li>
                     <a href="{{path('crm_ticket_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-laptop fa-stack-1x "></i></span>Поставлені завдання</a>
                 </li>
-                {% if is_granted('ROLE_ADMIN') %}
+                {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN') %}
                 <li>
                     <hr />
                 </li>

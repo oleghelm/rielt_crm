@@ -95,6 +95,9 @@ class CompanyAdminController extends Controller
             //work with file
             $file = $company->getLogo();
             if($file){
+                if(file_exists($this->getParameter('company_photo_directory').'/'.$old_logo)){
+                    unlink($this->getParameter('company_photo_directory').'/'.$old_logo);
+                }
                 $fileUploader->setCurrentDir($this->getParameter('company_photo_directory'));
                 $fileName = $fileUploader->upload($file);
                 $company->setLogo($fileName);
@@ -103,6 +106,9 @@ class CompanyAdminController extends Controller
             }
             $file = $company->getPreview();
             if($file){
+                if(file_exists($this->getParameter('company_photo_directory').'/'.$old_preview)){
+                    unlink($this->getParameter('company_photo_directory').'/'.$old_preview);
+                }
                 $fileUploader->setCurrentDir($this->getParameter('company_photo_directory'));
                 $fileName = $fileUploader->upload($file);
                 $company->setPreview($fileName);
