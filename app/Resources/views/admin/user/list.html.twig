@@ -23,7 +23,9 @@
                         {% endif %}
                     </td>
                     <td>
+                        {%if(user.id != 134)%}
                         <a href="{{path('admin_user_delete', {'id': user.id})}}" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>
+                        {%endif%}
                     </td>
                 </tr>
             {% endfor %}
