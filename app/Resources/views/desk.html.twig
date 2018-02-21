@@ -33,7 +33,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li class="active" ><button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2"> <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span></button></li>
-                                <li class="pull-right"><a href="{{ path('security_logout') }}">Logout</a></li>
+                                <li class="pull-right"><a href="{{ path('security_logout') }}">Вийти</a></li>
                             </ul>
                 </div><!-- bs-example-navbar-collapse-1 -->
     </nav>
@@ -114,6 +114,12 @@
                     <a href="{{path('admin_location_level_0')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-map-marker fa-stack-1x "></i></span>Райони розташування</a>
                 </li>
                 {% endif %}
+                <li>
+                    <hr />
+                </li>
+                <li>
+                    <a href="{{ path('security_logout') }}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-sign-out fa-stack-1x "></i></span>Вийти</a>
+                </li>
             </ul>
         </div>
         <div id="page-content-wrapper">
