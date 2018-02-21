@@ -39,6 +39,22 @@ class UserRepository extends EntityRepository
                 ->setParameter('nulluser', null)
                 ->getQuery()
                 ->execute();
+        $this->_em->getRepository('AppBundle:Bid')
+                ->createQueryBuilder('bid')
+                ->update()
+                ->set('bid.user',':nulluser')
+                ->where('bid.user = :user')
+                ->setParameter('user', $user)
+                ->setParameter('nulluser', null)
+                ->getQuery()
+                ->execute();
+        $this->_em->getRepository('AppBundle:Ticket')
+                ->createQueryBuilder('ticket')
+                ->delete()
+                ->where('ticket.user = :user')
+                ->setParameter('user', $user)
+                ->getQuery()
+                ->execute();
     }
     public function getUsersForFilter(){
         $vals = $this->createQueryBuilder('user')

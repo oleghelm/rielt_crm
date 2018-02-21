@@ -122,10 +122,12 @@ class UserAdminController extends Controller
             throw $this->createNotFoundException('No user found');
         }
         
-//        $photo = $user->getPhoto();
-//        if($photo){
-//            unlink($this->getParameter('user_photo_directory').'/'.$user->getPhoto());
-//        }
+        $photo = $user->getPhoto();
+        if($photo){
+            if(file_exists($this->getParameter('user_photo_directory').'/'.$photo)){
+                unlink($this->getParameter('user_photo_directory').'/'.$photo);
+            }
+        }
 
         $em = $this->getDoctrine()->getEntityManager();
         
