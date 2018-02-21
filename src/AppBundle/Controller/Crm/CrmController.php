@@ -12,7 +12,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\Bid;
 
 /**
- * @Security("is_granted('ROLE_CRM_USER') or is_granted('ROLE_ADMIN')")
+ * @Security("is_granted('ROLE_CRM_USER') or is_granted('ROLE_SUPERADMIN')")
  */
 class CrmController extends Controller
 {

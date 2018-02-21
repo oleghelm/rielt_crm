@@ -23,7 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 /**
- * @Security("is_granted('ROLE_CRM_USER') or is_granted('ROLE_ADMIN')")
+ * @Security("is_granted('ROLE_CRM_USER') or is_granted('ROLE_SUPERADMIN')")
  * @Route("/crm")
  */
 class TicketController extends Controller

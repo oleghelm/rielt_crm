@@ -27,7 +27,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 /**
- * @Security("is_granted('ROLE_CRM_USER') or is_granted('ROLE_ADMIN')")
+ * @Security("is_granted('ROLE_CRM_USER') or is_granted('ROLE_SUPERADMIN')")
  * @Route("/crm")
  */
 class ObjectController extends Controller {

@@ -13,7 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 //use Symfony\Component\HttpFoundation\File\File;
 //use AppBundle\Service\FileUploader;
 /**
- * @Security("is_granted('ROLE_CRM_USER') or is_granted('ROLE_ADMIN')")
+ * @Security("is_granted('ROLE_CRM_USER') or is_granted('ROLE_SUPERADMIN')")
  * @Route("/crm")
  */
 class ClientController extends Controller
