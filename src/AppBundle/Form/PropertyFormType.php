@@ -32,7 +32,7 @@ class PropertyFormType extends AbstractType
                         }
                         return $qb;
                     },
-                    'data'=>$_REQUEST['param_id']
+                    'data'=>(isset($_REQUEST['param_id']) && $_REQUEST['param_id']!="") ? $_REQUEST['param_id'] : null
                 ]);
     }
 

@@ -9,6 +9,6 @@
     {% if(app.request.get('return_url')!="") %}
         <a href="{{app.request.get('return_url')}}" class="btn btn-warning"><i class="fa fa-sign-out"></i></a>
     {% else %}
-        <a href="{{path('crm_object_list')}}" class="btn btn-warning"><i class="fa fa-sign-out"></i></a>
+        <a href="{{path('admin_param_list')}}" class="btn btn-warning"><i class="fa fa-sign-out"></i></a>
     {% endif %}
 {{ form_end(form) }}
