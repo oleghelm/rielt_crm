@@ -68,16 +68,22 @@ class Client
     private $lastUpdate;
     
     /**
-     * @ORM\OneToMany(targetEntity="Object", mappedBy="client")
+     * @ORM\OneToMany(targetEntity="Object", mappedBy="client", orphanRemoval=true)
      * @ORM\OrderBy({"id" = "DESC"})
      */
     private $objects;
     
     /**
-     * @ORM\OneToMany(targetEntity="Bid", mappedBy="client")
+     * @ORM\OneToMany(targetEntity="Bid", mappedBy="client", orphanRemoval=true)
      * @ORM\OrderBy({"id" = "DESC"})
      */
     private $bids;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="Ticket", mappedBy="client", orphanRemoval=true)
+     * @ORM\OrderBy({"id" = "DESC"})
+     */
+    private $tickets;
             
     function getId() {
         return $this->id;
@@ -148,6 +154,13 @@ class Client
      */
     function getObjects() {
         return $this->objects;
+    }
+
+    /**
+     * @return ArrayCollection|Ticket[]
+     */
+    function getTickets() {
+        return $this->tickets;
     }
 
     function setObjects($objects) {
