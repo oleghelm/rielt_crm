@@ -27,7 +27,7 @@ class BidParam
     private $bid;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Param", inversedBy="objectParams")
+     * @ORM\ManyToOne(targetEntity="Param", inversedBy="bidParams")
      * @ORM\JoinColumn(nullable=true)
      */
     private $param;

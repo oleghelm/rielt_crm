@@ -69,6 +69,12 @@ class Param
      */
     private $objectParams;
     
+    /**
+     * @ORM\OneToMany(targetEntity="BidParam", mappedBy="param", orphanRemoval=true)
+     * @ORM\OrderBy({"id" = "DESC"})
+     */
+    private $bidParams;
+    
     
     function getId() {
         return $this->id;
@@ -102,6 +108,13 @@ class Param
      */
     function getObjectParams() {
         return $this->objectParams;
+    }
+
+    /**
+     * @return ArrayCollection|ObjectParam[]
+     */
+    function getBidParams() {
+        return $this->bidParams;
     }
 
     function setId($id) {
@@ -155,6 +168,14 @@ class Param
 
     function setDetail($detail) {
         $this->detail = $detail;
+    }
+    
+    function setObjectParams($objectParams) {
+        $this->objectParams = $objectParams;
+    }
+
+    function setBidParams($bidParams) {
+        $this->bidParams = $bidParams;
     }
 
 }
