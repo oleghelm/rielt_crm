@@ -86,7 +86,7 @@ class Ticket{
     private $bid;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Object")
+     * @ORM\ManyToOne(targetEntity="Object", inversedBy="tickets")
      * @ORM\JoinColumn(nullable=true)
      */
     private $object;

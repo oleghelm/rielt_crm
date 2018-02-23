@@ -7,9 +7,11 @@
              <div class="{%if(not app.request.get('ajax'))%}col-sm-5{%endif%} col-xs-12">
                  <div class="object-gallery">
                           {% for photo in object.photos %}
+                              {%if(photo is not iterable)%}
                               <a class="photo" href="{{photo}}" class='fancybox'  data-fancybox="gallery">
                                   <img src="{{photo}}" alt="" height="" />
                               </a>
+                              {%endif%}
                           {% endfor %}
                  </div>
               </div>

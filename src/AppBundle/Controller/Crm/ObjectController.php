@@ -134,6 +134,11 @@ class ObjectController extends Controller {
             $em->persist($object);
             $em->flush();
             
+            if($object->getCode() == ""){
+                $object->setCode($object->getId());
+                $em->persist($object);
+                $em->flush();
+            }
             //work with file
             $files = $object->getPhotos();
             if($files){

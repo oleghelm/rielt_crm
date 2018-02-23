@@ -139,6 +139,12 @@ class Object
      */
     private $params;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Ticket", mappedBy="object", orphanRemoval=true)
+     * @ORM\OrderBy({"id" = "DESC"})
+     */
+    private $tickets;
+    
     function getId() {
         return $this->id;
     }
@@ -160,17 +166,23 @@ class Object
     }
 
     /**
-     * @return ArrayCollection|GenusNote[]
+     * @return ArrayCollection|User[]
      */
     function getUser() {
         return $this->user;
     }
 
     /**
-     * @return ArrayCollection|GenusNote[]
+     * @return ArrayCollection|Client[]
      */
     function getClient() {
         return $this->client;
+    }
+    /**
+     * @return ArrayCollection|Ticket[]
+     */
+    function getTickets() {
+        return $this->tickets;
     }
 
     function getLastUpdate() {
