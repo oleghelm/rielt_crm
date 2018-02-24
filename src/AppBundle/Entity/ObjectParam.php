@@ -33,7 +33,7 @@ class ObjectParam
     private $param;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Property")
+     * @ORM\ManyToOne(targetEntity="Property", inversedBy="objectParams")
      * @ORM\JoinColumn(nullable=true)
      */
     private $property;

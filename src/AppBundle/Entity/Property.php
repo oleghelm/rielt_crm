@@ -43,6 +43,18 @@ class Property
      */
     private $param;
     
+    /**
+     * @ORM\OneToMany(targetEntity="ObjectParam", mappedBy="property", orphanRemoval=true)
+     * @ORM\OrderBy({"id" = "DESC"})
+     */
+    private $objectParams;
+    
+    /**
+     * @ORM\OneToMany(targetEntity="BidParam", mappedBy="property", orphanRemoval=true)
+     * @ORM\OrderBy({"id" = "DESC"})
+     */
+    private $bidParams;
+    
     function getId() {
         return $this->id;
     }
