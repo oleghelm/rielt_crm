@@ -32,6 +32,14 @@ class ClientFormType extends AbstractType
                         'В архіві'  => 'archive',
                     ]
                 ])
+                ->add('type',ChoiceType::class, [
+                    'label' => 'Тип',
+                    'choices' => [
+                        'Продаж'  => 'sale',
+                        'Оренда'  => 'rent',
+//                        'Все'  => 'all',
+                    ]
+                ])
                 ->add('info',TextareaType::class)
                 ->add('phones',CollectionType::class,[
                     'label_attr' => ['class'=>'textCollection'],

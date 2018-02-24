@@ -38,6 +38,11 @@ class Client
     /**
      * @ORM\Column(type="string", nullable=true)
      */
+    private $type;
+    
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
     private $info;
     
     /**
@@ -189,6 +194,14 @@ class Client
 
     function setOwner($owner) {
         $this->owner = $owner;
+    }
+
+    function getType() {
+        return $this->type;
+    }
+
+    function setType($type) {
+        $this->type = $type;
     }
 
     public function __toString()

@@ -108,12 +108,17 @@ class ObjectRepository extends EntityRepository
                     ->setParameter('lastUpdateEnd', $filter['lastUpdateEnd']['val']);
             }
             
+            $price_type = '';
+            if(isset($filter['price_type']) && $filter['price_type']['val']!="full"){$price_type='_'.$filter['price_type']['val'];}
+            $currency = '';
+            if(isset($filter['currency']) && $filter['currency']['val']!="dol"){$currency='_'.$filter['currency']['val'];}
+            
             if(isset($filter['min_price'])){
-                $queryBuilder->andWhere('ob.price >= :min_price')
+                $queryBuilder->andWhere('ob.price'.$price_type.$currency.' >= :min_price')
                         ->setParameter('min_price', $filter['min_price']['val']);
             }
             if(isset($filter['max_price'])){
-                $queryBuilder->andWhere('ob.price <= :max_price')
+                $queryBuilder->andWhere('ob.price'.$price_type.$currency.' <= :max_price')
                         ->setParameter('max_price', $filter['max_price']['val']);
             }
             if(isset($filter['rooms'])){

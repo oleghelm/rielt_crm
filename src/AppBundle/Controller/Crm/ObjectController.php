@@ -180,7 +180,6 @@ class ObjectController extends Controller {
 
         $form = $this->createForm(ObjectFormType::class, $object);
         $form->handleRequest($request);
-        
         //render params form
         $objectformParams = $object->getParamsArrayMap(true);
         $paramsForm = $this->getParamsForm($objectformParams);
@@ -214,6 +213,7 @@ class ObjectController extends Controller {
                     }
                 }
             }
+        
             //upload
             $files = $object->getPhotos();
             if($files){
@@ -598,9 +598,23 @@ class ObjectController extends Controller {
             'multiple' => false,
         ];
         $formParams[] = [
+            'id' => 'price_type',
+            'type' => 'select',
+            'label' => 'Тип ціни',
+            'multiple' => false,
+            'choices' => ['Повна' => 'full','За 1 м2'  => 'm2'],
+        ];
+        $formParams[] = [
+            'id' => 'currency',
+            'type' => 'select',
+            'label' => 'Валюта',
+            'multiple' => false,
+            'choices' => ['Грн' => 'uah','$'  => 'dol'],
+        ];
+        $formParams[] = [
             'id' => 'clientstr',
             'type' => 'text',
-            'label' => 'Власник',
+            'label' => 'Власник(част. ім. або тел.)',
             'multiple' => false,
         ];
         

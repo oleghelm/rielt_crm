@@ -77,6 +77,11 @@ class Object
     private $domria = false;
     
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $comission = false;
+    
+    /**
      * @ORM\Column(type="json_array", nullable=true)
      */
     private $photos;
@@ -132,6 +137,24 @@ class Object
      * @ORM\Column(type="integer")
      */
     private $price;
+    
+    /**
+     * @Assert\Range(min=0, minMessage="Вставновіть мінімальну ціну")
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $price_uah;
+    
+    /**
+     * @Assert\Range(min=0, minMessage="Вставновіть мінімальну ціну за м2")
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $price_m2;
+    
+    /**
+     * @Assert\Range(min=0, minMessage="Вставновіть мінімальну ціну за м2")
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $price_m2_uah;
     
     /**
      * @ORM\OneToMany(targetEntity="ObjectParam", mappedBy="object", orphanRemoval=true)
@@ -342,7 +365,38 @@ class Object
     function setDomria($domria) {
         $this->domria = $domria;
     }
+    
+    function getPriceUah() {
+        return $this->price_uah;
+    }
 
+    function getPriceM2() {
+        return $this->price_m2;
+    }
+
+    function getPriceM2Uah() {
+        return $this->price_m2_uah;
+    }
+
+    function setPriceUah($price_uah) {
+        $this->price_uah = $price_uah;
+    }
+
+    function setPriceM2($price_m2) {
+        $this->price_m2 = $price_m2;
+    }
+
+    function setPriceM2Uah($price_m2_uah) {
+        $this->price_m2_uah = $price_m2_uah;
+    }
+    function getComission() {
+        return $this->comission;
+    }
+
+    function setComission($comission) {
+        $this->comission = $comission;
+    }
+    
     function getParamVal($id){
         $params = $this->getParams();
         $res = [];

@@ -24,6 +24,12 @@ class Property
      * @ORM\Column(type="string")
      */
     private $name;
+    
+    /**
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $exportName;
    
     /**
      * @Assert\NotBlank()
@@ -67,6 +73,13 @@ class Property
 
     function setParam($param) {
         $this->param = $param;
+    }
+    function getExportName() {
+        return $this->exportName;
+    }
+
+    function setExportName($exportName) {
+        $this->exportName = $exportName;
     }
     
     public function __toString()

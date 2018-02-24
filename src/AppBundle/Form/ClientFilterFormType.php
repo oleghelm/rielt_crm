@@ -37,6 +37,15 @@ class ClientFilterFormType extends AbstractType
                         'В архіві'  => 'archive',
                     ]
                 ])
+                ->add('type',ChoiceType::class, [
+                    'label' => 'Тип співпраці',
+                    'placeholder' => 'Виберіть тип',
+                    'choices' => [
+                        'Продаж'  => 'sale',
+                        'Оренда'  => 'rent',
+//                        'Все'  => 'all',
+                    ]
+                ])
                 ->add('user',EntityType::class,[
                     'placeholder' => 'Виберіть чий клієнт',
                     'class' => User::class,

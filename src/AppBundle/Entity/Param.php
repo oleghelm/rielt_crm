@@ -56,6 +56,22 @@ class Param
      * @ORM\Column(type="integer")
      */
     private $sort;
+        
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $useInExport = false;
+    
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $basicParam = false;
+    
+    /**
+     * @Assert\NotBlank()
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $exportName;
     
     /**
      * @ORM\OneToMany(targetEntity="Property", mappedBy="param", orphanRemoval=true)
@@ -177,5 +193,29 @@ class Param
     function setBidParams($bidParams) {
         $this->bidParams = $bidParams;
     }
+    
+    function getUseInExport() {
+        return $this->useInExport;
+    }
 
+    function getBasicParam() {
+        return $this->basicParam;
+    }
+
+    function getExportName() {
+        return $this->exportName;
+    }
+
+    function setUseInExport($useInExport) {
+        $this->useInExport = $useInExport;
+    }
+
+    function setBasicParam($basicParam) {
+        $this->basicParam = $basicParam;
+    }
+
+    function setExportName($exportName) {
+        $this->exportName = $exportName;
+    }
+    
 }

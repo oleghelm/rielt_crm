@@ -83,6 +83,8 @@ class ObjectFormType extends AbstractType
                 ])
                 ->add('important',ChoiceType::class, [
                     'label' => 'Важливий',
+                    'expanded' => true,
+                    'attr' => array('class' => 'inline-radio'),
                     'choices' => [
                         'Так' => true,
                         'Ні'  => false
@@ -90,6 +92,8 @@ class ObjectFormType extends AbstractType
                 ])
                 ->add('advertising',ChoiceType::class, [
                     'label' => 'Рекламується',
+                    'expanded' => true,
+                    'attr' => array('class' => 'inline-radio'),
                     'choices' => [
                         'Так' => true,
                         'Ні'  => false
@@ -97,6 +101,8 @@ class ObjectFormType extends AbstractType
                 ])
                 ->add('exclusive',ChoiceType::class, [
                     'label' => 'Ексклюзив',
+                    'expanded' => true,
+                    'attr' => array('class' => 'inline-radio'),
                     'choices' => [
                         'Так' => true,
                         'Ні'  => false
@@ -104,12 +110,26 @@ class ObjectFormType extends AbstractType
                 ])
                 ->add('domria',ChoiceType::class, [
                     'label' => 'Вигрузка на dom.ria',
+                    'expanded' => true,
+                    'attr' => array('class' => 'inline-radio'),
                     'choices' => [
                         'Так' => true,
                         'Ні'  => false
                     ]
                 ])
-                ->add('price', IntegerType::class, ['label' => 'Ціна'])
+                ->add('comission',ChoiceType::class, [
+                    'label' => 'Комісію платить',
+                    'expanded' => true,
+                    'attr' => array('class' => 'inline-radio'),
+                    'choices' => [
+                        'Власник' => true,
+                        'Клієнт'  => false
+                    ]
+                ])
+                ->add('price', IntegerType::class, ['label' => 'Ціна в $'])
+                ->add('price_uah', IntegerType::class, ['label' => 'Ціна в грн'])
+                ->add('price_m2', IntegerType::class, ['label' => 'Ціна $ за м2'])
+                ->add('price_m2_uah', IntegerType::class, ['label' => 'Ціна в грн за 1 м2'])
                 ->add('rooms', IntegerType::class, ['label' => 'Кількість кімнат'])
                 ->add('area', TextType::class, ['label' => 'Площа'])
                 ->add('info', TextareaType::class, ['label' => 'Опис'])

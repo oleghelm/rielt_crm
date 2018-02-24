@@ -33,6 +33,10 @@ class ClientRepository extends EntityRepository
     public function getFilteredClients($filter){
         $queryBuilder = $this->_em->getRepository('AppBundle:Client')->createQueryBuilder('cl');
         $queryBuilder->leftJoin('cl.user', 'user');
+        if(isset($filter['type']) && $filter['type'] !=""){
+            $queryBuilder->andWhere('cl.type = :type')
+                    ->setParameter('type',$filter['type']);
+        }
         if(isset($filter['status']) && $filter['status'] !=""){
             $queryBuilder->andWhere('cl.status = :clstatus')
                     ->setParameter('clstatus',$filter['status']);

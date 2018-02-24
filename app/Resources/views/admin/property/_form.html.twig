@@ -1,8 +1,9 @@
 {{ form_start(form) }}
 
-    {{ form_row(form.name, {'label': "Значення"}) }}
-    {{ form_row(form.sort, {'label': "Порядок"}) }}
-    {{ form_row(form.param, {'label': "Параметр"}) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.sort) }}
+    {{ form_row(form.exportName) }}
+    {{ form_row(form.param) }}
 
     <button class="btn btn-primary" name="submitType" value="apply" type="submit" formnovalidate><i class="fa fa-save"></i></button>&nbsp;
     <button class="btn btn-success" name="submitType" value="save" type="submit" formnovalidate><i class="fa fa-save"></i>&nbsp;<i class="fa fa-plus"></i>&nbsp;<i class="fa fa-sign-out"></i></button>&nbsp;
