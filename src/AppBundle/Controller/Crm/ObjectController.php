@@ -154,7 +154,7 @@ class ObjectController extends Controller {
 //            $paramsForm->handleRequest($request);
             $this->saveFormParams($object,$paramsForm->getData());
             
-            $this->addFlash('success', 'Object created!');
+            $this->addFlash('success', "Об'єкт створено!");
 
             if($request->get('submitType')!='apply')
                 return $this->redirectToRoute('crm_object_list');
@@ -231,7 +231,7 @@ class ObjectController extends Controller {
             //save params
             $this->saveFormParams($object,$paramsForm->getData());
 
-            $this->addFlash('success', 'Object updated!');
+            $this->addFlash('success', "Об'єкт оновлено!");
 
             if($request->get('submitType')!='apply')
                 return $this->redirectToRoute('crm_object_list');
@@ -265,7 +265,7 @@ class ObjectController extends Controller {
         $em->remove($object);
         $em->flush();
 
-        $this->addFlash('success', 'Object deleted!');
+        $this->addFlash('success', "Об'єкт видалено!");
         
         return $this->redirectToRoute('crm_object_list');
     }
@@ -355,7 +355,7 @@ class ObjectController extends Controller {
             }
         }
 
-        $this->addFlash('success', "Фльтр заповнено згідно об'єкту №".$object->getId());
+        $this->addFlash('success', "Фільтр заповнено згідно об'єкту №".$object->getId());
         
         return $this->redirectToRoute('crm_bid_list',['object'=>$object->getId(),'form'=>$queryString]);
     }

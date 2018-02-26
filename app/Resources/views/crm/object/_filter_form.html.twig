@@ -1,0 +1,70 @@
+
+        {{ form_start(paramsForm, {'action': app.request.pathInfo}) }}
+        <div class="row">
+            <div class="col-lg-2 col-sm-3 col-xs-6">
+                <div class="form-group checkbox-group">
+                    <label class="control-label required">Компанія</label>
+                    <div id="form_company">
+                        {% for ch in paramsForm.company.children %}
+                            <div class="checkbox">
+                                <input style="display:none;" type="checkbox" id="{{ch.vars.id}}" name="{{ch.vars.full_name}}" value="{{ch.vars.value}}" {% if(ch.vars.checked) %}checked="checked"{% endif %}>
+                                <label for="{{ch.vars.id}}">
+                                    <img src="{{ch.vars.attr['data-image']}}" height="30">
+                                    {{ch.vars.label}}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% do paramsForm.company.setRendered %}
+            </div>
+{#            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(paramsForm['location']) }}</div>#}
+            {#<div class="col-lg-2 col-sm-3 col-xs-6">
+                <div class="form-group">
+                    <label for="">Ціна від - до</label>
+                    <input type="number" id="{{paramsForm.min_price.vars['id']}}" name="{{paramsForm.min_price.vars['full_name']}}" value="{{paramsForm.min_price.vars['value']}}" required="required" class="form-control">
+                    <br>
+                    <input type="number" id="{{paramsForm.max_price.vars['id']}}" name="{{paramsForm.max_price.vars['full_name']}}" value="{{paramsForm.max_price.vars['value']}}" required="required" class="form-control">
+                </div>
+                {% do paramsForm.min_price.setRendered %}
+                {% do paramsForm.max_price.setRendered %}
+            </div>#}
+            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(paramsForm.min_price) }}</div>
+            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(paramsForm['max_price']) }}</div>
+            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(paramsForm['price_type']) }}</div>
+            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(paramsForm['currency']) }}</div>
+            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(paramsForm['rooms']) }}</div>
+            {% if(paramsForm.children.type is defined) %}
+            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(paramsForm['type']) }}</div>
+            {% endif %}
+            <div class="col-lg-4 col-sm-6 col-xs-6">{{ form_row(paramsForm['clientstr']) }}</div>
+            <div class="col-lg-2 col-sm-6 col-xs-6">
+                <br />
+                <a href="javascript:void(0);" class="btn btn-primary showOtherFIlter"><i class="fa fa-arrow-down"></i></a>
+                <button type="submit" name="setFilter" value="Y" formnovalidate class="btn btn-success"><i class="fa fa-search"></i></button>
+                <a href="{#{ path('crm_object_list',{'removeFilter':'Y'})}#}{{app.request.pathInfo}}" class="btn btn-success"><i class="fa fa-times"></i></a>
+                <br />
+                <br />
+            </div>
+                <div class="clearfix"></div>
+            <div class="col-lg-12">
+                <div class="otherFIlter" style='display:none;'>
+                    <div class="row ">
+                        <div class="col-lg-3 col-sm-4 col-xs-6">{{ form_row(paramsForm['status']) }}</div>
+                        {% for field in paramsForm.children %}
+                            {% if(not field.rendered and field.vars.name != '_token') %}
+                                <div class="col-lg-3 col-sm-4 col-xs-6">
+                                    {{ form_row(paramsForm[field.vars.name]) }}
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+            
+            
+            
+        {{ form_end(paramsForm) }}
+       

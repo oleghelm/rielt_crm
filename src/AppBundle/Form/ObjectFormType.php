@@ -81,6 +81,16 @@ class ObjectFormType extends AbstractType
                         'місце на стоянці' => 'место на стоянке',
                     ]
                 ])
+                ->add('saletype',ChoiceType::class, [
+                    'label' => 'Тип операції з нерухомістю',
+                    'expanded' => true,
+                    'attr' => array('class' => 'inline-radio'),
+                    'choices' => [
+                        'Первинна' => 2,
+                        'Вторинна'  => 1
+                    ],
+                    'data' => 1
+                ])
                 ->add('important',ChoiceType::class, [
                     'label' => 'Важливий',
                     'expanded' => true,

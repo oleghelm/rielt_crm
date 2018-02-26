@@ -62,6 +62,11 @@ class Object
     private $important = false;
     
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $saletype = false;
+    
+    /**
      * @ORM\Column(type="boolean")
      */
     private $exclusive = false;
@@ -395,6 +400,14 @@ class Object
 
     function setComission($comission) {
         $this->comission = $comission;
+    }
+    
+    function getSaletype() {
+        return $this->saletype;
+    }
+
+    function setSaletype($saletype) {
+        $this->saletype = $saletype;
     }
     
     function getParamVal($id){

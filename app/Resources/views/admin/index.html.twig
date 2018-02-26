@@ -1,6 +1,11 @@
 {% extends 'desk.html.twig' %}
 
 {% block body %}
-    <h1>Панель адміністратора</h1>
-    <h3><i>---в розробці---</i></h3>
+            <div class="col-sm-12">
+                <h1>Панель адміністратора</h1>
+                <hr />
+                <h3>Вигрузки</h3>
+                <a class="btn btn-default" href="{{path('admin_expotr_domria_object_list')}}">вигрузка об'єктів на dom.ria</a>
+            </div>
+        
 {% endblock %}

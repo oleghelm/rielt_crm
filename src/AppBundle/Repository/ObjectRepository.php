@@ -30,6 +30,21 @@ class ObjectRepository extends EntityRepository
         return $query;
     }
     
+    public function getExportParams($object){
+        $queryBuilder = $this->_em->getRepository('AppBundle:ObjectParam')->createQueryBuilder('obp');
+        $queryBuilder->andWhere('obp.object = :object')->setParameter('object',$object);
+        $queryBuilder->leftJoin('obp.param', 'param');
+        $queryBuilder->andWhere('param.useInExport = :useInExport')->setParameter('useInExport',true);
+//        $queryBuilder = $this->_em->getRepository('AppBundle:Object')->createQueryBuilder('ob');
+//        $queryBuilder->leftJoin('ob.params', 'object_param');
+//        $queryBuilder->leftJoin('object_param.param', 'parametr');
+//        $queryBuilder->andWhere('parametr.useInExport = :useInExport')->setParameter('useInExport',true);
+//        $queryBuilder->andWhere('ob = :object')->setParameter('object',$object);
+        
+        $query = $queryBuilder->getQuery()->execute();
+        return $query;
+    }
+    
     public function getFilteredObjects($filter){
         $queryBuilder = $this->_em->getRepository('AppBundle:Object')->createQueryBuilder('ob');
         $queryBuilder->leftJoin('ob.location', 'location');
@@ -97,6 +112,10 @@ class ObjectRepository extends EntityRepository
                 elseif($filter['type']['val']!="")
                     $queryBuilder->andWhere('ob.type = :type')
                             ->setParameter('type', $filter['type']['val']);
+            }
+            if(isset($filter['domria'])){
+                    $queryBuilder->andWhere('ob.domria = :domria')
+                            ->setParameter('domria', $filter['domria']['val']);
             }
             
             if(isset($filter['lastUpdateStart']) && $filter['lastUpdateStart']['val']!=""){

@@ -1,0 +1,99 @@
+<table class="table table-hover table-responsive-objects">
+    <thead>
+        <tr>
+            <th>{{knp_pagination_sortable(objects, 'Код', 'ob.code')}}</th>
+            <th>{{knp_pagination_sortable(objects, 'Статус', 'ob.status')}}</th>
+            <th>{{knp_pagination_sortable(objects, 'Район', 'location.name')}}</th>
+            <th>{{knp_pagination_sortable(objects, 'Ціна', 'ob.price')}}</th>
+            <th>{{knp_pagination_sortable(objects, 'К-сть кімнат', 'ob.rooms')}}</th>
+            <th>{{knp_pagination_sortable(objects, 'Площа', 'ob.area')}}</th>
+            <th>Тип будинку</th>
+            <th width="85"></th>
+            <th width="5%">Dom.ria</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in objects %}
+            <tr class="
+                {% if( date(object.lastUpdate) < date('-14days') ) %}
+                    danger
+                {% elseif(object.status=='reserved') %}
+                    warning
+                {% elseif(object.status=='insale') %}
+
+                {% elseif(object.status=='saled') %}
+                    success
+                {% elseif(object.status=='archive') %}
+                    active
+                {% endif %}
+                ">
+                <td>
+                    <a href="{{ path('crm_object_show', {'id': object.id}) }}">
+                    {{ object.code }}
+                    </a>
+                    <div class="pull-right">
+                        {% if(object.photos|length > 0) %}
+                            <i class="fa fa-image primary-color" title="Є фото"></i>
+                        {% else %}
+                            <i class="fa fa-image" title="Нема фото" style="color:#ddd;"></i>
+                        {% endif %}
+                        {% if(object.exclusive) %}
+                            <i class="fa fa-star warning-color" title="Ексклюзив"></i>
+                        {% else %}
+                            <i class="fa fa-star" title="Не ексклюзив" style="color:#ddd;"></i>
+                        {% endif %}
+                        {% if(object.important) %}
+                            <i class="fa fa-warning danger-color" title="Важливий"></i>
+                        {% else %}
+                            <i class="fa fa-warning" title="Не важливий" style="color:#ddd;"></i>
+                        {% endif %}
+                        {% if(object.advertising) %}
+                            <i class="fa fa-bullhorn success-color" title="Рекламується"></i>
+                        {% else %}
+                            <i class="fa fa-bullhorn" title="Не рекламується" style="color:#ddd;"></i>
+                        {% endif %}
+
+                    </div>
+                </td>
+                <td>
+                    {% if(object.status=='insale') %}
+                        В продажу
+                    {% elseif(object.status=='reserved') %}
+                        Зарезервовано
+                    {% elseif(object.status=='saled') %}
+                        Продано
+                    {% elseif(object.status=='archive') %}
+                        В архіві
+                    {% endif %}
+                </td>
+                <td>
+                    {% if(object.location) %}
+                        {{ object.location.name }}
+                    {% endif %}
+                </td>
+                <td>
+                    {{ object.price }}
+                </td>
+                <td>
+                    {{ object.rooms }}
+                </td>
+                <td>
+                    {{ object.area }}
+                </td>
+                <td>
+                    {{ object.getParamVal(24) }}
+                </td>
+                <td>
+                    <a href="{{ path('crm_object_search_bid', {'id': object.id}) }}" class="btn btn-primary btn-sm" ><i class="fa fa-search"></i></a>
+                    <a href="{{ path('crm_object_show', {'id': object.id}) }}" class="btn btn-success btn-sm" ><i class="fa fa-user"></i></a>
+{#                        <a href="{{ path('crm_object_edit', {'id': object.id}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>#}
+{#                        <a href="{{path('crm_object_delete', {'id': object.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>#}
+                </td>
+                <td align="right">
+                    <input type="checkbox" name="domria[{{object.id}}]" data-url="{{path('crm_object_changeadv',{'id':object.id})}}" class="dom-ria-check" id="dom_ria_checker_{{object.id}}" {% if(object.domria) %}checked=""{%endif%} />
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{{ knp_pagination_render(objects) }}

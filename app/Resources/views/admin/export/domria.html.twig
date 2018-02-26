@@ -1,0 +1,9 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <div class="col-sm-12">
+        <a  class="btn btn-danger" href="{{path('admin_expotr_domria_go')}}">Створити файл</a>
+        <h3>Об'єкти, які будуть додані у вигрузку на dom.ria</h3>
+        {{ include('crm/object/_list.html.twig') }}
+    </div>
+{% endblock %}
