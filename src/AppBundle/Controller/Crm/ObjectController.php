@@ -580,6 +580,13 @@ class ObjectController extends Controller {
             'choice_attr' =>  $this->getDoctrine()->getRepository('AppBundle:Company')->getImagesForFilter(),
         ];
         $formParams[] = [
+            'id' => 'user',
+            'type' => 'select',
+            'label' => 'Ріелтор',
+            'multiple' => false,
+            'choices' =>  $this->getDoctrine()->getRepository('AppBundle:User')->getUsersForFilter(),
+        ];
+        $formParams[] = [
             'id' => 'rooms',
             'type' => 'integer',
             'label' => 'К-сть кімнат',
