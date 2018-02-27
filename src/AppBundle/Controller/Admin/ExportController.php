@@ -72,6 +72,11 @@ class ExportController extends Controller {
                 }
                 $xml .= '</photos_urls>';
             }
+            $characteristics = '';
+            $characteristics .= '<rooms_count>'.$item->getRooms().'</rooms_count>';
+            $characteristics .= '<total_area>'.$item->getArea().'</total_area>';
+            $characteristics .= '<price>'.$item->getPrice().'</price>';
+            $characteristics .= '<currency>$</currency>';
             $params = $this->getDoctrine()->getRepository('AppBundle:Object')->getExportParams($item);
             if(!empty($params)){
                 $arItem['characteristics'] = [];
@@ -88,7 +93,6 @@ class ExportController extends Controller {
                         }
                     }
                 }
-                $characteristics = '';
                 foreach($arParams as $arParam){
                     if($arParam['basic']){
                         $xml .= '<'.$arParam['code'].'>'.implode(', ',$arParam['values']).'</'.$arParam['code'].'>';
@@ -96,9 +100,9 @@ class ExportController extends Controller {
                         $characteristics .= '<'.$arParam['code'].'>'.implode(', ',$arParam['values']).'</'.$arParam['code'].'>';
                     }
                 }
-                if($characteristics!="")
-                    $xml .= '<characteristics>'.$characteristics.'</characteristics>';
             }
+            if($characteristics!="")
+                $xml .= '<characteristics>'.$characteristics.'</characteristics>';
             $xml .= '</realty>';
             $export .= $xml;
         endforeach;
