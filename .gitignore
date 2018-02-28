@@ -23,6 +23,8 @@
 /web/images/company/*
 /web/images/user/avatars
 /web/images/user/avatars/*
+/nbproject/
+/nbproject/*
 rielt_id_rsa
 rielt_id_rsa.pub
 .htaccess
