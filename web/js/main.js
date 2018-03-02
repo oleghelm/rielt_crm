@@ -218,7 +218,7 @@ function initStartScripts(){
         format: 'YYYY-MM-DD HH:mm:ss',
         locale: 'uk'
     });
-    $(".xyz select").chosen()
+    $(".xyz select").chosen({search_contains: true})
 }
 function loadAjaxList(listWrap,src){
     if(typeof src === 'undefined'){

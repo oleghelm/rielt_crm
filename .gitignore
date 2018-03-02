@@ -2,6 +2,7 @@
 /app/config/parameters.yml
 /app/config/config_prod.yml
 /app/config/config_dev.yml
+/app/DoctrineMigrations/*
 /build/
 /phpunit.xml
 /var/*
