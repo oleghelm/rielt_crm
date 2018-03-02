@@ -206,7 +206,12 @@ class Client
 
     public function __toString()
     {
-        return $this->getName();
+        $name = $this->getName().' (№'.$this->getId();
+        if($this->getUser()){
+            $name .= ' від '.$this->getUser()->getName();
+        }
+        $name .= ')';
+        return $name;
     }
     
     public function canEdit(User $user){
