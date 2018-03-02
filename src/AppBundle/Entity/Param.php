@@ -58,17 +58,16 @@ class Param
     private $sort;
         
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $useInExport = false;
     
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $basicParam = false;
     
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="string", nullable=true)
      */
     private $exportName;

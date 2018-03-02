@@ -706,7 +706,7 @@ FOOTER Styling
     /*position: absolute;*/
     /*padding: 15px;*/
     width: 100%;  
-    overflow-x: hidden; 
+    /*overflow-x: hidden;*/ 
     min-height:400px;
 }
 .xyz{
@@ -945,4 +945,5 @@ html,body{height: 100%;}
     .table-responsive-calls.table>tbody>tr>td:nth-child(4){width:20%;}
     .table-responsive-calls tr:after{content:" ";display:block;clear:both;}
 }
+.inline-radio{margin-bottom:19px;}
 .inline-radio .radio {display: inline-block;margin: 0 10px 10px 0px;}

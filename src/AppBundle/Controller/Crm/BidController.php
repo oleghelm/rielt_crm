@@ -6,6 +6,7 @@ namespace AppBundle\Controller\Crm;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Bid;
 use AppBundle\Entity\BidParam;
+use AppBundle\Entity\Location;
 use AppBundle\Form\BidFormType;
 //use AppBundle\Form\OpfType;
 //use AppBundle\Form\BidFilterFormType;
@@ -70,6 +71,11 @@ class BidController extends Controller {
      */
     public function newAction(Request $request, FileUploader $fileUploader){
         $form = $this->createForm(BidFormType::class);
+        $form->add('location',ChoiceType::class, [
+                    'label' => 'Райони',
+                    'multiple' => true,
+                    'choices' => $this->getDoctrine()->getRepository('AppBundle:Location')->getLocationsForFilter()
+                ]);
 
         //render params form
         $paramsForm = $this->getParamsForm(null);
@@ -111,12 +117,16 @@ class BidController extends Controller {
 //        if(file_exists($this->getParameter('user_photo_directory').'/'.$bid->getPhotos()) && is_file($this->getParameter('user_photo_directory').'/'.$bid->getPhotos()))
 
         $form = $this->createForm(BidFormType::class, $bid);
+        $form->add('location',ChoiceType::class, [
+                    'label' => 'Райони',
+                    'multiple' => true,
+                    'choices' => $this->getDoctrine()->getRepository('AppBundle:Location')->getLocationsForFilter()
+                ]);
         $form->handleRequest($request);
         
         //render params form
         $paramsForm = $this->getParamsForm($bid);
         $paramsForm->handleRequest($request);
-//        dump($paramsForm);die;
         if ($form->isSubmitted() && $form->isValid()) {
             $bid = $form->getData();
 
@@ -195,14 +205,18 @@ class BidController extends Controller {
         $queryString['type'] = $bid->getType();
         $queryString['min_price'] = $bid->getMinPrice();
         $queryString['max_price'] = $bid->getMaxPrice();
-//        
+        $queryString['location'] = $bid->getLocation();
         $params = $bid->getParamsArrayMap();
+
         foreach($params as $param){
             switch($param['type']){
                 case 'text': 
                         $queryString[$param['param_id']] = $param['val'];
                     break;
+                case 'float':
                 case 'integer':
+                case 'diapazon':
+                case 'floatdiapazon':
                     if(!isset($queryString['min_'.$param['param_id']]))
                         $queryString['min_'.$param['param_id']] = $param['val'];
                     elseif($queryString['min_'.$param['param_id']] > $param['val'])
@@ -218,7 +232,7 @@ class BidController extends Controller {
                     break;
             }
         }
-
+//dump($queryString);die;
         $this->addFlash('success', 'Фльтр заповнено згідно заявки №'.$bid->getId());
         
         return $this->redirectToRoute('crm_object_list',['bid'=>$bid->getId(),'form'=>$queryString]);
@@ -242,6 +256,8 @@ class BidController extends Controller {
             switch ($param->getType()){
                 case 'diapazon':
                 case 'integer': $val = $bidParam->getNumber(); break;
+                case 'floatdiapazon': 
+                case 'float': $val = $bidParam->getFloatnumber(); break;
                 case 'text': $val = $bidParam->getString(); break;
                 case 'select': $val = $bidParam->getProperty()->getName(); $multiple=true; break;
             }
@@ -252,6 +268,15 @@ class BidController extends Controller {
             }
             $params[$param->getId()]['name'] = $param->getName();
             $params[$param->getId()]['multiple'] = $multiple;
+        }
+        
+        if($bid->getLocation()){
+            $locations = $this->getDoctrine()->getRepository('AppBundle:Location')->findBy(['id'=>$bid->getLocation()]);
+            $params['locations'] = [
+                'name' => "Райони",
+                'multiple' => true,
+                'val' => $locations
+            ];
         }
         
         if($request->get('ajax','')=='Y'){
@@ -268,7 +293,6 @@ class BidController extends Controller {
     
     public function deleteDir($dirPath) {
         if (! is_dir($dirPath)) {
-            dump($dirPath);
             throw new InvalidArgumentException("$dirPath must be a directory");
         }
         if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
@@ -337,6 +361,14 @@ class BidController extends Controller {
                 $formParam['choices'] = $choices;
                 $formParam['multiple'] = true;
             }
+            if($formParam['type']=='integer'){
+                $formParam['multiple']=true;
+                $formParam['type']='diapazon';
+            }
+            if($formParam['type']=='float'){
+                $formParam['multiple']=true;
+                $formParam['type']='floatdiapazon';
+            }
             $formParams[$param->getSort()] = $formParam;
         }
         return $formParams;
@@ -347,12 +379,19 @@ class BidController extends Controller {
             switch($formParam['type']){
                 case 'text': 
                     break;
+                case 'float': 
                 case 'integer': 
                     break;
-                case 'diapazon': 
+                case 'diapazon':
+                case 'floatdiapazon': 
                     if(isset($bidformParams[$formParam['id']])){
-                        $bidformParams['min_'.$formParam['id']] = $bidformParams[$formParam['id']][0];
-                        $bidformParams['max_'.$formParam['id']] = $bidformParams[$formParam['id']][1];
+                        if(!isset($bidformParams[$formParam['id']][1])){
+                            $bidformParams['min_'.$formParam['id']] = 0;
+                            $bidformParams['max_'.$formParam['id']] = $bidformParams[$formParam['id']][0];
+                        } else {
+                            $bidformParams['min_'.$formParam['id']] = $bidformParams[$formParam['id']][0];
+                            $bidformParams['max_'.$formParam['id']] = $bidformParams[$formParam['id']][1];
+                        }
                     }
                     break;
                 case 'select': 
@@ -393,6 +432,10 @@ class BidController extends Controller {
             }
             if($formParam['type']=='integer'){
                 $formParam['type']='diapazon';
+                $formParam['multiple']=false;
+            }
+            if($formParam['type']=='float'){
+                $formParam['type']='floatdiapazon';
                 $formParam['multiple']=false;
             }
         }
@@ -504,11 +547,34 @@ class BidController extends Controller {
                         ]);
                     }
                     break;
+                case 'float':
+                    if($formParam['multiple']){
+                        $formBuilder->add($formParam['id'],CollectionType::class,[
+                            'label' => $formParam['label'],
+                            'label_attr' => ['class'=>'textCollection'],
+                            'entry_type' => TextType::class,
+                            'allow_delete' => true,
+                            'allow_add' => true,
+                        ]);
+                    } else {
+                        $formBuilder->add($formParam['id'],TextType::class, [
+                            'label' => $formParam['label']
+                        ]);
+                    }
+                    break;
                 case 'diapazon':
                         $formBuilder->add('min_'.$formParam['id'],IntegerType::class, [
                             'label' => $formParam['label'].' від'
                         ]);
                         $formBuilder->add('max_'.$formParam['id'],IntegerType::class, [
+                            'label' => $formParam['label'].' до'
+                        ]);
+                    break;
+                case 'floatdiapazon':
+                        $formBuilder->add('min_'.$formParam['id'],TextType::class, [
+                            'label' => $formParam['label'].' від'
+                        ]);
+                        $formBuilder->add('max_'.$formParam['id'],TextType::class, [
                             'label' => $formParam['label'].' до'
                         ]);
                     break;
@@ -527,14 +593,14 @@ class BidController extends Controller {
         //find diapazone hack
         foreach ($newParams as $k=>$newParam){
             if(strpos($k,'_')){
-                $tmp = explode('_',$k);
+                $tmp = explode('_',$k);dump($tmp);
+                if(is_array($newParams) && !isset($newParams[$tmp[1]])){$newParams[$tmp[1]] = [];}
                 unset($newParams[$tmp[1]][0]);
                 unset($newParams[$tmp[1]][1]);
                 $newParams[$tmp[1]][$tmp[0]] = $newParam;
                 unset($newParams[$k]);
             }
         }
-        
         //find params, what not isset in new params
         foreach($oldParams as $oldParam){
             if(isset($newParams[$oldParam['param_id']])){
@@ -560,6 +626,10 @@ class BidController extends Controller {
                     unset($oldParams[$oldParam['id']]);//value checked
                     continue;
                 }
+            } else {
+                $result['delete'][] = $oldParam['id'];
+                unset($oldParams[$oldParam['id']]);//value checked
+                continue;
             }
         }
         //add other new params
@@ -577,7 +647,7 @@ class BidController extends Controller {
                             'val' => $p
                         ];
         }
-        
+                
         return $result;
     }
     
@@ -608,6 +678,9 @@ class BidController extends Controller {
                     case 'integer': 
                         $bp->setNumber($forUpdate['val']);
                         break;
+                    case 'float': 
+                        $bp->setFloatnumber($forUpdate['val']);
+                        break;
                     case 'select': 
                         $property = $this->getDoctrine()->getRepository('AppBundle:Property')->find($forUpdate['val']);
                         $bp->setProperty($property);
@@ -631,6 +704,10 @@ class BidController extends Controller {
                     case 'integer': 
                     case 'diapazon': 
                         $bp->setNumber($forInsert['val']);
+                        break;
+                    case 'floatdiapazon': 
+                    case 'float': 
+                        $bp->setFloatnumber(floatval($forInsert['val']));
                         break;
                     case 'select': 
                         $property = $this->getDoctrine()->getRepository('AppBundle:Property')->find($forInsert['val']);

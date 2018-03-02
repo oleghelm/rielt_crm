@@ -92,7 +92,6 @@ class ClientController extends Controller
         
         // only handles data on POST
         $form->handleRequest($request);
-        dump($form->getErrors());
         if ($form->isSubmitted() && $form->isValid()) {
             $client = $form->getData();
             

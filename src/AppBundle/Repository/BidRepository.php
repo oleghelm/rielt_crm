@@ -20,6 +20,7 @@ class BidRepository extends EntityRepository
     public function getFilteredBids($filter){
         $queryBuilder = $this->_em->getRepository('AppBundle:Bid')->createQueryBuilder('bp');
         $queryBuilder->leftJoin('bp.user', 'user');
+        $queryBuilder->leftJoin('bp.client', 'client');
         if($filter && is_array($filter)){
             if(isset($filter['name']) && $filter['name']['val'] !=""){
                 $queryBuilder->andWhere('bp.name LIKE :obname')

@@ -33,7 +33,6 @@ class SimpleToolsController extends Controller
         if($form->isSubmitted()){
             $filter = $form->getData();
             foreach ($filter as &$f){$f = ['val'=>$f];}
-            dump($filter);
             
             if($filter['entity']['val']=='object'){
                 $query = $this->getDoctrine()->getRepository('AppBundle:Object')->getFilteredObjects($filter);

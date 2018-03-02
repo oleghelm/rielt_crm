@@ -218,6 +218,7 @@ function initStartScripts(){
         format: 'YYYY-MM-DD HH:mm:ss',
         locale: 'uk'
     });
+    $(".xyz select").chosen()
 }
 function loadAjaxList(listWrap,src){
     if(typeof src === 'undefined'){

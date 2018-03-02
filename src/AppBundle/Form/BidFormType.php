@@ -6,6 +6,7 @@ use AppBundle\Entity\Client;
 use AppBundle\Entity\User;
 use AppBundle\Repository\UserRepository;
 use AppBundle\Repository\ClientRepository;
+use AppBundle\Repository\LocationRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,7 +25,6 @@ class BidFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options) 
     {
-//        dump($options['data']->getId());
         $builder
                 ->add('name',TextType::class, ['label' => 'Назва'])
                 ->add('status',ChoiceType::class, [

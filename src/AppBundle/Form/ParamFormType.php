@@ -39,7 +39,9 @@ class ParamFormType extends AbstractType
 //                        'Вибір кількох'  => 'select_multiple',
                         'Текст'  => 'text',
                         'Число'  => 'integer',
+                        'Число з крапкою'  => 'float',
                         'Діапазон'  => 'diapazon',
+                        'Діапазон з крапкою'  => 'floatdiapazon',
                     ]
                 ])
                 ->add('filter',ChoiceType::class, [

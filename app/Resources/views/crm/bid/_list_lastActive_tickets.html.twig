@@ -19,7 +19,7 @@
             </ul>
         </td>
         <td>
-            <a href="{{path('crm_tools_lastActive_update_bid',{'id':item.id,'ajax':'Y'})}}" class='btn btn-primary ajax-call-done' data-for_hide="bid_row_{{item.id}}"><i class="fa fa-check"></i></a>
+            <a href="{{path('crm_tools_lastActive_update_bid',{'id':item.id,'ajax':'Y'})}}" class='btn btn-primary ajax-call-done' data-for_hide="bid_row_{{item.id}}" title="Оновити до сьогодні"><i class="fa fa-check"></i></a>
         </td>
     </tr>
     {% endfor %}

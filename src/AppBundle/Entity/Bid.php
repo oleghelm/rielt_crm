@@ -2,6 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Location;
+use AppBundle\Repository\LocationRepository;
+
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -73,7 +76,12 @@ class Bid
      * @ORM\Column(type="integer", nullable=true)
      */
     private $max_price;
-       
+           
+    /**
+     * @ORM\Column(type="json_array")
+     */
+    private $location;
+    
     /**
      * @ORM\OneToMany(targetEntity="BidParam", mappedBy="bid", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
@@ -173,6 +181,16 @@ class Bid
     function setMaxPrice($max_price) {
         $this->max_price = $max_price;
     }
+    /**
+     * @return ArrayCollection|int[]
+     */
+    function getLocation() {
+        return $this->location;
+    }
+
+    function setLocation($location) {
+        $this->location = $location;
+    }
 
     public function __toString()
     {
@@ -198,8 +216,16 @@ class Bid
             $Param['param_id'] = $param->getId();
             $Param['type'] = $param->getType();
             $Param['multiple'] = $param->getMultiple();
-            if($Param['type']=='integer' || $Param['type']=='diapazon')
+            if($Param['type']=='integer' || $Param['type']=='diapazon'){
+                $Param['multiple'] = true;
+                $Param['type'] = 'diapazon';
                 $Param['val'] = $p->getNumber();
+            }
+            elseif($Param['type']=='float' || $Param['type']=='floatdiapazon'){
+                $Param['multiple'] = true;
+                $Param['type'] = 'floatdiapazon';
+                $Param['val'] = $p->getFloatnumber();
+            }
             elseif($Param['type']=='text')
                 $Param['val'] = $p->getString();
             else{

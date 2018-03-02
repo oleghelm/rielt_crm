@@ -44,6 +44,7 @@
 {#                <th>{{knp_pagination_sortable(bids, 'Ціна', 'bp.price')}}</th>#}
                 <th>{{knp_pagination_sortable(bids, 'Статус', 'bp.status')}}</th>
                 <th>{{knp_pagination_sortable(bids, 'Ріелтор', 'user.name')}}</th>
+                <th>{{knp_pagination_sortable(bids, 'Клієнт', 'client.name')}}</th>
                 <th>{{knp_pagination_sortable(bids, 'Останній контакт', 'bp.lastUpdate')}}</th>
 {#                <th></th>#}
             </tr>
@@ -85,15 +86,20 @@
                         {% endif %}
                     </td>
                     <td>
+                        {% if(bid.client) %}
+                            <a href="{{path("crm_client_show",{'id':bid.client.id,'ajax':'Y'})}}" class='ajax-page-load'>{{bid.client.name}}</a>
+                        {% endif %}
+                    </td>
+                    <td>
                         {{  bid.lastUpdate|date("d.m.Y") }}
                     </td>
-                    {#<td>
+                    <td>
                         
-                        <a href="{{ path('crm_bid_search_object', {'id': bid.id}) }}" class="btn btn-primary btn-sm" ><i class="fa fa-search"></i></a>
-                        <a href="{{ path('crm_bid_show', {'id': bid.id}) }}" class="btn btn-success btn-sm" ><i class="fa fa-user"></i></a>
-                        <a href="{{ path('crm_bid_edit', {'id': bid.id}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>
-                        <a href="{{path('crm_bid_delete', {'id': bid.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>
-                    </td>#}
+                        <a href="{{ path('crm_bid_search_object', {'id': bid.id}) }}" class="btn btn-primary btn-sm" title="Знайти відповідні об'єкти"><i class="fa fa-search"></i></a>
+                        <a href="{{ path('crm_bid_show', {'id': bid.id}) }}" class="btn btn-success btn-sm" title="Переглянути"><i class="fa fa-user"></i></a>
+{#                        <a href="{{ path('crm_bid_edit', {'id': bid.id}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>#}
+{#                        <a href="{{path('crm_bid_delete', {'id': bid.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>#}
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>

@@ -1,10 +1,10 @@
 <h1>{{bid.name}}</h1>
 <div class="">
-     <a href="{{ path('crm_bid_search_object', {'id': bid.id}) }}" class="btn btn-primary btn-sm" ><i class="fa fa-search"></i></a>
-     <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="window.history.back()" ><i class="fa fa-arrow-left"></i></a>
-     <a href="{{ path('crm_bid_edit', {'id': bid.id}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>
+     <a href="{{ path('crm_bid_search_object', {'id': bid.id}) }}" class="btn btn-primary btn-sm" title="Знайти відповідні об'єкти"><i class="fa fa-search"></i></a>
+     <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="window.history.back()" title="Повернутись"><i class="fa fa-arrow-left"></i></a>
+     <a href="{{ path('crm_bid_edit', {'id': bid.id}) }}" class="btn btn-warning btn-sm" title="Редагувати"><i class="fa fa-edit"></i></a>
      <a href="{{path('crm_bid_changestatus', {'id': bid.id,'status':'archive'})}}"  title="В архів" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете перенести у архів?')) {} else {return false;}"><i class="fa fa-archive"></i></a>
-     <a href="{{path('crm_bid_delete', {'id': bid.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>
+     <a href="{{path('crm_bid_delete', {'id': bid.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}" title="Видалити"><i class="fa fa-user-times"></i></a>
 </div>
 <h3>Загальні параметри</h3>
 <table class='table table-hover table-condensed'>

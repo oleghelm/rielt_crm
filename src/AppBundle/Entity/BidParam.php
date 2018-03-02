@@ -48,6 +48,11 @@ class BidParam
      */
     private $number;
     
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $floatnumber;
+    
     function getId() {
         return $this->id;
     }
@@ -102,5 +107,12 @@ class BidParam
         $this->number = $number;
     }
 
+    function getFloatnumber() {
+        return $this->floatnumber;
+    }
+
+    function setFloatnumber($floatnumber) {
+        $this->floatnumber = $floatnumber;
+    }
 
 }

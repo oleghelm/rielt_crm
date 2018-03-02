@@ -12,8 +12,6 @@ class ParamsFormBuilder extends Controller {
     public function getParamsForm($name = '', $objectformParams = []){
         //get params and Properties for build
         $formParams = $this->getParamsForForm($name);
-        dump($formParams);
-        dump($objectformParams);return;
         if(!empty($objectformParams)){
             $objectformParams = $this->prepareFormParams($formParams, $objectformParams);
         }
@@ -48,7 +46,6 @@ class ParamsFormBuilder extends Controller {
             }
             $formParams[$param->getSort()] = $formParam;
         }
-//        dump($formParams);
         return $formParams;
     }
 }

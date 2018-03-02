@@ -47,6 +47,11 @@ class ObjectParam
      * @ORM\Column(type="integer", nullable=true)
      */
     private $number;
+        
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $floatnumber;
     
     function getId() {
         return $this->id;
@@ -102,5 +107,12 @@ class ObjectParam
         $this->number = $number;
     }
 
+    function getFloatnumber() {
+        return $this->floatnumber;
+    }
+
+    function setFloatnumber($floatnumber) {
+        $this->floatnumber = $floatnumber;
+    }
 
 }

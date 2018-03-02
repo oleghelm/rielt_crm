@@ -26,7 +26,6 @@ class TicketFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options) 
     {
-//        dump($options['data']->getId());
         $builder
                 ->add('date',DateType::class,[
                     'label' => 'Дата',

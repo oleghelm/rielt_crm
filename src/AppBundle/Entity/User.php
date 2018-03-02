@@ -176,7 +176,7 @@ class User implements UserInterface
     }
     
     /**
-     * @return ArrayCollection|GenusNote[]
+     * @return ArrayCollection|Client[]
      */
     function getClients() {
         return $this->clients;

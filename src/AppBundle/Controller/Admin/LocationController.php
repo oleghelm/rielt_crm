@@ -61,7 +61,6 @@ class LocationController extends Controller {
             $location = new Location();
             $location->setLocation($_location);
             $location->setLevel($_location->getLevel() + 1);
-            dump($_location);
         } else {$location = null;}
         $form = $this->createForm(LocationFormType::class,$location);
         $form->handleRequest($request);

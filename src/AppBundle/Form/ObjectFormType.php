@@ -23,12 +23,12 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 
 class ObjectFormType extends AbstractType 
 {
     public function buildForm(FormBuilderInterface $builder, array $options) 
     {
-//        dump($options['data']->getId());
         $builder
                 ->add('name',TextType::class, ['label' => 'Заголовок'])
                 ->add('code',TextType::class, ['label' => 'Код'])
@@ -141,10 +141,20 @@ class ObjectFormType extends AbstractType
                     ],
                     'data' => 0
                 ])
-                ->add('price', IntegerType::class, ['label' => 'Ціна в $'])
-                ->add('price_uah', IntegerType::class, ['label' => 'Ціна в грн'])
-                ->add('price_m2', IntegerType::class, ['label' => 'Ціна $ за м2'])
-                ->add('price_m2_uah', IntegerType::class, ['label' => 'Ціна в грн за 1 м2'])
+                ->add('baseprice',ChoiceType::class, [
+                    'label' => 'Основна ціна',
+                    'choices' => [
+                        'Ціна в $' => 'price',
+                        'Ціна в $ за м2' => 'price_m2',
+                        'Ціна в грн' => 'price_uah',
+                        'Ціна в грн за м2' => 'price_m2_uah',
+                    ],
+                    'data' => 'price'
+                ])
+                ->add('price', MoneyType::class, ['label' => 'Ціна в $','currency'=>'USD'])
+                ->add('price_uah', MoneyType::class, ['label' => 'Ціна в грн','currency'=>'UAH'])
+                ->add('price_m2', MoneyType::class, ['label' => 'Ціна $ за м2','currency'=>'USD'])
+                ->add('price_m2_uah', MoneyType::class, ['label' => 'Ціна в грн за 1 м2','currency'=>'UAH'])
                 ->add('rooms', IntegerType::class, ['label' => 'Кількість кімнат'])
                 ->add('area', TextType::class, ['label' => 'Площа'])
                 ->add('info', TextareaType::class, ['label' => 'Опис'])

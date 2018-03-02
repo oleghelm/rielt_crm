@@ -45,7 +45,6 @@ class GenusController extends Controller
 //        $genuses = $em->getRepository('AppBundle\Entity\Genus')->findAll();
 //        $genuses = $em->getRepository('AppBundle:Genus')->findAll();
         $genuses = $em->getRepository('AppBundle:Genus')->findAllPublishedOrderedByRecentlyActive();
-//        dump($genuses);die;
         return $this->render('genus/list.html.twig', ['genuses' => $genuses]);
     }
     
@@ -81,7 +80,6 @@ class GenusController extends Controller
      * @Method("GET")
      */
     public function getNotesAction(Genus $genus){
-//        dump($genus);die;
         $notes = [];
         foreach ($genus->getNotes() as $note) {
             $notes[] = [

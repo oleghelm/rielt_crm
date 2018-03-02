@@ -22,7 +22,6 @@ class ExportController extends Controller {
     {
         $filter = ['domria'=>['val'=>true]];
         $query = $this->getDoctrine()->getRepository('AppBundle:Object')->getFilteredObjects($filter);
-//        dump($query);
         $paginator  = $this->get('knp_paginator');
         $result = $paginator->paginate(
             $query,
@@ -48,7 +47,8 @@ class ExportController extends Controller {
         $export .= '<generation_date>'.$datetime->format(\DateTime::ATOM).'</generation_date>';
         foreach($items as $item):
             $xml = '<realty>';
-            $xml .= '<email>'.'oleg123hedsiuk@gmail.com'.'</email>';
+            if($item->getCompany())
+                $xml .= '<email>'.$item->getCompany()->getEmail().'</email>';
             $xml .= '<local_realty_id>'.$item->getId().'</local_realty_id>';
             $xml .= '<realty_type>'.$item->getRealty().'</realty_type>';
             $xml .= '<advert_type>'.((strpos($item->getType(),'sale')) ? 'продажа' : 'долгосрочная аренда').'</advert_type>';
@@ -75,8 +75,15 @@ class ExportController extends Controller {
             $characteristics = '';
             $characteristics .= '<rooms_count>'.$item->getRooms().'</rooms_count>';
             $characteristics .= '<total_area>'.$item->getArea().'</total_area>';
-            $characteristics .= '<price>'.$item->getPrice().'</price>';
-            $characteristics .= '<currency>$</currency>';
+            switch ($item->getBaseprice()){
+                case 'price_m2': $price = $item->getPriceM2(); $currency = '$'; $price_type = 'за кв.м.'; break;
+                case 'price_m2_uah': $price = $item->getPriceM2Uah(); $currency = 'грн'; $price_type = 'за кв.м.'; break;
+                case 'price_uah': $price = $item->getPriceUah(); $currency = 'грн'; $price_type = 'за объект'; break;
+                default : $price = $item->getPrice(); $currency = '$'; $price_type = 'за объект'; break;
+            }
+            $characteristics .= '<price>'.$price.'</price>';
+            $characteristics .= '<currency>'.$currency.'</currency>';
+            $characteristics .= '<price_type>'.$price_type.'</price_type>';
             $params = $this->getDoctrine()->getRepository('AppBundle:Object')->getExportParams($item);
             if(!empty($params)){
                 $arItem['characteristics'] = [];

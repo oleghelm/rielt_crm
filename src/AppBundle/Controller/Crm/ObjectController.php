@@ -49,7 +49,6 @@ class ObjectController extends Controller {
             $filter = $this->prepareFilterParams();
 
         $query = $this->getDoctrine()->getRepository('AppBundle:Object')->getFilteredObjects($filter);
-//        dump($query);
         $paginator  = $this->get('knp_paginator');
         $result = $paginator->paginate(
             $query,
@@ -190,6 +189,13 @@ class ObjectController extends Controller {
         
         if ($form->isSubmitted() && $form->isValid()) {
             $object = $form->getData();
+            
+            if($object->getPrice()!="" && $object->getPriceM2()=="" && $object->getArea()!=""){
+                $object->setPriceM2(round(($object->getPrice()/$object->getArea()),2));
+            }
+            if($object->getPriceUah()!="" && $object->getPriceM2Uah()=="" && $object->getArea()!=""){
+                $object->setPriceM2Uah(round(($object->getPriceUah()/$object->getArea()),2));
+            }
             
             //attach new client
             if($request->get('new_client','N')=='Y'){
@@ -338,7 +344,10 @@ class ObjectController extends Controller {
                 case 'text': 
                         $queryString[$param['param_id']] = $param['val'];
                     break;
+                case 'float':
                 case 'integer':
+                case 'diapazon':
+                case 'floatdiapazon':
                     if(!isset($queryString['min_'.$param['param_id']]))
                         $queryString['min_'.$param['param_id']] = $param['val'];
                     elseif($queryString['min_'.$param['param_id']] > $param['val'])
@@ -378,6 +387,8 @@ class ObjectController extends Controller {
             switch ($param->getType()){
                 case 'diapazon': 
                 case 'integer': $val = $objectParam->getNumber(); break;
+                case 'floatdiapazon': 
+                case 'float': $val = $objectParam->getFloatnumber(); break;
                 case 'text': $val = $objectParam->getString(); break;
                 case 'select': $val = $objectParam->getProperty()->getName(); break;
             }
@@ -404,7 +415,6 @@ class ObjectController extends Controller {
     
     public function deleteDir($dirPath) {
         if (! is_dir($dirPath)) {
-            dump($dirPath);
             throw new InvalidArgumentException("$dirPath must be a directory");
         }
         if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
@@ -430,19 +440,27 @@ class ObjectController extends Controller {
             $params['type']['val'] = $this->listFilter['type'];
         }
         $formParams = $this->getParamsFilterFormParams();
+//        dump($params);
+//        dump($formParams);
         foreach($formParams as $formParam){
             if(isset($params[$formParam['id']])){
+//                $params[$formParam['id']]['id'] = $formParam['id'];
                 $params[$formParam['id']]['type'] = $formParam['type'];
             } 
             if(isset($params['min_'.$formParam['id']])){
-                $params[$formParam['id']]['type'] = 'diapazon';
+//                $params[$formParam['id']]['id'] = $formParam['id'];
+                $params[$formParam['id']]['type'] = $formParam['type'];
                 $params[$formParam['id']]['val']['min'] = $params['min_'.$formParam['id']]['val'];
+                unset($params['min_'.$formParam['id']]);
             } 
             if(isset($params['max_'.$formParam['id']])){
-                $params[$formParam['id']]['type'] = 'diapazon';
+//                $params[$formParam['id']]['id'] = $formParam['id'];
+                $params[$formParam['id']]['type'] = $formParam['type'];
                 $params[$formParam['id']]['val']['max'] = $params['max_'.$formParam['id']]['val'];
+                unset($params['max_'.$formParam['id']]);
             }
         }
+//        dump($params);
         return $params;
     }
     
@@ -494,12 +512,19 @@ class ObjectController extends Controller {
             switch($formParam['type']){
                 case 'text': 
                     break;
+                case 'float': 
                 case 'integer': 
                     break;
                 case 'diapazon': 
+                case 'floatdiapazon': 
                     if(isset($objectformParams[$formParam['id']])){
-                        $objectformParams['min_'.$formParam['id']] = $objectformParams[$formParam['id']][0];
-                        $objectformParams['max_'.$formParam['id']] = $objectformParams[$formParam['id']][1];
+                        if(!isset($objectformParams[$formParam['id']][1])){
+//                            $objectformParams['min_'.$formParam['id']] = 0;
+                            $objectformParams['max_'.$formParam['id']] = $objectformParams[$formParam['id']][0];
+                        } else {
+                            $objectformParams['min_'.$formParam['id']] = $objectformParams[$formParam['id']][0];
+                            $objectformParams['max_'.$formParam['id']] = $objectformParams[$formParam['id']][1];
+                        }
                     }
                     break;
                 case 'select': 
@@ -528,6 +553,10 @@ class ObjectController extends Controller {
                 $formParam['type']='diapazon';
                 $formParam['multiple']=false;
             }
+            if($formParam['type']=='float'){
+                $formParam['type']='floatdiapazon';
+                $formParam['multiple']=false;
+            }
         }
         $formParams = array_merge($defParams,$formParams);
         return $formParams;
@@ -537,7 +566,6 @@ class ObjectController extends Controller {
      */
     public function getParamsFilterForm($data = [], $filterType = ''){
         $formParams = $this->getParamsFilterFormParams($filterType);
-        
         return $this->generateParamsForm($formParams,['method'=>'GET','data'=>$data]);
     }
     
@@ -555,7 +583,6 @@ class ObjectController extends Controller {
                 'В архіві'  => 'archive',
             ]
         ];
-//        dump($this->listFilter);
         if(!isset($this->listFilter['type']))
             $formParams[] = [
                 'id' => 'type',
@@ -624,6 +651,12 @@ class ObjectController extends Controller {
             'label' => 'Власник(част. ім. або тел.)',
             'multiple' => false,
         ];
+        $formParams[] = [
+            'id' => 'code',
+            'type' => 'text',
+            'label' => 'Код або назва',
+            'multiple' => false,
+        ];
         
         return $formParams;
     }
@@ -673,10 +706,24 @@ class ObjectController extends Controller {
                             'entry_type' => IntegerType::class,
                             'allow_delete' => true,
                             'allow_add' => true,
-//                            'data_class'=>'multi'
                         ]);
                     } else {
                         $formBuilder->add($formParam['id'],IntegerType::class, [
+                            'label' => $formParam['label']
+                        ]);
+                    }
+                    break;
+                case 'float':
+                    if($formParam['multiple']){
+                        $formBuilder->add($formParam['id'],CollectionType::class,[
+                            'label' => $formParam['label'],
+                            'label_attr' => ['class'=>'textCollection'],
+                            'entry_type' => TextType::class,
+                            'allow_delete' => true,
+                            'allow_add' => true,
+                        ]);
+                    } else {
+                        $formBuilder->add($formParam['id'],TextType::class, [
                             'label' => $formParam['label']
                         ]);
                     }
@@ -686,6 +733,14 @@ class ObjectController extends Controller {
                             'label' => $formParam['label'].' від'
                         ]);
                         $formBuilder->add('max_'.$formParam['id'],IntegerType::class, [
+                            'label' => $formParam['label'].' до'
+                        ]);
+                    break;
+                case 'floatdiapazon':
+                        $formBuilder->add('min_'.$formParam['id'],TextType::class, [
+                            'label' => $formParam['label'].' від'
+                        ]);
+                        $formBuilder->add('max_'.$formParam['id'],TextType::class, [
                             'label' => $formParam['label'].' до'
                         ]);
                     break;
@@ -710,13 +765,14 @@ class ObjectController extends Controller {
         foreach ($newParams as $k=>$newParam){
             if(strpos($k,'_')){
                 $tmp = explode('_',$k);
+                if(is_array($newParams) && !isset($newParams[$tmp[1]])){$newParams[$tmp[1]] = [];}
                 unset($newParams[$tmp[1]][0]);
                 unset($newParams[$tmp[1]][1]);
                 $newParams[$tmp[1]][$tmp[0]] = $newParam;
                 unset($newParams[$k]);
             }
         }
-        
+
         //find params, what not isset in new params
         foreach($oldParams as $oldParam){
             if(isset($newParams[$oldParam['param_id']])){
@@ -742,6 +798,10 @@ class ObjectController extends Controller {
                     unset($oldParams[$oldParam['id']]);//value checked
                     continue;
                 }
+            } else {
+                $result['delete'][] = $oldParam['id'];
+                unset($oldParams[$oldParam['id']]);//value checked
+                continue;
             }
         }
         //add other new params
@@ -790,6 +850,9 @@ class ObjectController extends Controller {
                     case 'integer': 
                         $op->setNumber($forUpdate['val']);
                         break;
+                    case 'float': 
+                        $op->setFloatnumber($forUpdate['val']);
+                        break;
                     case 'select': 
                         $property = $this->getDoctrine()->getRepository('AppBundle:Property')->find($forUpdate['val']);
                         $op->setProperty($property);
@@ -799,7 +862,7 @@ class ObjectController extends Controller {
                 $em->flush();
             }
         }
-        
+
         if(!empty($comparedParams['insert'])){
             foreach($comparedParams['insert'] as $forInsert){
                 $op = new ObjectParam();
@@ -813,6 +876,10 @@ class ObjectController extends Controller {
                     case 'integer': 
                     case 'diapazon': 
                         $op->setNumber($forInsert['val']);
+                        break;
+                    case 'floatdiapazon': 
+                    case 'float': 
+                        $op->setFloatnumber(floatval($forInsert['val']));
                         break;
                     case 'select': 
                         $property = $this->getDoctrine()->getRepository('AppBundle:Property')->find($forInsert['val']);

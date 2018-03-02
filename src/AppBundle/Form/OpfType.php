@@ -25,7 +25,6 @@ class OpfType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options) 
     {
         $builder->add('name');
-//        dump($options);
 //        $builder->add('photos',FileType::class, [
 //                    'data_class' => null,
 //                    'multiple' => true

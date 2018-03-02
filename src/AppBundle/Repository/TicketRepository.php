@@ -52,7 +52,6 @@ class TicketRepository extends EntityRepository
         } else {
             $date = new \DateTime();
             $date->setDate(date('Y'), date('m'), 1);
-//            dump($date);
             $queryBuilder->andWhere('t.date >= :date_from')
                     ->setParameter('date_from', $date);
         }

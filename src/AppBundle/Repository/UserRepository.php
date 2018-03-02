@@ -64,7 +64,6 @@ class UserRepository extends EntityRepository
         $arr = [];
         foreach($vals as $val){
             $arr[$val->getName()] = $val->getId();
-//            dump($val);
         }
         return $arr;
     }

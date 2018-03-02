@@ -84,8 +84,8 @@
                     {{ object.getParamVal(24) }}
                 </td>
                 <td>
-                    <a href="{{ path('crm_object_search_bid', {'id': object.id}) }}" class="btn btn-primary btn-sm" ><i class="fa fa-search"></i></a>
-                    <a href="{{ path('crm_object_show', {'id': object.id}) }}" class="btn btn-success btn-sm" ><i class="fa fa-user"></i></a>
+                    <a href="{{ path('crm_object_search_bid', {'id': object.id}) }}" class="btn btn-primary btn-sm" title="Знайти відповідні заявки"><i class="fa fa-search"></i></a>
+                    <a href="{{ path('crm_object_show', {'id': object.id}) }}" class="btn btn-success btn-sm" title="Перегляд"><i class="fa fa-user"></i></a>
 {#                        <a href="{{ path('crm_object_edit', {'id': object.id}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>#}
 {#                        <a href="{{path('crm_object_delete', {'id': object.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>#}
                 </td>

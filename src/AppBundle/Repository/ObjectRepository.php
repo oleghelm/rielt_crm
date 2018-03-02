@@ -88,6 +88,11 @@ class ObjectRepository extends EntityRepository
                     $queryBuilder->andWhere('(client.name LIKE :clientstr OR client.phones LIKE :clientstr)')
                             ->setParameter('clientstr', '%'.$filter['clientstr']['val'].'%');
             }
+            if(isset($filter['code'])){
+                if($filter['code']['val']!="")
+                    $queryBuilder->andWhere('(ob.code LIKE :code OR ob.code LIKE :code)')
+                            ->setParameter('code', '%'.$filter['code']['val'].'%');
+            }
             
             if(isset($filter['status'])){
                 if(is_array($filter['status']['val']))
@@ -148,33 +153,54 @@ class ObjectRepository extends EntityRepository
                 if(is_numeric($key)){// || (isset($param['type']) && strpos($param['type'],'diapazon')!==false)
                     switch ($param['type']){
                         case 'select':
-                            $queryBuilder->leftJoin('ob.params', 'object_param'.$key);
+                            $queryBuilder->leftJoin('ob.params', 'object_param'.$key, 'WITH', 'object_param'.$key.'.param = '.$key);
                             $queryBuilder->andWhere('object_param'.$key.'.property IN (:param'.$key.')')
                                         ->setParameter('param'.$key, $param['val']);
                             break;
                         case 'text':
-                            $queryBuilder->leftJoin('ob.params', 'object_param'.$key);
+                            $queryBuilder->leftJoin('ob.params', 'object_param'.$key, 'WITH', 'object_param'.$key.'.param = '.$key);
                             $queryBuilder->andWhere('object_param'.$key.'.string LIKE :param'.$key)
                                         ->setParameter('param'.$key, '%'.$param['val'].'%');
                             break;
                         case 'integer':
-                            $queryBuilder->leftJoin('ob.params', 'object_param'.$key);
+                            $queryBuilder->leftJoin('ob.params', 'object_param'.$key, 'WITH', 'object_param'.$key.'.param = '.$key);
                             $queryBuilder->andWhere('object_param'.$key.'.number = :param'.$key)
+                                        ->setParameter('param'.$key, $param['val']);
+                            break;
+                        case 'float':
+                            $queryBuilder->leftJoin('ob.params', 'object_param'.$key, 'WITH', 'object_param'.$key.'.param = '.$key);
+                            $queryBuilder->andWhere('object_param'.$key.'.floatnumber = :param'.$key)
                                         ->setParameter('param'.$key, $param['val']);
                             break;
                         case 'diapazon':
                             if(isset($param['val']['min']) && isset($param['val']['max'])){
-                                $queryBuilder->leftJoin('ob.params', 'object_param'.$key);
+                                $queryBuilder->leftJoin('ob.params', 'object_param'.$key, 'WITH', 'object_param'.$key.'.param = '.$key);
                                 $queryBuilder->andWhere('object_param'.$key.'.number <= :param'.$key.'_max AND object_param'.$key.'.number >= :param'.$key.'_min')
                                             ->setParameter('param'.$key.'_max', $param['val']['max'])
                                             ->setParameter('param'.$key.'_min', $param['val']['min']);
                             } elseif(isset($param['val']['min']) && !isset($param['val']['max'])){
-                                $queryBuilder->leftJoin('ob.params', 'object_param'.$key);
+                                $queryBuilder->leftJoin('ob.params', 'object_param'.$key, 'WITH', 'object_param'.$key.'.param = '.$key);
                                 $queryBuilder->andWhere('object_param'.$key.'.number >= :param'.$key.'_min')
                                             ->setParameter('param'.$key.'_min', $param['val']['min']);
                             } elseif(!isset($param['val']['min']) && isset($param['val']['max'])){
-                                $queryBuilder->leftJoin('ob.params', 'object_param'.$key);
+                                $queryBuilder->leftJoin('ob.params', 'object_param'.$key, 'WITH', 'object_param'.$key.'.param = '.$key);
                                 $queryBuilder->andWhere('object_param'.$key.'.number <= :param'.$key.'_max')
+                                            ->setParameter('param'.$key.'_max', $param['val']['max']);
+                            }
+                            break;
+                        case 'floatdiapazon':
+                            if(isset($param['val']['min']) && isset($param['val']['max'])){
+                                $queryBuilder->leftJoin('ob.params', 'object_param'.$key, 'WITH', 'object_param'.$key.'.param = '.$key);
+                                $queryBuilder->andWhere('object_param'.$key.'.floatnumber <= :param'.$key.'_max AND object_param'.$key.'.floatnumber >= :param'.$key.'_min')
+                                            ->setParameter('param'.$key.'_max', $param['val']['max'])
+                                            ->setParameter('param'.$key.'_min', $param['val']['min']);
+                            } elseif(isset($param['val']['min']) && !isset($param['val']['max'])){
+                                $queryBuilder->leftJoin('ob.params', 'object_param'.$key, 'WITH', 'object_param'.$key.'.param = '.$key);
+                                $queryBuilder->andWhere('object_param'.$key.'.floatnumber >= :param'.$key.'_min')
+                                            ->setParameter('param'.$key.'_min', $param['val']['min']);
+                            } elseif(!isset($param['val']['min']) && isset($param['val']['max'])){
+                                $queryBuilder->leftJoin('ob.params', 'object_param'.$key, 'WITH', 'object_param'.$key.'.param = '.$key);
+                                $queryBuilder->andWhere('object_param'.$key.'.floatnumber <= :param'.$key.'_max')
                                             ->setParameter('param'.$key.'_max', $param['val']['max']);
                             }
                             break;
@@ -192,7 +218,6 @@ class ObjectRepository extends EntityRepository
         }
         
         $query = $queryBuilder->getQuery();
-//            dump($filter);die;
         
         return $query;
     }

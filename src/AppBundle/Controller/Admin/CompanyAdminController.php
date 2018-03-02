@@ -84,7 +84,6 @@ class CompanyAdminController extends Controller
         if(file_exists($this->getParameter('company_photo_directory').'/'.$company->getPreview()) && is_file($this->getParameter('company_photo_directory').'/'.$company->getPreview()))
             $company->setPreview($company->getPreview());
         $old_preview = $company->getPreview();
-//dump($this->getParameter('company_photo_directory'));
         $form = $this->createForm(CompanyFormType::class, $company);
         
         // only handles data on POST

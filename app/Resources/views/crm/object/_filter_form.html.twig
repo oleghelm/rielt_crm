@@ -38,12 +38,13 @@
             {% if(paramsForm.children.type is defined) %}
             <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(paramsForm['type']) }}</div>
             {% endif %}
-            <div class="col-lg-4 col-sm-6 col-xs-6">{{ form_row(paramsForm['clientstr']) }}</div>
+            <div class="col-lg-2 col-sm-6 col-xs-6">{{ form_row(paramsForm['code']) }}</div>
+            <div class="col-lg-2 col-sm-6 col-xs-6">{{ form_row(paramsForm['clientstr']) }}</div>
             <div class="col-lg-2 col-sm-6 col-xs-6">
                 <br />
-                <a href="javascript:void(0);" class="btn btn-primary showOtherFIlter"><i class="fa fa-arrow-down"></i></a>
-                <button type="submit" name="setFilter" value="Y" formnovalidate class="btn btn-success"><i class="fa fa-search"></i></button>
-                <a href="{#{ path('crm_object_list',{'removeFilter':'Y'})}#}{{app.request.pathInfo}}" class="btn btn-success"><i class="fa fa-times"></i></a>
+                <a href="javascript:void(0);" class="btn btn-primary showOtherFIlter" title="Відкрити решту параметрів"><i class="fa fa-arrow-down"></i></a>
+                <button type="submit" name="setFilter" value="Y" formnovalidate class="btn btn-success" title="Шукати"><i class="fa fa-search"></i></button>
+                <a href="{#{ path('crm_object_list',{'removeFilter':'Y'})}#}{{app.request.pathInfo}}" class="btn btn-success" title="Скинути фільтр"><i class="fa fa-times"></i></a>
                 <br />
                 <br />
             </div>

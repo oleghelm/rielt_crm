@@ -131,33 +131,36 @@ class Object
     private $location;
     
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="date", nullable=true)
      */
     private $lastUpdate;
         
     /**
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $baseprice;
+    
+    /**
      * @Assert\Range(min=0, minMessage="Вставновіть мінімальну ціну")
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      */
     private $price;
     
     /**
      * @Assert\Range(min=0, minMessage="Вставновіть мінімальну ціну")
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $price_uah;
     
     /**
      * @Assert\Range(min=0, minMessage="Вставновіть мінімальну ціну за м2")
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $price_m2;
     
     /**
      * @Assert\Range(min=0, minMessage="Вставновіть мінімальну ціну за м2")
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $price_m2_uah;
     
@@ -410,6 +413,14 @@ class Object
         $this->saletype = $saletype;
     }
     
+    function getBaseprice() {
+        return $this->baseprice;
+    }
+
+    function setBaseprice($baseprice) {
+        $this->baseprice = $baseprice;
+    }
+    
     function getParamVal($id){
         $params = $this->getParams();
         $res = [];
@@ -419,6 +430,7 @@ class Object
                     case 'select': $res[] = $param->getProperty()->getName();break;
                     case 'text': $res[] = $param->getString(); break;
                     case 'integer': $res[] = $param->getNumber(); break;
+                    case 'float': $res[] = $param->getFloatnumber(); break;
                 }
             }
         }
@@ -442,6 +454,8 @@ class Object
             $Param['multiple'] = $param->getMultiple();
             if($Param['type']=='integer' || $Param['type']=='diapazon')
                 $Param['val'] = $p->getNumber();
+            elseif($Param['type']=='float' || $Param['type']=='floatdiapazon')
+                $Param['val'] = $p->getFloatnumber();
             elseif($Param['type']=='text')
                 $Param['val'] = $p->getString();
             else{
