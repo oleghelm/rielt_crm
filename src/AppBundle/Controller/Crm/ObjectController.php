@@ -250,8 +250,6 @@ class ObjectController extends Controller {
                 return $this->redirectToRoute('crm_object_edit',['id'=>$object->getId()]);
         }
 
-        dump($paramsMap);
-        
         return $this->render('crm/object/edit.html.twig', [
             'form' => $form->createView(),
             'paramsForm' => $paramsForm->createView(),
