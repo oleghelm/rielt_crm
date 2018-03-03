@@ -26,16 +26,15 @@
                 <div class="row">
                     <div class="col-lg-12"><h3>Тип нерухомості</h3></div>
                     <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(form.type) }}</div>
-                    <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(form.realty) }}</div>
+                    {% if(paramsMap['type'] is defined) %}
+                        {% set sectionParams = paramsMap['type'] %}
+                        {{ include('crm/object/_params_section_form.html.twig') }}
+                    {% endif %}
                     <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(form.saletype) }}</div>
                     <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(form.important) }}</div>
                     <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(form.exclusive) }}</div>
                     <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(form.advertising) }}</div>
                     <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(form.domria) }}</div>
-                    {% if(paramsMap['type'] is defined) %}
-                        {% set sectionParams = paramsMap['type'] %}
-                        {{ include('crm/object/_params_section_form.html.twig') }}
-                    {% endif %}
                 </div>
             </div>
             <div class="col-lg-6 col-sm-12 col-xs-12">
@@ -64,6 +63,7 @@
                         {% set sectionParams = paramsMap['params'] %}
                         {{ include('crm/object/_params_section_form.html.twig') }}
                     {% endif %}
+                    <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(form.rooms) }}</div>
                 </div>
             </div>
             <div class="col-lg-6 col-sm-12 col-xs-12">
@@ -78,7 +78,6 @@
         </div>
             <hr />
         <div class="row">
-            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(form.rooms) }}</div>
             <div class="col-lg-12 ">{{ form_row(form.address) }}</div>
             <div class="col-lg-12 ">{{ form_row(form.info) }}</div>
             <div class="col-lg-12 ">{{ form_row(form.officialinfo) }}</div>

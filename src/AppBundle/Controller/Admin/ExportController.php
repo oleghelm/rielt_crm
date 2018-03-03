@@ -50,7 +50,6 @@ class ExportController extends Controller {
             if($item->getCompany())
                 $xml .= '<email>'.$item->getCompany()->getEmail().'</email>';
             $xml .= '<local_realty_id>'.$item->getId().'</local_realty_id>';
-            $xml .= '<realty_type>'.$item->getRealty().'</realty_type>';
             $xml .= '<advert_type>'.((strpos($item->getType(),'sale')) ? 'продажа' : 'долгосрочная аренда').'</advert_type>';
             $xml .= '<description>'.$item->getOfficialinfo().'</description>';
             $xml .= '<realty_sale_type>'.$item->getSaletype().'</realty_sale_type>';

@@ -42,11 +42,6 @@ class Object
     private $type;
     
     /**
-     * @ORM\Column(type="string", nullable=true)
-     */
-    private $realty;
-    
-    /**
      * @ORM\Column(type="integer", nullable=true)
      */
     private $rooms;
@@ -348,14 +343,6 @@ class Object
 
     function setCompany($company) {
         $this->company = $company;
-    }
-    
-    function getRealty() {
-        return $this->realty;
-    }
-
-    function setRealty($realty) {
-        $this->realty = $realty;
     }
     
     function getOfficialinfo() {
