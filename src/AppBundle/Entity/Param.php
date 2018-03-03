@@ -90,6 +90,10 @@ class Param
      */
     private $bidParams;
     
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $section;
     
     function getId() {
         return $this->id;
@@ -217,4 +221,11 @@ class Param
         $this->exportName = $exportName;
     }
     
+    function getSection() {
+        return $this->section;
+    }
+
+    function setSection($section) {
+        $this->section = $section;
+    }    
 }

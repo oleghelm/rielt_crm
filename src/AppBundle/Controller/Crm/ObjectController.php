@@ -109,6 +109,8 @@ class ObjectController extends Controller {
         $paramsForm = $this->getParamsForm([]);
         $paramsForm->handleRequest($request);
         
+        $paramsMap = $this->getParamsSectionsMap();
+        
         $clientForm = $this->createForm(ClientShortFormType::class);
         $clientForm->handleRequest($request);
         
@@ -164,6 +166,7 @@ class ObjectController extends Controller {
         return $this->render('crm/object/new.html.twig', [
             'form' => $form->createView(),
             'paramsForm' => $paramsForm->createView(),
+            'paramsMap' => $paramsMap,
             'clientForm' => $clientForm->createView(),
             'object' => null
         ]);
@@ -183,6 +186,8 @@ class ObjectController extends Controller {
         $objectformParams = $object->getParamsArrayMap(true);
         $paramsForm = $this->getParamsForm($objectformParams);
         $paramsForm->handleRequest($request);
+        
+        $paramsMap = $this->getParamsSectionsMap();
         
         $clientForm = $this->createForm(ClientShortFormType::class);
         $clientForm->handleRequest($request);
@@ -245,11 +250,12 @@ class ObjectController extends Controller {
                 return $this->redirectToRoute('crm_object_edit',['id'=>$object->getId()]);
         }
 
-        
+        dump($paramsMap);
         
         return $this->render('crm/object/edit.html.twig', [
             'form' => $form->createView(),
             'paramsForm' => $paramsForm->createView(),
+            'paramsMap' => $paramsMap,
             'clientForm' => $clientForm->createView(),
             'object' => $object
         ]);
@@ -413,6 +419,19 @@ class ObjectController extends Controller {
         ));
     }
     
+    public function getParamsSectionsMap(){
+        $formParams = $this->getParamsForForm();
+        $map = [];
+        foreach ($formParams as $formParam){
+            if($formParam['type']=='diapazon' || $formParam['type']=='floatdiapazon'){
+                $map[$formParam['section']][] = 'min_'.$formParam['id'];
+                $map[$formParam['section']][] = 'max_'.$formParam['id'];
+            } else
+                $map[$formParam['section']][] = $formParam['id'];
+        }
+        return $map;
+    }
+    
     public function deleteDir($dirPath) {
         if (! is_dir($dirPath)) {
             throw new InvalidArgumentException("$dirPath must be a directory");
@@ -493,6 +512,7 @@ class ObjectController extends Controller {
                 'id' => $param->getId(),
                 'type' => $param->getType(),
                 'label' => $param->getName(),
+                'section' => $param->getSection(),
                 'multiple' => $param->getMultiple(),
             ];
             if(in_array($formParam['type'],['select'])){

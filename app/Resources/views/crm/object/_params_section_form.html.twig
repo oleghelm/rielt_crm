@@ -1,0 +1,5 @@
+{% for sectionParam in sectionParams %}
+    {% if(not paramsForm.children[sectionParam].rendered) %}
+        <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(paramsForm[sectionParam]) }}</div>
+    {% endif %}
+{% endfor %}

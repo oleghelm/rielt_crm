@@ -54,6 +54,17 @@ class ParamFormType extends AbstractType
                         'Комерція оренда'  => 'comercial_rent',
                     ]
                 ])
+                ->add('section',ChoiceType::class, [
+                    'label' => 'Група',
+                    'choices' => [
+                        'Не визначати' => 'none',
+                        'Тип нерухомості' => 'type',
+                        'Вартість'  => 'price',
+                        "Параметри об'єкта"  => 'params',
+                        "Властивості об'єкта"  => 'options',
+                        "Інше"  => 'other',
+                    ]
+                ])
                 ->add('detail',ChoiceType::class, [
                     'label' => "Для яких об'єктів виводити",
                     'multiple' => true,
