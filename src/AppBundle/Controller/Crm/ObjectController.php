@@ -668,7 +668,7 @@ class ObjectController extends Controller {
         $formParams[] = [
             'id' => 'clientstr',
             'type' => 'text',
-            'label' => 'Власник(част. ім. або тел.)',
+            'label' => 'Власник(ім./тел.)',
             'multiple' => false,
         ];
         $formParams[] = [

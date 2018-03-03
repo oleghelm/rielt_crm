@@ -26,7 +26,6 @@ class Property
     private $name;
     
     /**
-     * @Assert\NotBlank()
      * @ORM\Column(type="string", nullable=true)
      */
     private $exportName;

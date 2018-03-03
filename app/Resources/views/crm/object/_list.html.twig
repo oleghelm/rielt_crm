@@ -79,6 +79,9 @@
                 </td>
                 <td>
                     {{ object.area }}
+{#                    {{ object.getParamVal(34) }}#}
+                    {%if(object.getParamVal(37)!="")%}/{{ object.getParamVal(37) }}{%endif%}
+                    {%if(object.getParamVal(35)!="")%}/{{ object.getParamVal(35) }}{%endif%}
                 </td>
                 <td>
                     {{ object.getParamVal(24) }}

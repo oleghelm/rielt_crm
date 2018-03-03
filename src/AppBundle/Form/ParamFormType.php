@@ -63,6 +63,7 @@ class ParamFormType extends AbstractType
                         "Параметри об'єкта"  => 'params',
                         "Властивості об'єкта"  => 'options',
                         "Інше"  => 'other',
+                        "Статистика"  => 'statistic',
                     ]
                 ])
                 ->add('detail',ChoiceType::class, [
