@@ -24,6 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class ObjectFormType extends AbstractType 
 {
@@ -125,7 +126,7 @@ class ObjectFormType extends AbstractType
                 ->add('price_m2', MoneyType::class, ['label' => 'Ціна $ за м2','currency'=>'USD'])
                 ->add('price_m2_uah', MoneyType::class, ['label' => 'Ціна в грн за 1 м2','currency'=>'UAH'])
                 ->add('rooms', IntegerType::class, ['label' => 'Кількість кімнат'])
-                ->add('area', TextType::class, ['label' => 'Площа'])
+                ->add('area', HiddenType::class, ['label' => 'Площа'])
                 ->add('info', TextareaType::class, ['label' => 'Опис'])
                 ->add('officialinfo', TextareaType::class, ['label' => 'Опис для вигрузки'])
                 ->add('address',TextareaType::class, ['label' => 'Адреса'])

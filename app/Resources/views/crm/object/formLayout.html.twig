@@ -24,6 +24,9 @@
             $('input[name="new_client"]').change(function(){
                 checkNewClientForm()
             })
+            $("#form_25").keyup(function(){
+                $("#object_form_area").val($(this).val())
+            })
         })
     </script>
 {% endblock %}

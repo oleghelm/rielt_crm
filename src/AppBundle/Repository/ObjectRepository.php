@@ -49,7 +49,7 @@ class ObjectRepository extends EntityRepository
         $queryBuilder = $this->_em->getRepository('AppBundle:Object')->createQueryBuilder('ob');
         $queryBuilder->leftJoin('ob.location', 'location');
         $queryBuilder->leftJoin('ob.company', 'company');
-        $queryBuilder->leftJoin('ob.client', 'client');
+        $queryBuilder->leftJoin('ob.client', 'client');       
         if($filter && is_array($filter)){
             if(isset($filter['name']) && $filter['name']['val'] !=""){
                 $queryBuilder->andWhere('ob.name LIKE :obname')
@@ -218,7 +218,7 @@ class ObjectRepository extends EntityRepository
         }
         
         $query = $queryBuilder->getQuery();
-        
+//        dump($queryBuilder);
         return $query;
     }
     
