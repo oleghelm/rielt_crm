@@ -1,3 +1,4 @@
+h1 span {font-size:60%;color:#bbb;}
 /******************************
 Flexbox Layout
 *******************************/
@@ -710,7 +711,7 @@ FOOTER Styling
     min-height:400px;
 }
 .xyz{
-    min-width: 360px;
+    /*min-width: 360px;*/
     padding:20px 0;
 }
 #wrapper.toggled #page-content-wrapper {
@@ -881,11 +882,22 @@ ul.no-mapped,ul.no-mapped li{margin:0 0 10px;padding:0;list-style:none;}
 #ajax-page-popup{overflow:visible}
 .object-gallery{}
 .object-gallery .photo{
-    width: 30%;
+    width: 22%;
     display: inline-block;
-    margin: 0 2% 15px 0;
+    margin: 0 2% 10px 0;
     float: left;
-    height: 150px;
+    height: 100px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.object-gallery #main-object-photo{text-align: center;}
+.object-gallery #main-object-photo .photo{
+    width: 100%;
+    display: inline-block;
+    margin: 0 0 20px 0;
+    max-height: 450px;
+    float:none;
 }
 .object-gallery .photo img{
     max-width: 100%;
@@ -947,3 +959,7 @@ html,body{height: 100%;}
 }
 .inline-radio{margin-bottom:19px;}
 .inline-radio .radio {display: inline-block;margin: 0 10px 10px 0px;}
+.object-opts {}
+.object-opts .object-opt{margin-bottom: 10px;}
+.object-opts .object-opt .name{display: inline-block;margin-right: 10px;font-weight: bold;}
+.object-opts .object-opt .val{}

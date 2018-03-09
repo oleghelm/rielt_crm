@@ -402,30 +402,36 @@ class ObjectController extends Controller {
                 $params[$param->getId()]['val'] = $val;
             }
             $params[$param->getId()]['name'] = $param->getName();
+            $params[$param->getId()]['type'] = $param->getType();
             $params[$param->getId()]['multiple'] = $multiple;
         }
+        
+        $paramsMap = $this->getParamsSectionsMap(false);
         
         if($request->get('ajax','')=='Y'){
             $tmpl = 'crm/object/_show.html.twig';
         } else {
             $tmpl = 'crm/object/show.html.twig';
         }
-        
+        dump($paramsMap);
         return $this->render($tmpl, array(
             'object' => $object,
-            'params' => $params
+            'params' => $params,
+            'paramsMap' => $paramsMap
         ));
     }
     
-    public function getParamsSectionsMap(){
+    public function getParamsSectionsMap($setMinMax = true){
         $formParams = $this->getParamsForForm();
         $map = [];
         foreach ($formParams as $formParam){
-            if($formParam['type']=='diapazon' || $formParam['type']=='floatdiapazon'){
-                $map[$formParam['section']][] = 'min_'.$formParam['id'];
-                $map[$formParam['section']][] = 'max_'.$formParam['id'];
+            $section = $formParam['section'] != "" ? $formParam['section'] : "none";
+            if(($formParam['type']=='diapazon' || $formParam['type']=='floatdiapazon') && $setMinMax){
+                $map[$section][] = 'min_'.$formParam['id'];
+                $map[$section][] = 'max_'.$formParam['id'];
             } else
-                $map[$formParam['section']][] = $formParam['id'];
+                if(!isset($map[$section]) || !in_array($formParam['id'], $map[$section]))
+                    $map[$section][] = $formParam['id'];
         }
         return $map;
     }

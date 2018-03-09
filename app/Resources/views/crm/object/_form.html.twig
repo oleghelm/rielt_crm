@@ -46,11 +46,11 @@
                     <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(form.price_uah) }}</div>
                     <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(form.price_m2) }}</div>
                     <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(form.price_m2_uah) }}</div>
-                    <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(form.area) }}</div>
                     {% if(paramsMap['price'] is defined) %}
                         {% set sectionParams = paramsMap['price'] %}
                         {{ include('crm/object/_params_section_form.html.twig') }}
                     {% endif %}
+                    <div class="col-lg-6 col-sm-3 col-xs-6">{{ form_row(form.area) }}</div>
                 </div>
             </div>
         </div>
