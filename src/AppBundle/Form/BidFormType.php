@@ -55,6 +55,16 @@ class BidFormType extends AbstractType
                         'Ні'  => false
                     ]
                 ])
+                ->add('baseprice',ChoiceType::class, [
+                    'label' => 'Основна ціна',
+                    'choices' => [
+                        'Ціна в $' => 'price',
+                        'Ціна в $ за м2' => 'price_m2',
+                        'Ціна в грн' => 'price_uah',
+                        'Ціна в грн за м2' => 'price_m2_uah',
+                    ],
+                    'data' => 'price'
+                ])
                 ->add('min_price', IntegerType::class, ['label' => 'Мінімальна ціна'])
                 ->add('max_price', IntegerType::class, ['label' => 'Максимальна ціна'])
                 ->add('info', TextareaType::class, ['label' => 'Опис'])

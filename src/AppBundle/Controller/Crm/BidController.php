@@ -203,6 +203,24 @@ class BidController extends Controller {
         $queryString = [];
         
         $queryString['type'] = $bid->getType();
+        switch ($bid->getBaseprice()){
+            case 'price_m2': 
+                    $queryString['price_type'] = 'm2';
+                    $queryString['currency'] = 'dol';
+                break;
+            case 'price_uah': 
+                    $queryString['price_type'] = 'full';
+                    $queryString['currency'] = 'uah';
+                break;
+            case 'price_m2_uah': 
+                    $queryString['price_type'] = 'm2';
+                    $queryString['currency'] = 'uah';
+                break;
+            default: 
+                    $queryString['price_type'] = 'full';
+                    $queryString['currency'] = 'dol';
+                break;
+        }
         $queryString['min_price'] = $bid->getMinPrice();
         $queryString['max_price'] = $bid->getMaxPrice();
         $queryString['location'] = $bid->getLocation();
@@ -342,9 +360,9 @@ class BidController extends Controller {
     public function getParamsForForm($forFilter = false){
         $em = $this->getDoctrine()->getManager();
         if($forFilter)
-            $params = $em->getRepository('AppBundle:Param')->findAllParamsForFilterForm();
+            $params = $em->getRepository('AppBundle:Param')->findAllParamsForBidFilterForm();
         else
-            $params = $em->getRepository('AppBundle:Param')->findAllParamsForForm();
+            $params = $em->getRepository('AppBundle:Param')->findAllParamsForBidForm();
         $formParams = [];
         foreach($params as $param){
             $formParam = [

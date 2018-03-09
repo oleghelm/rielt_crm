@@ -65,6 +65,11 @@ class Param
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
+    private $useInBid = false;
+    
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
     private $basicParam = false;
     
     /**
@@ -227,5 +232,13 @@ class Param
 
     function setSection($section) {
         $this->section = $section;
-    }    
+    }
+    
+    function getUseInBid() {
+        return $this->useInBid;
+    }
+
+    function setUseInBid($useInBid) {
+        $this->useInBid = $useInBid;
+    }
 }

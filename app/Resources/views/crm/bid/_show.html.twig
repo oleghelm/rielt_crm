@@ -1,10 +1,10 @@
 <h1>{{bid.name}}</h1>
 <div class="">
-     <a href="{{ path('crm_bid_search_object', {'id': bid.id}) }}" class="btn btn-primary btn-sm" title="Знайти відповідні об'єкти"><i class="fa fa-search"></i></a>
-     <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="window.history.back()" title="Повернутись"><i class="fa fa-arrow-left"></i></a>
-     <a href="{{ path('crm_bid_edit', {'id': bid.id}) }}" class="btn btn-warning btn-sm" title="Редагувати"><i class="fa fa-edit"></i></a>
-     <a href="{{path('crm_bid_changestatus', {'id': bid.id,'status':'archive'})}}"  title="В архів" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете перенести у архів?')) {} else {return false;}"><i class="fa fa-archive"></i></a>
-     <a href="{{path('crm_bid_delete', {'id': bid.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}" title="Видалити"><i class="fa fa-user-times"></i></a>
+    <a href="{{ path('crm_bid_search_object', {'id': bid.id}) }}" class="btn btn-primary btn-sm" title="Знайти відповідні об'єкти"><i class="fa fa-search"></i></a>
+    <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="window.history.back()" title="Повернутись"><i class="fa fa-arrow-left"></i></a>
+    <a href="{{ path('crm_bid_edit', {'id': bid.id}) }}" class="btn btn-warning btn-sm" title="Редагувати"><i class="fa fa-edit"></i></a>
+    <a href="{{path('crm_bid_changestatus', {'id': bid.id,'status':'archive'})}}"  title="В архів" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете перенести у архів?')) {} else {return false;}"><i class="fa fa-archive"></i></a>
+    <a href="{{path('crm_bid_delete', {'id': bid.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}" title="Видалити"><i class="fa fa-user-times"></i></a>
 </div>
 <h3>Загальні параметри</h3>
 <table class='table table-hover table-condensed'>
@@ -12,49 +12,49 @@
         <th>Тип</th>
         <td>
             {% if(bid.type=='simple_sale') %}
-                 Продаж
-             {% elseif(bid.type=='simple_rent') %}
-                 Оренда
-             {% elseif(bid.type=='comercial_sale') %}
-                 Комерція продаж
-             {% elseif(bid.type=='comercial_rent') %}
-                 Комерція оренда
-             {% endif %}
+                Продаж
+            {% elseif(bid.type=='simple_rent') %}
+                Оренда
+            {% elseif(bid.type=='comercial_sale') %}
+                Комерція продаж
+            {% elseif(bid.type=='comercial_rent') %}
+                Комерція оренда
+            {% endif %}
         </td>
     </tr>
     <tr>
         <th>Статус</th>
         <td>
-             {% if(bid.status == 'new')%}
-                 Нова
-             {% elseif(bid.status == 'inwork') %}
-                 В роботі
-             {% elseif(bid.status == 'buyprogres') %}
-                 Оформляється покупка
-             {% elseif(bid.status == 'pause') %}
-                 Призупинено
-             {% elseif(bid.status == 'succesfinish') %}
-                 Успішно завершено
-             {% elseif(bid.status == 'cancel') %}
-                 Відмінена
-             {% elseif(bid.status == 'archive') %}
-                 В архіві
-             {% endif %}
+            {% if(bid.status == 'new')%}
+                Нова
+            {% elseif(bid.status == 'inwork') %}
+                В роботі
+            {% elseif(bid.status == 'buyprogres') %}
+                Оформляється покупка
+            {% elseif(bid.status == 'pause') %}
+                Призупинено
+            {% elseif(bid.status == 'succesfinish') %}
+                Успішно завершено
+            {% elseif(bid.status == 'cancel') %}
+                Відмінена
+            {% elseif(bid.status == 'archive') %}
+                В архіві
+            {% endif %}
         </td>
     </tr>
     <tr>
         <th>Важлива заявка</th>
         <td>
-             {% if(bid.important)%}
-                 Так
-             {% else %}
-                 Ні
-             {% endif %}
+            {% if(bid.important)%}
+                Так
+            {% else %}
+                Ні
+            {% endif %}
         </td>
     </tr>
     {% if(bid.user) %}
     <tr>
-        <th>Хто веде</th>
+        <th>Ріелтор</th>
         <td>
             {{bid.user.name}}
         </td>
@@ -62,7 +62,7 @@
     {% endif %}
     {% if(bid.client) %}
     <tr>
-        <th>Який клієнт</th>
+        <th>Клієнт</th>
         <td><a href="{{path('crm_client_show',{'id':bid.client.id})}}">{{bid.client.name}}</a></td>
     </tr>
     {% endif %}
@@ -72,7 +72,8 @@
     </tr>
     <tr>
         <th>Ціна</th>
-        <td>{{bid.minprice}} - {{bid.maxprice}}</td>
+        <td>{{bid.minprice}} - {{bid.maxprice}} {%if(bid.basePrice == 'price_m2')%}$ за м2{%elseif(bid.basePrice == 'price_uah')%}грн{%elseif(bid.basePrice == 'price_m2_uah')%}грн за м2{%else%}${%endif%}
+        </td>
     </tr>
     <tr>
         <th>Загальна інформація</th>
@@ -85,15 +86,11 @@
     <tr>
         <td>{{ param.name }}</td>
         <td>
-             {% if(param.multiple) %}
-                 <ul class="list-unstyled">
-                     {% for prop in param.val %}
-                         <li>{{prop}}</li>
-                     {% endfor %}
-                 </ul>
-             {% else %}
-                 {{param.val}}
-             {% endif %}
+            {% if(param.multiple) %}
+                {{param.val|join(', ')}}
+            {% else %}
+                {{param.val}}
+            {% endif %}
         </td>
     </tr>
     {% endfor %}

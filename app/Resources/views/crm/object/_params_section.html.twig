@@ -7,11 +7,7 @@
                 {% if(params[param].type == 'diapazon' or params[param].type == 'floatdiapazon') %}
                     від {{params[param].val[0]}}{%if(params[param].val[1] is defined)%} до {{params[param].val[1]}}{%endif%}
                 {% else %}
-                    <ul>
-                        {% for prop in params[param].val %}
-                            <li>{{prop}}</li>
-                            {% endfor %}
-                    </ul>
+                    {{params[param].val|join(', ')}}
                 {% endif %}
             {% else %}
                 {{params[param].val}}

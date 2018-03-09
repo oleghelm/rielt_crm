@@ -32,6 +32,13 @@ class ParamFormType extends AbstractType
                         'Ні'  => false
                     ]
                 ])
+                ->add('useInBid',ChoiceType::class, [
+                    'label' => 'Використовувати в заявках',
+                    'choices' => [
+                        'Ні'  => false,
+                        'Так' => true,
+                    ]
+                ])
                 ->add('type',ChoiceType::class, [
                     'label' => 'Тип',
                     'choices' => [

@@ -66,6 +66,11 @@ class Bid
      * @ORM\Column(type="date", nullable=true)
      */
     private $lastUpdate;
+    
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $baseprice;
         
     /**
      * @ORM\Column(type="integer", nullable=true)
@@ -191,7 +196,15 @@ class Bid
     function setLocation($location) {
         $this->location = $location;
     }
+    
+    function getBaseprice() {
+        return $this->baseprice;
+    }
 
+    function setBaseprice($baseprice) {
+        $this->baseprice = $baseprice;
+    }
+    
     public function __toString()
     {
         return $this->getName();

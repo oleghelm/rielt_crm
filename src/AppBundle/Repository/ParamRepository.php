@@ -30,15 +30,9 @@ class ParamRepository extends EntityRepository
     public function findAllParamsForForm($filterType = '')
     {
         $builder = $this->createQueryBuilder('param')
-//            ->andWhere('param.useInFilter = :useInFilter')
-//            ->setParameter('useInFilter', true)
             ->orderBy('param.sort', 'ASC')
             ->getQuery()
             ->execute();
-//        if($filterType!=""){
-//            $builder ->andWhere('param.filter = :filtertype')
-//            ->setParameter('filtertype', $filterType);
-//        }
         return $builder;
     }
     /**
@@ -59,6 +53,48 @@ class ParamRepository extends EntityRepository
             $builder = $this->createQueryBuilder('param')
                 ->andWhere('param.useInFilter = :useInFilter')
                 ->setParameter('useInFilter', true)
+                ->orderBy('param.sort', 'ASC')
+                ->getQuery()
+                ->execute();
+            
+        }
+        return $builder;
+    }
+    /**
+     * @return Param[]
+     */
+    public function findAllParamsForBidForm($filterType = '')
+    {
+        $builder = $this->createQueryBuilder('param')
+            ->orderBy('param.sort', 'ASC')
+            ->andWhere('param.useInBid = :useInBid')
+            ->setParameter('useInBid', true)
+            ->getQuery()
+            ->execute();
+        return $builder;
+    }
+    /**
+     * @return Param[]
+     */
+    public function findAllParamsForBidFilterForm($filterType = '')
+    {
+        if($filterType!=""){
+            $builder = $this->createQueryBuilder('param')
+                ->andWhere('param.useInFilter = :useInFilter')
+                ->andWhere('param.useInBid = :useInBid')
+                ->setParameter('useInFilter', true)
+                ->setParameter('useInBid', true)
+                ->andWhere('param.filter LIKE :filtertype')
+                ->setParameter('filtertype', '%'.$filterType.'%')
+                ->orderBy('param.sort', 'ASC')
+                ->getQuery()
+                ->execute();
+        } else {
+            $builder = $this->createQueryBuilder('param')
+                ->andWhere('param.useInFilter = :useInFilter')
+                ->setParameter('useInFilter', true)
+                ->andWhere('param.useInBid = :useInBid')
+                ->setParameter('useInBid', true)
                 ->orderBy('param.sort', 'ASC')
                 ->getQuery()
                 ->execute();
