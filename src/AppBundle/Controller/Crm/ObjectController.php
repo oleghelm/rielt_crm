@@ -413,7 +413,7 @@ class ObjectController extends Controller {
         } else {
             $tmpl = 'crm/object/show.html.twig';
         }
-        dump($paramsMap);
+        
         return $this->render($tmpl, array(
             'object' => $object,
             'params' => $params,
