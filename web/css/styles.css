@@ -903,7 +903,7 @@ ul.no-mapped,ul.no-mapped li{margin:0 0 10px;padding:0;list-style:none;}
 }
 .object-gallery .photo img{
     max-width: 100%;
-    max-height: 100%;
+    max-height: 300px;
 }
 a.sortable:after{
     content: "\f0dc";
