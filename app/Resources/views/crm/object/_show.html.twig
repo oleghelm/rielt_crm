@@ -120,8 +120,8 @@
                     <div class="col-lg-6 col-sm-12 col-xs-12">
                         <div class="row">
                             <div class="col-lg-12"><h3>Властивості об'єкта</h3></div>
-                            {% if(paramsMap['params'] is defined) %}
-                                {% set sectionParams = paramsMap['params'] %}
+                            {% if(paramsMap['options'] is defined) %}
+                                {% set sectionParams = paramsMap['options'] %}
                                 {{ include('crm/object/_params_section.html.twig') }}
                             {% endif %}
                         </div>
