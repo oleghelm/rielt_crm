@@ -137,7 +137,7 @@ class Object
     
     /**
      * @Assert\Range(min=0, minMessage="Вставновіть мінімальну ціну")
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $price;
     
