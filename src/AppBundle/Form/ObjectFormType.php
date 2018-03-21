@@ -59,7 +59,6 @@ class ObjectFormType extends AbstractType
                         'Первинна' => 2,
                         'Вторинна'  => 1
                     ],
-                    'data' => 1
                 ])
                 ->add('important',ChoiceType::class, [
                     'label' => 'Важливий',
@@ -69,7 +68,6 @@ class ObjectFormType extends AbstractType
                         'Так' => true,
                         'Ні'  => false
                     ],
-                    'data' => 0
                 ])
                 ->add('advertising',ChoiceType::class, [
                     'label' => 'Рекламується',
@@ -79,7 +77,6 @@ class ObjectFormType extends AbstractType
                         'Так' => true,
                         'Ні'  => false
                     ],
-                    'data' => 0
                 ])
                 ->add('exclusive',ChoiceType::class, [
                     'label' => 'Ексклюзив',
@@ -89,7 +86,6 @@ class ObjectFormType extends AbstractType
                         'Так' => true,
                         'Ні'  => false
                     ],
-                    'data' => 0
                 ])
                 ->add('domria',ChoiceType::class, [
                     'label' => 'Вигрузка на dom.ria',
@@ -99,7 +95,6 @@ class ObjectFormType extends AbstractType
                         'Так' => true,
                         'Ні'  => false
                     ],
-                    'data' => 0
                 ])
                 ->add('comission',ChoiceType::class, [
                     'label' => 'Комісію платить',
@@ -109,7 +104,6 @@ class ObjectFormType extends AbstractType
                         'Власник' => true,
                         'Клієнт'  => false
                     ],
-                    'data' => 0
                 ])
                 ->add('baseprice',ChoiceType::class, [
                     'label' => 'Основна ціна',
