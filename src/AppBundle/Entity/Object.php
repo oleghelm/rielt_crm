@@ -408,6 +408,14 @@ class Object
         $this->baseprice = $baseprice;
     }
     
+    function canEdit(User $user){
+        if($this->getUser() && $this->getUser()->getId() == $user->getId())
+            return true;
+        if(in_array('ROLE_SUPERADMIN', $user->getRoles()))
+            return true;
+        return false;
+    }
+    
     function getParamVal($id){
         $params = $this->getParams();
         $res = [];

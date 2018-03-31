@@ -2,6 +2,7 @@
     <thead>
         <tr>
             <th>{{knp_pagination_sortable(objects, 'Код', 'ob.code')}}</th>
+            <th>{{knp_pagination_sortable(objects, 'Назва', 'ob.name')}}</th>
             <th>{{knp_pagination_sortable(objects, 'Статус', 'ob.status')}}</th>
             <th>{{knp_pagination_sortable(objects, 'Район', 'location.name')}}</th>
             <th>{{knp_pagination_sortable(objects, 'Ціна', 'ob.price')}}</th>
@@ -54,6 +55,11 @@
                         {% endif %}
 
                     </div>
+                </td>
+                <td>
+                    <a href="{{ path('crm_object_show', {'id': object.id,'ajax':'Y'}) }}"  class="ajax-page-load">
+                    {{ object.name }}
+                    </a>
                 </td>
                 <td>
                     {% if(object.status=='insale') %}

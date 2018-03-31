@@ -387,7 +387,7 @@ class BidController extends Controller {
                 $formParam['multiple']=true;
                 $formParam['type']='floatdiapazon';
             }
-            $formParams[$param->getSort()] = $formParam;
+            $formParams[] = $formParam;
         }
         return $formParams;
     }

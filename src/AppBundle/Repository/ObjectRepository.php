@@ -90,7 +90,7 @@ class ObjectRepository extends EntityRepository
             }
             if(isset($filter['code'])){
                 if($filter['code']['val']!="")
-                    $queryBuilder->andWhere('(ob.code LIKE :code OR ob.code LIKE :code)')
+                    $queryBuilder->andWhere('(ob.name LIKE :code OR ob.code LIKE :code)')
                             ->setParameter('code', '%'.$filter['code']['val'].'%');
             }
             
