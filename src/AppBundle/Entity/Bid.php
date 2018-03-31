@@ -88,6 +88,11 @@ class Bid
     private $location;
     
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $rooms;
+    
+    /**
      * @ORM\OneToMany(targetEntity="BidParam", mappedBy="bid", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
      */
@@ -210,8 +215,15 @@ class Bid
         return $this->getName();
     }
     
-    
-    /**
+    function getRooms() {
+        return $this->rooms;
+    }
+
+    function setRooms($rooms) {
+        $this->rooms = $rooms;
+    }
+
+        /**
      * @return ArrayCollection|ObjectParam[]
      */
     function getParams() {

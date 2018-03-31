@@ -224,6 +224,7 @@ class BidController extends Controller {
         $queryString['min_price'] = $bid->getMinPrice();
         $queryString['max_price'] = $bid->getMaxPrice();
         $queryString['location'] = $bid->getLocation();
+        $queryString['rooms'] = $bid->getRooms();
         $params = $bid->getParamsArrayMap();
 
         foreach($params as $param){
