@@ -879,7 +879,7 @@ ul.no-mapped,ul.no-mapped li{margin:0 0 10px;padding:0;list-style:none;}
     width: 200px;
 }
 .status-btns a.btn{width:100%;margin-bottom: 20px;}
-#ajax-page-popup{overflow:visible}
+#ajax-page-popup{overflow:visible;max-width:80%;}
 .object-gallery{}
 .object-gallery .photo{
     width: 22%;
@@ -959,6 +959,7 @@ html,body{height: 100%;}
     .table-responsive-calls.table>tbody>tr>td:nth-child(4){width:20%;}
     .table-responsive-calls tr:after{content:" ";display:block;clear:both;}
 }
+@media(max-width:768px) {#ajax-page-popup{max-width:100%;}}
 .inline-radio{margin-bottom:19px;}
 .inline-radio .radio {display: inline-block;margin: 0 10px 10px 0px;}
 .object-opts {}
