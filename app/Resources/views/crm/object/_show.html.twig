@@ -30,7 +30,7 @@
             </h1>
         </div>
         {% if(object.photos) %}
-            <div class="{%if(not app.request.get('ajax'))%}col-sm-5{%endif%} col-xs-12">
+            <div class="{%if(not app.request.get('ajax'))%}col-sm-5{%endif%} col-sm-5 col-xs-12">
                 <div class="object-gallery">
                     <div id="main-object-photo">
                             <a class="photo" href="{{object.photos[0]}}" class='fancybox'  data-fancybox="gallery">
@@ -47,7 +47,7 @@
                 </div>
             </div>
         {% endif %}
-        <div class="{%if(not app.request.get('ajax'))%}col-sm-7{%endif%} col-xs-12">
+        <div class="{%if(not app.request.get('ajax'))%}col-sm-7{%endif%} col-sm-7 col-xs-12">
             <div class="row">
                 <div class="col-sm-12">
                     {#                            <a href="{{ path('crm_object_list') }}" class="btn btn-primary btn-sm" ><i class="fa fa-arrow-left"></i></a>#}
