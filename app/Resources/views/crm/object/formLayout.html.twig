@@ -2,6 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
+    <style type="text/css">.error{color:red;}</style>
 {#    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/css/bootstrap-datepicker.min.css" />#}
 {% endblock %}
 
@@ -28,5 +29,192 @@
                 $("#object_form_area").val($(this).val())
             })
         })
+        
+        var reqFields = {
+            222 : [//квартира
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_20',//Поверх floor
+                'form_26',//Поверховість floors
+                'form_29',//Тип стін wall_type
+                'object_form_rooms',//Кількість кімнат rooms_count
+            ],
+            223 : [//комната
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_20',//Поверх floor
+                'form_26',//Поверховість floors
+            ],
+            224 : [//дом
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_26',//Поверховість floors
+                'form_29',//Тип стін wall_type
+                'object_form_rooms',//Кількість кімнат rooms_count
+            ],
+            225 : [//дом
+                'form_34',//Загальна площа total_area
+                'form_26',//Поверховість floors
+                'form_29',//Тип стін wall_type
+                'object_form_rooms',//Кількість кімнат rooms_count
+            ],
+            226 : [//дача
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_26',//Поверховість floors
+                'form_29',//Тип стін wall_type
+                'object_form_rooms',//Кількість кімнат rooms_count
+            ],
+            227 : [//офисное помещение
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_20',//Поверх floor
+                'form_26',//Поверховість floors
+                'form_29',//Тип стін wall_type
+                'form_30',//Тип об'єкту object_type
+                'object_form_rooms',//Кількість кімнат rooms_count
+            ],
+            228 : [//офисное здание
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_20',//Поверх floor
+                'form_26',//Поверховість floors
+                'form_29',//Тип стін wall_type
+                'form_30',//Тип об'єкту object_type
+                'object_form_rooms',//Кількість кімнат rooms_count
+            ],
+            229 : [//торговые площади
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_20',//Поверх floor
+                'form_26',//Поверховість floors
+                'form_30',//Тип об'єкту object_type
+                'object_form_rooms',//Кількість кімнат rooms_count
+            ],
+            230 : [//складские помещения
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_30',//Тип об'єкту object_type
+                'object_form_rooms',//Кількість кімнат rooms_count
+            ],
+            231 : [//производственные помещения
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_20',//Поверх floor
+                'form_26',//Поверховість floors
+                'form_30',//Тип об'єкту object_type
+                'object_form_rooms',//Кількість кімнат rooms_count
+            ],
+            232 : [//кафе, бар, ресторан
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_20',//Поверх floor
+                'form_26',//Поверховість floors
+                'object_form_rooms',//Кількість кімнат rooms_count
+            ],
+            233 : [//объект сферы услуг
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_20',//Поверх floor
+                'form_26',//Поверховість floors
+                'object_form_rooms',//Кількість кімнат rooms_count
+            ],
+            234 : [//отель, гостиница
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_26',//Поверховість floors
+            ],
+            235 : [//база отдыха, пансионат
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_26',//Поверховість floors
+                'object_form_rooms',//Кількість кімнат rooms_count
+            ],
+            236 : [//помещения свободного назначения
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_20',//Поверх floor
+                'form_26',//Поверховість floors
+                'object_form_rooms',//Кількість кімнат rooms_count
+            ],
+            237 : [//готовый бизнес
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_49',//Поверх sphere
+            ],
+            238 : [//участок под жилую застройку
+                'object_form_location',//район розташування location
+                'form_38',//Площа ділянки plot_area
+            ],
+            239 : [//земля коммерческого назначения
+                'object_form_location',//район розташування location
+                'form_38',//Площа ділянки plot_area
+            ],
+            240 : [//земля сельскохозяйственного назначения
+                'object_form_location',//район розташування location
+                'form_38',//Площа ділянки plot_area
+            ],
+            241 : [//земля рекреационного назначения
+                'object_form_location',//район розташування location
+                'form_38',//Площа ділянки plot_area
+            ],
+            242 : [//земля природно-заповедного назначения
+                'object_form_location',//район розташування location
+                'form_38',//Площа ділянки plot_area
+            ],
+            243 : [//бокс в гаражном комплексе
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_32',//Загальна площа cars
+                'form_31',//Загальна площа appointment
+            ],
+            244 : [//подземный паркинг
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_32',//Загальна площа cars
+                'form_31',//Загальна площа appointment
+            ],
+            245 : [//место в гаражном кооперативе
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_32',//Загальна площа cars
+                'form_31',//Загальна площа appointment
+            ],
+            246 : [//отдельно стоящий гараж
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_32',//Загальна площа cars
+                'form_31',//Загальна площа appointment
+            ],
+            247 : [//место на стоянке
+                'object_form_location',//район розташування location
+                'form_34',//Загальна площа total_area
+                'form_32',//Загальна площа cars
+                'form_31',//Загальна площа appointment
+            ],
+        }
+        $('form[name="object_form"]').submit(function(){
+            $('.form-group').removeClass('error');
+            $('.errors').html('');
+            var typeid = $("#form_54").val();
+            var errors = false;
+            if(!typeid){
+                setErrorToGroup('form_54');
+                return false;
+            }
+            for(key in reqFields[typeid]){
+                if($("#"+reqFields[typeid][key]).val() == ""){
+                    setErrorToGroup(reqFields[typeid][key]);
+                    errors = true;
+                }
+            }
+            if(errors){
+                $('.errors').html("<br>Заповніть обов'язкові поля (пізсвічені червоним)");
+                return false;
+            } 
+        })
+        function setErrorToGroup(id){
+            $('#'+id).parents('.form-group').addClass('error');
+        }
     </script>
 {% endblock %}
