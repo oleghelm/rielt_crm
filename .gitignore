@@ -18,6 +18,7 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
+/web/xml/
 /web/xml/*
 /web/.htaccess
 /web/images/company

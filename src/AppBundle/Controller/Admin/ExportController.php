@@ -46,6 +46,9 @@ class ExportController extends Controller {
         $datetime = new \DateTime('now');
         $export .= '<generation_date>'.$datetime->format(\DateTime::ATOM).'</generation_date>';
         foreach($items as $item):
+            if(!$item->getLocation()){
+                continue;
+            }
             $xml = '<realty>';
             if($item->getCompany())
                 $xml .= '<email>'.$item->getCompany()->getEmail().'</email>';
@@ -67,7 +70,8 @@ class ExportController extends Controller {
             if($item->getPhotos()){
                 $xml .= '<photos_urls>';
                 foreach($item->getPhotos() as $photo){
-                    $xml .= '<loc crc="'.md5_file($this->getParameter('assets_directory').'/'.$photo).'">'.$url.$photo.'</loc>';
+                    if(file_exists($this->getParameter('assets_directory').'/'.$photo))
+                        $xml .= '<loc crc="'.md5_file($this->getParameter('assets_directory').'/'.$photo).'">'.$url.$photo.'</loc>';
                 }
                 $xml .= '</photos_urls>';
             }
