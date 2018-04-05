@@ -97,7 +97,9 @@ class ExportController extends Controller {
                         $arParams[$parent->getId()]['basic'] = $parent->getBasicParam();
                         $arParams[$parent->getId()]['code'] = $parent->getExportName();
                         switch ($parent->getType()){
-                            case 'select': $arParams[$parent->getId()]['values'][] = $param->getProperty()->getName();break;
+                            case 'select': 
+                                $val = $param->getProperty()->setExportName()!="" ? $param->getProperty()->setExportName() : $param->getProperty()->setName();
+                                $arParams[$parent->getId()]['values'][] = $val;break;
                             case 'text': $arParams[$parent->getId()]['values'][] = $param->getString(); break;
                             case 'integer': $arParams[$parent->getId()]['values'][] = $param->getNumber(); break;
                         }
