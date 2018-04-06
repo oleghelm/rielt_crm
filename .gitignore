@@ -21,6 +21,7 @@
 /web/xml/
 /web/xml/*
 /web/xml/domria.xml
+web/xml/domria.xml
 /web/.htaccess
 /web/images/company
 /web/images/company/*

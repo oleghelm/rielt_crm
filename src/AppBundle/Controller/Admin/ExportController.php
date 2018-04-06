@@ -15,6 +15,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
  * @Route("/admin")
  */
 class ExportController extends Controller {
+    public $errIds = [];
     /**
      * @Route("/export/domria", name="admin_expotr_domria_object_list")
      */
@@ -46,10 +47,10 @@ class ExportController extends Controller {
         $datetime = new \DateTime('now');
         $export .= '<generation_date>'.$datetime->format(\DateTime::ATOM).'</generation_date>';
         foreach($items as $item):
-            if(!$item->getLocation()){
-                continue;
-            }
+//            if(!$item->getLocation()){continue;}
             $xml = '<realty>';
+            $tags = ['location','rooms_count'];
+            $realty_type = '';
             if($item->getCompany())
                 $xml .= '<email>'.$item->getCompany()->getEmail().'</email>';
             $xml .= '<local_realty_id>'.$item->getId().'</local_realty_id>';
@@ -96,10 +97,15 @@ class ExportController extends Controller {
                     if($parent->getExportName()!=""){
                         $arParams[$parent->getId()]['basic'] = $parent->getBasicParam();
                         $arParams[$parent->getId()]['code'] = $parent->getExportName();
+                        $arParams[$parent->getId()]['id'] = $parent->getId();
                         switch ($parent->getType()){
                             case 'select': 
                                 $val = $param->getProperty()->getExportName()!="" ? $param->getProperty()->getExportName() : $param->getProperty()->getName();
-                                $arParams[$parent->getId()]['values'][] = $val;break;
+                                $arParams[$parent->getId()]['values'][] = $val;
+                                if($arParams[$parent->getId()]['code']=='realty_type'){
+                                    $realty_type = $param->getProperty()->getId();
+                                }
+                                break;
                             case 'text': $arParams[$parent->getId()]['values'][] = $param->getString(); break;
                             case 'integer': $arParams[$parent->getId()]['values'][] = $param->getNumber(); break;
                         }
@@ -111,20 +117,62 @@ class ExportController extends Controller {
                     } else {
                         $characteristics .= '<'.$arParam['code'].'>'.implode(', ',$arParam['values']).'</'.$arParam['code'].'>';
                     }
+                    $tags[] = $arParam['code'];
                 }
             }
             if($characteristics!="")
-                $xml .= '<characteristics>'.$characteristics.'</characteristics>';
+                    $xml .= '<characteristics>'.$characteristics.'</characteristics>';
             $xml .= '</realty>';
-            $export .= $xml;
+            if($this->validateObject($item->getId(),$realty_type,$tags))
+                $export .= $xml;
         endforeach;
         $export .= '</realties>';
-        
+        if(!empty($this->errIds)){
+            $this->addFlash('success', "Перевірте правильність заповнення параметрів в об'єктах з ID ".implode(", ",$this->errIds).". Решту об'єктів додано у файл обміну ".'<a href="/xml/domria.xml" target="_blank">/xml/domria.xml</a>');
+        } else {
+            $this->addFlash('success', 'Файл /xml/domria.xml оновлено! Переглянути можна за посиланням <a href="/xml/domria.xml" target="_blank">/xml/domria.xml</a>');
+        }
         $file = $this->getParameter('assets_directory').'/xml/domria.xml';
         file_put_contents($file, $export);
-        
-        $this->addFlash('success', 'Файл /xml/domria.xml оновлено! Переглянути можна за посиланням <a href="/xml/domria.xml" target="_blank">/xml/domria.xml</a>');
         return $this->redirectToRoute('admin_expotr_domria_object_list');
     }
-    
+    public function validateObject($id, $realty_type = '', $tags = []){
+        if($realty_type == '' || empty($tags)){return false;}
+        $reqFields = [
+            222 => ['location','total_area','floor','floors','wall_type','rooms_count'],//квартира
+            223 => ['location','total_area','floor','floors'],//комната
+            224 => ['location','total_area','floors','wall_type','rooms_count'],//дом
+            225 => ['location','total_area','floors','wall_type','rooms_count'],//дом
+            226 => ['location','total_area','floors','wall_type','rooms_count'],//дача
+            227 => ['location','total_area','floor','floors','wall_type','rooms_count','object_type'],//офисное помещение
+            228 => ['location','total_area','floor','floors','wall_type','rooms_count','object_type'],//офисное здание
+            229 => ['location','total_area','floor','floors','rooms_count','object_type'],//торговые площади
+            230 => ['location','total_area','rooms_count','object_type'],//складские помещения
+            231 => ['location','total_area','floor','floors','rooms_count','object_type'],//производственные помещения
+            232 => ['location','total_area','floor','floors','rooms_count'],//кафе, бар, ресторан
+            233 => ['location','total_area','floor','floors','rooms_count'],//объект сферы услуг
+            234 => ['location','total_area','floors'],//отель, гостиница
+            235 => ['location','total_area','floors','rooms_count'],//база отдыха, пансионат
+            236 => ['location','total_area','floor','floors','rooms_count'],//помещения свободного назначения
+            237 => ['location','total_area','sphere'],//готовый бизнес
+            238 => ['location','plot_area'],//участок под жилую застройку
+            239 => ['location','plot_area'],//земля коммерческого назначения
+            240 => ['location','plot_area'],//земля сельскохозяйственного назначения
+            241 => ['location','plot_area'],//земля рекреационного назначения
+            242 => ['location','plot_area'],//земля природно-заповедного назначения
+            243 => ['location','total_area','cars','appointment'],//бокс в гаражном комплексе
+            244 => ['location','total_area','cars','appointment'],//подземный паркинг
+            245 => ['location','total_area','cars','appointment'],//место в гаражном кооперативе
+            246 => ['location','total_area','cars','appointment'],//отдельно стоящий гараж
+            247 => ['location','total_area','cars','appointment'],//место на стоянке
+        ];
+        foreach($reqFields[$realty_type] as $req){
+            if(!in_array($req, $tags)){
+                $this->errIds[] = $id;
+//        dump($req);die;
+                return false;
+            }
+        }
+        return true;
+    }
 }
