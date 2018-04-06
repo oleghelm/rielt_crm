@@ -77,14 +77,14 @@ class BidFormType extends AbstractType
                         return $repo->findAllUsers();
                     }
                 ])
-                ->add('client',EntityType::class,[
-                    'label' => 'Хто подав заявку',
-                    'placeholder' => "Виберіть хто подав заявку",
-                    'class' => Client::class,
-                    'query_builder' => function(ClientRepository $repo) {
-                        return $repo->findAllClients();
-                    }
-                ])
+//                ->add('client',EntityType::class,[
+//                    'label' => 'Хто подав заявку',
+//                    'placeholder' => "Виберіть хто подав заявку",
+//                    'class' => Client::class,
+//                    'query_builder' => function(ClientRepository $repo) {
+//                        return $repo->findAllClients();
+//                    }
+//                ])
                 ->add('lastUpdate',DateType::class,[
                     'label' => 'Останній контакт',
                     'widget' => 'single_text',

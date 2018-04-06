@@ -86,10 +86,17 @@ class ClientRepository extends EntityRepository
         return $this->_em->getRepository('AppBundle:Client')->createQueryBuilder('cl');
     }
     
-        public function findAllClients()
+    public function findAllClients()
     {
         return $this->createQueryBuilder('user')
             ->orderBy('user.name', 'ASC');
+    }
+    public function findAllUserClients($user)
+    {
+        return $this->createQueryBuilder('cl')
+                ->where("cl.user = :user")
+                ->setParameter('user', $user)
+            ->orderBy('cl.name', 'ASC');
     }
 
 }

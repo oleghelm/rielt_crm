@@ -7,9 +7,8 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\Bid;
 use AppBundle\Entity\BidParam;
 use AppBundle\Entity\Location;
+use AppBundle\Entity\Client;
 use AppBundle\Form\BidFormType;
-//use AppBundle\Form\OpfType;
-//use AppBundle\Form\BidFilterFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +17,8 @@ use Symfony\Component\HttpFoundation\File\File;
 use AppBundle\Service\FileUploader;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;//for chices
+use AppBundle\Repository\ClientRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -117,11 +118,18 @@ class BidController extends Controller {
 //        if(file_exists($this->getParameter('user_photo_directory').'/'.$bid->getPhotos()) && is_file($this->getParameter('user_photo_directory').'/'.$bid->getPhotos()))
 
         $form = $this->createForm(BidFormType::class, $bid);
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         $form->add('location',ChoiceType::class, [
                     'label' => 'Райони',
                     'multiple' => true,
                     'choices' => $this->getDoctrine()->getRepository('AppBundle:Location')->getLocationsForFilter()
                 ]);
+        $form->add('client',EntityType::class,[
+            'label' => 'Хто подав заявку',
+            'placeholder' => "Виберіть хто подав заявку",
+            'class' => Client::class,
+            'query_builder' => $this->getDoctrine()->getRepository('AppBundle:Client')->findAllUserClients($user)
+        ]);
         $form->handleRequest($request);
         
         //render params form
