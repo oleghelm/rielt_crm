@@ -18,4 +18,11 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.project_dir')).DIRECTORY_SEPARATOR,
         ]);
     }
+    
+    /**
+     * @Route("/no_access", name="no_access")
+     */
+    public function noAccessAction(){
+        return $this->render('default/no_access.html.twig');
+    }
 }

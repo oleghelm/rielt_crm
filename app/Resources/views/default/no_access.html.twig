@@ -1,0 +1,7 @@
+{% if app.request.get('ajax','')=='Y' %}
+{% else %}
+{#{% extends 'desk.html.twig' %}#}
+{% endif %}
+{% block body %}
+    <h1>Доступ обмежено</h1>
+{% endblock %}

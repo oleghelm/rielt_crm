@@ -85,6 +85,20 @@
             })
         })
         
+        $("a.edit_old_client").click(function(){
+            if($("#object_form_client").val()==="") {
+                alert('Виберіть клієнта');
+                return false;
+            }
+            var url = '/crm/clients/'+$("#object_form_client").val()+'/edit?ajax=Y';
+            $.get(url,function(resp){
+                $('#ajax-page-popup').html(resp)
+                $.fancybox.close()
+                $.fancybox.open( $('#ajax-page-popup'),{autoWidth : true});
+                initStartScripts();
+            })
+            return false;
+        })
         
         
         
@@ -92,25 +106,7 @@
             $('.search-bar').slideToggle();
         });
         
-        if($(".textCollection").length){
-            $(".textCollection").each(function(){
-                var block = $(this).next();
-                var id = block.attr('id');
-                var prototype = block.data('prototype');
-                prototype = prototype.replace('form-group','form-group input-group');
-                prototype = prototype.replace('</div>','<a href="javascript:void(0);" class="btn btn-warning input-group-addon removeCollectionValue"><i class="fa fa-remove"></i></a></div>');
-                block.data('prototype',prototype);
-                
-                block.find(".form-group").addClass('input-group');
-                block.find(".form-group input").after('<a href="javascript:void(0);" class="btn btn-warning input-group-addon removeCollectionValue"><i class="fa fa-remove"></i></a>');
-                
-                block.data('count',$(".textCollection").length);//set count
-                
-                block.after('<a href="javascript:void(0);" class="btn btn-success addTextCollectionValue" data-collection-id="'+id+'"><i class="fa fa-plus"></i></a>');
-                
-                block.addClass('textCollection-wrap');
-            })
-        }
+        
         
 //        $.fn.datepicker.dates['uk'] = {
 //            days: ["Неділя", "Понеділок", "Вівторок", "Середа", "Четвер", "П'ятниця", "Субота", "Неділя"],
@@ -122,7 +118,7 @@
 //        };
     });
 
-    $('.form-group').on('click',".textCollection-wrap .removeCollectionValue",function(){
+    $('body').on('click',".textCollection-wrap .removeCollectionValue",function(){
         var input = $(this).prev();
         var icon = $(this).find("i");
         input.data("old-name", input.attr('name'));
@@ -131,7 +127,7 @@
         $(this).removeClass('removeCollectionValue').addClass('restoreCollectionValue');
         icon.removeClass('fa-remove').addClass("fa-backward")
     })
-    $('.form-group').on('click',".textCollection-wrap .restoreCollectionValue",function(){
+    $('body').on('click',".textCollection-wrap .restoreCollectionValue",function(){
         var input = $(this).prev();
         var icon = $(this).find("i");
         input.attr('name',input.data("old-name"));
@@ -139,7 +135,7 @@
         $(this).addClass('removeCollectionValue').removeClass('restoreCollectionValue');
         icon.addClass('fa-remove').removeClass("fa-backward")
     })
-    $('.form-group').on('click',".addTextCollectionValue",function(){
+    $('body').on('click',".addTextCollectionValue",function(){
         var collectionsList = jQuery('#'+$(this).data("collection-id"));//get list ID
         var newWidget = collectionsList.data('prototype'); // get element prototype
         var counter = collectionsList.data('count'); // get count of elements
@@ -219,6 +215,10 @@ function initStartScripts(){
         locale: 'uk'
     });
     $(".xyz select").chosen({search_contains: true})
+    $("#ajax-page-popup select").chosen({search_contains: true})
+    if($(".textCollection").length){
+        setTextCollections();
+    }
 }
 function loadAjaxList(listWrap,src){
     if(typeof src === 'undefined'){
@@ -227,7 +227,29 @@ function loadAjaxList(listWrap,src){
     listWrap.load(src);
 }
 
+function setTextCollections(){
+    $(".textCollection").each(function(){
+        if(!$(this).hasClass('textCollection-checked')){
+            var block = $(this).next();
+            var id = block.attr('id');
+            var prototype = block.data('prototype');
+            prototype = prototype.replace('form-group','form-group input-group');
+            prototype = prototype.replace('</div>','<a href="javascript:void(0);" class="btn btn-warning input-group-addon removeCollectionValue"><i class="fa fa-remove"></i></a></div>');
+            block.data('prototype',prototype);
 
+            block.find(".form-group").addClass('input-group');
+            block.find(".form-group input").after('<a href="javascript:void(0);" class="btn btn-warning input-group-addon removeCollectionValue"><i class="fa fa-remove"></i></a>');
+
+            block.data('count',$(".textCollection").length);//set count
+
+            block.after('<a href="javascript:void(0);" class="btn btn-success addTextCollectionValue" data-collection-id="'+id+'"><i class="fa fa-plus"></i></a>');
+
+            block.addClass('textCollection-wrap');
+
+            $(this).addClass('textCollection-checked')
+        }
+    })
+}
 
 
 

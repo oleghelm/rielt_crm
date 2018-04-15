@@ -88,6 +88,10 @@ class ClientController extends Controller
      */
     public function editAction(Request $request, Client $client)
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        if(!$client->canEdit($user)){
+            return $this->redirectToRoute('no_access',['ajax'=>'Y']);
+        }
         $form = $this->createForm(ClientFormType::class, $client);
         
         // only handles data on POST
@@ -101,10 +105,18 @@ class ClientController extends Controller
 
             $this->addFlash('success', 'Client updated!');
 
-            return $this->redirectToRoute('crm_client_list');
+            if($request->get('ajax')=='Y')
+                return $this->redirectToRoute('crm_client_edit',['id'=>$client->getId(),'ajax'=>'Y']);
+            else
+                return $this->redirectToRoute('crm_client_list');
         }
 
-        return $this->render('crm/client/edit.html.twig', [
+        if($request->get('ajax')=='Y')
+            $tmpl = 'crm/client/edit_ajax.html.twig';
+        else
+            $tmpl = 'crm/client/edit.html.twig';
+        
+        return $this->render($tmpl, [
             'form' => $form->createView(),
         ]);
     }
