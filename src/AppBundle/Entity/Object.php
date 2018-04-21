@@ -433,7 +433,10 @@ class Object
     }
     
     public function __toString() {
-        return $this->getName();
+        $name = $this->getName();
+        if($this->getCode()!="")
+            $name .= ' ('.$this->getCode().')';
+        return $name;
     }
 
     public function getParamsArrayMap($joinMultiple = false){
