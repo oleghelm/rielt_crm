@@ -72,11 +72,18 @@ class BidController extends Controller {
      */
     public function newAction(Request $request, FileUploader $fileUploader){
         $form = $this->createForm(BidFormType::class);
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         $form->add('location',ChoiceType::class, [
                     'label' => 'Райони',
                     'multiple' => true,
                     'choices' => $this->getDoctrine()->getRepository('AppBundle:Location')->getLocationsForFilter()
                 ]);
+        $form->add('client',EntityType::class,[
+            'label' => 'Хто подав заявку',
+            'placeholder' => "Виберіть хто подав заявку",
+            'class' => Client::class,
+            'query_builder' => $this->getDoctrine()->getRepository('AppBundle:Client')->findAllUserClients($user)
+        ]);
 
         //render params form
         $paramsForm = $this->getParamsForm(null);
