@@ -241,10 +241,12 @@ function setTextCollections(){
             block.find(".form-group").addClass('input-group');
             block.find(".form-group input").after('<a href="javascript:void(0);" class="btn btn-warning input-group-addon removeCollectionValue"><i class="fa fa-remove"></i></a>');
 
-            var arr = block.find(".form-group.input-group").last().find('input').attr('name').split('[')
+            if(block.find(".form-group.input-group").length){
+                var arr = block.find(".form-group.input-group").last().find('input').attr('name').split('[')
+                block.data('count',arr[arr.length-1].split(']')[0]);//set count
+            } else
+            block.data('count',$(".textCollection").length);//set count
             
-//            block.data('count',$(".textCollection").length);//set count
-            block.data('count',arr[arr.length-1].split(']')[0]);//set count
 
             block.after('<a href="javascript:void(0);" class="btn btn-success addTextCollectionValue" data-collection-id="'+id+'"><i class="fa fa-plus"></i></a>');
 
