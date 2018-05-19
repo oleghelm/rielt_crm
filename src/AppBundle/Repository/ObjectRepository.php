@@ -93,6 +93,11 @@ class ObjectRepository extends EntityRepository
                     $queryBuilder->andWhere('(ob.name LIKE :code OR ob.code LIKE :code)')
                             ->setParameter('code', '%'.$filter['code']['val'].'%');
             }
+            if(isset($filter['id'])){
+                if($filter['id']['val']!="")
+                    $queryBuilder->andWhere('(ob.id = :id)')
+                            ->setParameter('id', $filter['id']['val']);
+            }
             
             if(isset($filter['status'])){
                 if(is_array($filter['status']['val']))
@@ -146,8 +151,22 @@ class ObjectRepository extends EntityRepository
                         ->setParameter('max_price', $filter['max_price']['val']);
             }
             if(isset($filter['rooms'])){
-                $queryBuilder->andWhere('ob.rooms = :rooms')
+                if(is_array($filter['rooms']['val']))
+                    $queryBuilder->andWhere('ob.rooms IN (:rooms)')
                         ->setParameter('rooms', $filter['rooms']['val']);
+                else
+                    $queryBuilder->andWhere('ob.rooms = :rooms')
+                        ->setParameter('rooms', $filter['rooms']['val']);
+            }
+            if(isset($filter['special'])){
+                if(in_array('exclusive', $filter['special']['val']))
+                    $queryBuilder->andWhere('ob.exclusive = true');
+                if(in_array('important', $filter['special']['val']))
+                    $queryBuilder->andWhere('ob.important = true');
+                if(in_array('advertising', $filter['special']['val']))
+                    $queryBuilder->andWhere('ob.advertising = true');
+                if(in_array('domria', $filter['special']['val']))
+                    $queryBuilder->andWhere('ob.domria = true');
             }
             foreach($filter as $key=>$param){
                 if(is_numeric($key)){// || (isset($param['type']) && strpos($param['type'],'diapazon')!==false)

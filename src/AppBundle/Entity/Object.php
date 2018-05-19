@@ -87,17 +87,17 @@ class Object
     private $photos;
     
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $info;
     
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $officialinfo;
     
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
     private $address;
     
@@ -129,6 +129,11 @@ class Object
      * @ORM\Column(type="date", nullable=true)
      */
     private $lastUpdate;
+    
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $created;
         
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -406,6 +411,14 @@ class Object
 
     function setBaseprice($baseprice) {
         $this->baseprice = $baseprice;
+    }
+    
+    function getCreated() {
+        return $this->created;
+    }
+
+    function setCreated($created) {
+        $this->created = $created;
     }
     
     function canEdit(User $user){

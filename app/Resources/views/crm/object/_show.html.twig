@@ -79,6 +79,12 @@
                     {% if(object.client) %}
                         <div class="col-md-6 col-xs-12 object-opt"><span class="name">Клієнт</span><span class="val"><a href="{{path("crm_client_show",{'id':object.client.id,'ajax':'Y'})}}" class='ajax-page-load'>{{object.client.name}}</a></span></div>
                     {% endif %}
+                    {% if(object.created) %}
+                        <div class="col-md-6 col-xs-12 object-opt"><span class="name">Створено</span><span class="val">{{object.created|date('d.m.Y')}}</span></div>
+                    {% endif %}
+                    {% if(object.lastUpdate) %}
+                        <div class="col-md-6 col-xs-12 object-opt"><span class="name">Останній контакт</span><span class="val">{{object.lastUpdate|date('d.m.Y')}}</span></div>
+                    {% endif %}
                     <div class="col-md-12 col-xs-12"><hr /></div>
                 </div>
                 <div class="row">

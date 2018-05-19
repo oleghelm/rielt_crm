@@ -20,11 +20,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\File\File;
 use AppBundle\Service\FileUploader;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;//for chices
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\HttpFoundation\Cookie;
 
 /**
  * @Security("is_granted('ROLE_CRM_USER') or is_granted('ROLE_SUPERADMIN')")
@@ -37,6 +39,8 @@ class ObjectController extends Controller {
      */
     public function indexAction(Request $request)
     {
+        //saved filter
+        setcookie("object_lastpage", $request->getRequestUri());
         //render params form
         $filterType = isset($this->listFilter['type']) ? $this->listFilter['type'] : '';
         $paramsForm = $this->getParamsFilterForm([],$filterType);
@@ -118,7 +122,7 @@ class ObjectController extends Controller {
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $object = $form->getData();
-            
+            $object->setCreated(new \DateTime('now'));
             //attach new client
             if($request->get('new_client','N')=='Y'){
                 $client = $clientForm->getData();
@@ -157,8 +161,12 @@ class ObjectController extends Controller {
             
             $this->addFlash('success', "Об'єкт створено!");
 
-            if($request->get('submitType')!='apply')
-                return $this->redirectToRoute('crm_object_list');
+            if($request->get('submitType')!='apply'){
+                if($_COOKIE['object_lastpage']!="")
+                    return $this->redirect($_COOKIE['object_lastpage']);
+                else
+                    return $this->redirectToRoute('crm_object_list');
+            }
             else
                 return $this->redirectToRoute('crm_object_edit',['id'=>$object->getId()]);
         }
@@ -194,7 +202,9 @@ class ObjectController extends Controller {
         
         if ($form->isSubmitted() && $form->isValid()) {
             $object = $form->getData();
-            
+            if(!$object->getCreated() && $object->getLastUpdate()){
+                $object->setCreated($object->getLastUpdate());
+            }
             if($object->getPrice()!="" && $object->getPriceM2()=="" && $object->getArea()!=""){
                 $object->setPriceM2(round(($object->getPrice()/$object->getArea()),2));
             }
@@ -244,8 +254,12 @@ class ObjectController extends Controller {
 
             $this->addFlash('success', "Об'єкт оновлено!");
 
-            if($request->get('submitType')!='apply')
-                return $this->redirectToRoute('crm_object_list');
+            if($request->get('submitType')!='apply'){
+                if($_COOKIE['object_lastpage']!="")
+                    return $this->redirect($_COOKIE['object_lastpage']);
+                else
+                    return $this->redirectToRoute('crm_object_list');
+            }
             else
                 return $this->redirectToRoute('crm_object_edit',['id'=>$object->getId()]);
         }
@@ -277,7 +291,10 @@ class ObjectController extends Controller {
 
         $this->addFlash('success', "Об'єкт видалено!");
         
-        return $this->redirectToRoute('crm_object_list');
+        if($_COOKIE['object_lastpage']!="")
+            return $this->redirect($_COOKIE['object_lastpage']);
+        else
+            return $this->redirectToRoute('crm_object_list');
     }
    
     /**
@@ -637,11 +654,18 @@ class ObjectController extends Controller {
             'multiple' => false,
             'choices' =>  $this->getDoctrine()->getRepository('AppBundle:User')->getUsersForFilter(),
         ];
+//        $formParams[] = [
+//            'id' => 'rooms',
+//            'type' => 'integer',
+//            'label' => 'К-сть кімнат',
+//            'multiple' => false,
+//        ];
         $formParams[] = [
             'id' => 'rooms',
-            'type' => 'integer',
+            'type' => 'select',
             'label' => 'К-сть кімнат',
-            'multiple' => false,
+            'multiple' => true,
+            'choices' =>  [1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10],
         ];
         $formParams[] = [
             'id' => 'min_price',
@@ -680,6 +704,19 @@ class ObjectController extends Controller {
             'type' => 'text',
             'label' => 'Код або назва',
             'multiple' => false,
+        ];
+        $formParams[] = [
+            'id' => 'id',
+            'type' => 'text',
+            'label' => "ІД об'єкту",
+            'multiple' => false,
+        ];
+        $formParams[] = [
+            'id' => 'special',
+            'type' => 'select',
+            'label' => 'Відмітки',
+            'multiple' => true,
+            'choices' =>  ['Ексклюзив'=>'exclusive','Важливий'=>'important','Рекламується'=>'advertising','Вигружається на dom.ria'=>'domria'],
         ];
         
         return $formParams;

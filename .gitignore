@@ -18,9 +18,8 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
-/web/xml/
+!/web/xml
 /web/xml/*
-/web/xml/domria.xml
 /web/.htaccess
 /web/images/object
 /web/images/company

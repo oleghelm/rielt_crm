@@ -1,7 +1,7 @@
 {{ form_start(form) }}
 <button class="btn btn-primary" name="submitType" value="apply" type="submit" formnovalidate title="Зберегти"><i class="fa fa-save"></i></button>&nbsp;
 <button class="btn btn-success" name="submitType" value="save" type="submit" formnovalidate title="Зберегти і вийти"><i class="fa fa-save"></i>&nbsp;<i class="fa fa-plus"></i>&nbsp;<i class="fa fa-sign-out"></i></button>&nbsp;
-<a href="{{path('crm_object_list')}}" class="btn btn-warning" title="Повернутись"><i class="fa fa-sign-out"></i></a>
+<a href="{%if(app.request.cookies.get('object_lastpage'))%}{{app.request.cookies.get('object_lastpage')}}{%else%}{{path('crm_object_list')}}{%endif%}" class="btn btn-warning" title="Повернутись"><i class="fa fa-sign-out"></i></a>
 <br />
 <div class="errors error"></div>
 <br />
@@ -124,6 +124,6 @@
 </div>
 <button class="btn btn-primary" name="submitType" value="apply" type="submit" formnovalidate title="Зберегти"><i class="fa fa-save"></i></button>&nbsp;
 <button class="btn btn-success" name="submitType" value="save" type="submit" formnovalidate title="Зберегти і вийти"><i class="fa fa-save"></i>&nbsp;<i class="fa fa-plus"></i>&nbsp;<i class="fa fa-sign-out"></i></button>&nbsp;
-<a href="{{path('crm_object_list')}}" class="btn btn-warning" title="Повернутись"><i class="fa fa-sign-out"></i></a>
+<a href="{%if(app.request.cookies.get('object_lastpage'))%}{{app.request.cookies.get('object_lastpage')}}{%else%}{{path('crm_object_list')}}{%endif%}" class="btn btn-warning" title="Повернутись"><i class="fa fa-sign-out"></i></a>
 <div class="errors error"></div>
 {{ form_end(form) }}

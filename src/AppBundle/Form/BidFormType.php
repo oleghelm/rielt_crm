@@ -65,7 +65,8 @@ class BidFormType extends AbstractType
                     ],
                     'data' => 'price'
                 ])
-                ->add('rooms', IntegerType::class, ['label' => 'Кількість кімнат'])
+//                ->add('rooms', IntegerType::class, ['label' => 'Кількість кімнат'])
+                ->add('rooms', ChoiceType::class, ['multiple' => true,'label' => 'Кількість кімнат','choices'=>[1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10]])
                 ->add('min_price', IntegerType::class, ['label' => 'Мінімальна ціна'])
                 ->add('max_price', IntegerType::class, ['label' => 'Максимальна ціна'])
                 ->add('info', TextareaType::class, ['label' => 'Опис'])

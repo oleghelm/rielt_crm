@@ -9,6 +9,7 @@
             <th>{{knp_pagination_sortable(objects, 'К-сть кімнат', 'ob.rooms')}}</th>
             <th>{{knp_pagination_sortable(objects, 'Площа', 'ob.area')}}</th>
             <th>Тип будинку</th>
+            <th>Поверх</th>
             <th width="85"></th>
             <th width="5%">Dom.ria</th>
         </tr>
@@ -91,6 +92,9 @@
                 </td>
                 <td>
                     {{ object.getParamVal(24) }}
+                </td>
+                <td>
+                    {{ object.getParamVal(20) }} / {{ object.getParamVal(26) }}
                 </td>
                 <td>
                     <a href="{{ path('crm_object_search_bid', {'id': object.id}) }}" class="btn btn-primary btn-sm" title="Знайти відповідні заявки"><i class="fa fa-search"></i></a>

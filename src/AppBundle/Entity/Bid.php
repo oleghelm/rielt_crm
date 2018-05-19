@@ -88,7 +88,7 @@ class Bid
     private $location;
     
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="json_array", nullable=true)
      */
     private $rooms;
     
@@ -215,6 +215,9 @@ class Bid
         return $this->getName();
     }
     
+    /**
+     * @return ArrayCollection|int[]
+     */
     function getRooms() {
         return $this->rooms;
     }
