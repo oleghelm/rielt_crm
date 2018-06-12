@@ -92,11 +92,14 @@
                     <a href="{{path('crm_tools_lastActive')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-clock-o fa-stack-1x "></i></span>Відслідкувати активність</a>
                 </li>
                 <li>
-                    <a href="{{path('crm_ticket_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-laptop fa-stack-1x "></i></span>Поставлені завдання</a>
+                    <a href="{{path('crm_myticket_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-laptop fa-stack-1x "></i></span>Мої завдання</a>
                 </li>
                 {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPERADMIN') or is_granted('ROLE_ADMIN_PANEL_USER') %}
                 <li>
                     <hr />
+                </li>
+                <li>
+                    <a href="{{path('crm_ticket_list')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-laptop fa-stack-1x "></i></span>Поставлені завдання</a>
                 </li>
                 <li>
                     <a href="{{path('admin_index')}}"><span class="fa-stack fa-lg pull-left"><i class="fa fa-dashboard fa-stack-1x "></i></span>Admin</a>

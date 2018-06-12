@@ -61,5 +61,39 @@ class TicketRepository extends EntityRepository
         
         return $query;
     }
+    public function getFilteredUserTickets($user, $filter){
+        $queryBuilder = $this->_em->getRepository('AppBundle:Ticket')->createQueryBuilder('t');
+        $queryBuilder->orderBy('t.date', 'asc');
+        $queryBuilder->andWhere('t.user = :user')
+                ->setParameter('user', $user);
+
+        if($filter && is_array($filter)){
+            if($filter['date_type']=='day'){
+                if(isset($filter['date_current'])){
+                    $queryBuilder->andWhere('t.date = :date_current')
+                            ->setParameter('date_current', $filter['date_current']);
+                }            
+            } else {
+                if(isset($filter['date_from'])){
+                    $queryBuilder->andWhere('t.date >= :date_from')
+                            ->setParameter('date_from', $filter['date_from']);
+                }            
+                if(isset($filter['date_to'])){
+                    $queryBuilder->andWhere('t.date <= :date_to')
+                            ->setParameter('date_to', $filter['date_to']);
+                }            
+            }
+        } else {
+            $date = new \DateTime();
+            $date->setDate(date('Y'), date('m'), 1);
+            $queryBuilder->andWhere('t.date >= :date_from')
+                    ->setParameter('date_from', $date);
+        }
+        
+        
+        $query = $queryBuilder->getQuery();
+        
+        return $query;
+    }
     
 }

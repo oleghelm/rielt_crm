@@ -236,6 +236,8 @@ class ObjectRepository extends EntityRepository
                             ->setParameter('status2', 'saled');
         }
         
+        $queryBuilder->addOrderBy('ob.id','desc');
+        
         $query = $queryBuilder->getQuery();
 //        dump($queryBuilder);
         return $query;

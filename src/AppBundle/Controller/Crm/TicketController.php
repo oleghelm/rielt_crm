@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\Ticket;
 use AppBundle\Form\TicketFormType;
 use AppBundle\Form\TicketFilterFormType;
+use AppBundle\Form\TicketMyFilterFormType;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Object;
 use AppBundle\Entity\Bid;
@@ -49,6 +50,40 @@ class TicketController extends Controller
         
         // replace this example code with whatever you need
         return $this->render('crm/ticket/list.html.twig', [
+            'items' => $result,
+            'form' => $form->createView()
+        ]);
+    }
+    
+    /**
+     * @Route("/my_tickets", name="crm_myticket_list")
+     */
+    public function myListAction(Request $request)
+    {
+        
+        $form = $this->createForm(TicketMyFilterFormType::class,null,['method'=>'GET']);
+        $form->handleRequest($request);
+        $filter = $form->getData();
+        if(!$form->isSubmitted() && $form->get('date_type')->getData()=='day' && !$form->get('date_current')->getData()){
+            $form->get('date_current')->setData(new \DateTime('now'));
+        }
+        if($filter['date_type']!='period' && !$filter['date_current']){
+            $filter['date_type'] = 'day';
+            $filter['date_current'] = new \DateTime('now');
+        }
+        
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $query = $this->getDoctrine()->getRepository('AppBundle:Ticket')->getFilteredUserTickets($user,$filter);
+        
+        $paginator  = $this->get('knp_paginator');
+        $result = $paginator->paginate(
+            $query, /* query NOT result */
+            $request->query->getInt('page', 1)/*page number*/,
+            $request->query->getInt('limit', 20)/*limit per page*/
+        );
+        
+        // replace this example code with whatever you need
+        return $this->render('crm/ticket/mylist.html.twig', [
             'items' => $result,
             'form' => $form->createView()
         ]);
@@ -125,8 +160,13 @@ class TicketController extends Controller
      */
     public function newAction(Request $request)
     {
-        $form = $this->createForm(TicketFormType::class);
-
+        $ticket = new Ticket;
+        if($request->get('user')!=""){
+            dump($request->get('user'));
+            $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($request->get('user'));
+            $ticket->setUser($user);
+        }
+        $form = $this->createForm(TicketFormType::class,$ticket);
         // only handles data on POST
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {

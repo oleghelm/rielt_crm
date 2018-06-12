@@ -1,0 +1,72 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid listfilterform">
+    {{ form_start(form, {'action': path('crm_myticket_list')}) }}
+        <div class="row">
+            <div class="col-lg-2 col-sm-2 col-xs-6">{{ form_row(form['date_type']) }}</div>
+            <div class="col-lg-2 col-sm-4 col-xs-6">
+                <a href="javascript:void(0);" onclick="changeCurrentday(-1);" class="btn btn-success" style="float: left;margin-top:25px;"><i class="fa fa-arrow-left"></i></a>
+                <div style="display:inline-block;width:100px;float: left;">
+                    {{ form_row(form['date_current']) }}
+                </div>
+                <a href="javascript:void(0);" onclick="changeCurrentday(1);"  class="btn btn-success" style="float: left;margin-top:25px;"><i class="fa fa-arrow-right"></i></a>
+            </div>
+            <div class="col-lg-2 col-sm-2 col-xs-6">{{ form_row(form['date_from']) }}</div>
+            <div class="col-lg-2 col-sm-2 col-xs-6">{{ form_row(form['date_to']) }}</div>
+            <div class="col-lg-2 col-sm-2 col-xs-6">
+                <br />
+                <button type="submit" formnovalidate name="setFIlter" value="Y" class="btn btn-success"><i class="fa fa-search"></i></button>
+                <a href="{{ path('crm_myticket_list',{'removeFilter':'Y'})}}" class="btn btn-success"><i class="fa fa-times"></i></a>
+                <br />
+            </div>
+        </div>
+    {{ form_end(form) }}
+    </div>
+    
+    <div class="ajax-list">
+        <div class="container-fluid listfilterform">
+            <h1>Список завдань</h1>
+            <a href="{{ path('crm_ticket_new',{user:app.user.id})}}" class="btn btn-success ajax-page-load">
+                Створити
+            </a>
+{#                {{dump(app.user)}}#}
+        {#    &nbsp;&nbsp;Сортувати: &nbsp;&nbsp; {{knp_pagination_sortable(items, 'По статусу', 't.status' )}} &nbsp;&nbsp; {{knp_pagination_sortable(items, 'по даті', 't.date' )}}#}
+        </div>
+        <div class="container-fluid tickets-list" {#data-list-src="{{app.request.requestUri}}"#}>
+            {{ include('crm/ticket/_list.html.twig') }}
+        </div>
+        {{ knp_pagination_render(items) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+        jQuery(document).ready(function(){
+            function checkdateCoise(){
+                if($("#ticket_my_filter_form_date_type").val() == 'period'){
+                    $("#ticket_my_filter_form_date_current").parent().parent().parent().hide();
+                    $("#ticket_my_filter_form_date_from").parent().parent().show();
+                    $("#ticket_my_filter_form_date_to").parent().parent().show();
+                } else {
+                    $("#ticket_my_filter_form_date_current").parent().parent().parent().show();
+                    $("#ticket_my_filter_form_date_from").parent().parent().hide();
+                    $("#ticket_my_filter_form_date_to").parent().parent().hide();
+                }
+            }
+            checkdateCoise();
+            $("#ticket_my_filter_form_date_type").change(checkdateCoise)
+            
+        })
+            function changeCurrentday(add){
+                var startDate = new Date($("#ticket_my_filter_form_date_current").val());
+                startDate.setDate(startDate.getDate() + add)
+                var html = startDate.getFullYear()+'-';
+                if(startDate.getMonth()<9){html += '0';}
+                html += (startDate.getMonth()+1) + '-' + startDate.getDate()
+                $("#ticket_my_filter_form_date_current").val(html)
+                document.ticket_my_filter_form.submit()
+            }
+    </script>
+{% endblock %}
