@@ -162,7 +162,7 @@ class TicketController extends Controller
     {
         $ticket = new Ticket;
         if($request->get('user')!=""){
-            dump($request->get('user'));
+//            dump($request->get('user'));
             $user = $this->getDoctrine()->getRepository('AppBundle:User')->find($request->get('user'));
             $ticket->setUser($user);
         }

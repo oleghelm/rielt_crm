@@ -133,6 +133,12 @@ class BidRepository extends EntityRepository
         return $query;
     }
     
+    public function getBids(){
+        $queryBuilder = $this->_em->getRepository('AppBundle:Bid')->createQueryBuilder('bp');
+        $queryBuilder->orderBy('bp.lastUpdate', 'desc');
+        $query = $queryBuilder->getQuery()->execute();
+        return $query;
+    }
 //    public function getFilteredBids($filter){
 //        $queryBuilder = $this->_em->getRepository('AppBundle:Bid')->createQueryBuilder('bp');
 //     

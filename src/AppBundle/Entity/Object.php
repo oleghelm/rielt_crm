@@ -176,6 +176,12 @@ class Object
      */
     private $tickets;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Favourite", mappedBy="object", orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $favourites;
+    
     function getId() {
         return $this->id;
     }
@@ -419,6 +425,23 @@ class Object
 
     function setCreated($created) {
         $this->created = $created;
+    }
+    
+    function getFavourites() {
+        return $this->favourites;
+    }
+
+    function setFavourites($favourites) {
+        $this->favourites = $favourites;
+    }
+
+    function isFavouriteInUser(User $user){
+        $favs = $this->getFavourites();
+        foreach ($favs as $fav){
+            if($fav->getUser() == $user)
+                return true;
+        }
+        return false;
     }
     
     function canEdit(User $user){

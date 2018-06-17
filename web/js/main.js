@@ -160,42 +160,42 @@
             icon.removeClass('fa-arrow-down').addClass('fa-arrow-up')
         }
     })
-
-//    $('ul').on('click',".removeCollectionValue",function(){
-//        var input = $(this).prev();
-//        var icon = $(this).find("i");
-//        input.data("old-name", input.attr('name'));
-//        input.attr('name',"");
-//        input.attr("disabled","disabled");
-//        $(this).removeClass('removeCollectionValue').addClass('restoreCollectionValue');
-//        icon.removeClass('fa-remove').addClass("fa-backward")
-//    })
-//    $('ul').on('click',".restoreCollectionValue",function(){
-//        console.log('restoreCollectionValue')
-//        var input = $(this).prev();
-//        var icon = $(this).find("i");
-//        input.attr('name',input.data("old-name"));
-//        input.removeAttr("disabled","disabled");
-//        $(this).addClass('removeCollectionValue').removeClass('restoreCollectionValue');
-//        icon.addClass('fa-remove').removeClass("fa-backward")
-//    })
-//    $(".addCollectionValue").on('click',function(){
-//        var collectionsList = jQuery('#'+$(this).data("collection-id"));//get list ID
-//        var newWidget = collectionsList.data('prototype'); // get element prototype
-//        var counter = collectionsList.data('count'); // get count of elements
-//        if(typeof counter === 'string'){ // if get not int - convert
-//            counter = parseInt(counter);
-//        }
-//        counter++; //increment count of elments
-//        newWidget = newWidget.replace(/__name__/g, counter); // make code of line
-//        collectionsList.data('count',counter); // update counter value
-//        var newLi = jQuery('<li class="input-group"></li>').html(newWidget); // create new li
-//        newLi.appendTo(collectionsList); // add html code
-//    })
     
-
-//AJAX TOOLS
-
+    $('body').on('click','.favourite-add', function(){
+        var btn = $(this);
+        $.get(btn.attr('href'),function(resp){
+            if(resp.status == '1'){
+                btn.removeClass('btn-default').addClass('btn-warning').attr('title','Видалили з обраних');
+            } else {
+                btn.removeClass('btn-warning').addClass('btn-default').attr('title','Додати в обрані');
+            }
+        });
+        return false;
+    })
+    $('body').on('click','.favourite-add-to-bid', function(){
+        var btn = $(this);
+        var bid = '';
+        var url = btn.attr('href');
+        if($("#check_bid_select").length && $("#check_bid_select").val()!=""){
+            bid = '?bid='+$("#check_bid_select").val();
+        }
+        $.get(url+bid,function(resp){
+            if($("#ajax-form-popup").is(':visible'))
+                $.fancybox.close('#ajax-form-popup')
+            $('#ajax-form-popup').html('<div style="min-width:300px;">'+resp.html.replace('#PATH#',url)+'</div>').css({'overflow': 'visible'});
+            $.fancybox.open( $('#ajax-form-popup'),{autoWidth : true});
+            $("#ajax-form-popup select").chosen({search_contains: true})
+        });
+        return false;
+    })
+    $('body').on('click','.favourite-del-from-bid', function(){
+        var btn = $(this);
+        $.get(btn.attr('href'),function(resp){
+            if(resp.status === '1')
+                btn.parents('tr').remove();
+        })
+        return false;
+    })
 
 }(jQuery);
 

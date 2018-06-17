@@ -1,0 +1,24 @@
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-sm-12 col-xs-12">{{ form_row(form.name) }}</div>
+        <div class="col-sm-12 col-xs-12"><hr></div>
+        <div class="col-sm-3 col-xs-6">{{ form_row(form.date) }}</div>
+        <div class="col-sm-3 col-xs-6">{{ form_row(form.status) }}</div>
+        <div class="col-sm-6 col-xs-6">{{ form_row(form.flags) }}</div>
+        <div class="col-sm-12 col-xs-12"><hr></div>
+{#        <div class="col-sm-3 col-xs-6">{{ form_row(form.status) }}</div>#}
+        <div class="col-sm-4 col-xs-6">{{ form_row(form.user) }}</div>
+        <div class="col-sm-4 col-xs-6">{{ form_row(form.client) }}</div>
+        <div class="col-sm-4 col-xs-6">{{ form_row(form.object) }}</div>
+        <div class="col-sm-12 col-xs-12"><hr></div>
+        
+        <div class="col-sm-4 col-xs-6">{{ form_row(form.price) }}</div>
+        <div class="col-sm-4 col-xs-6">{{ form_row(form.comision) }}</div>
+        <div class="col-sm-4 col-xs-6">{{ form_row(form.total) }}</div>
+        
+        <div class="col-sm-12 col-xs-12">{{ form_row(form.info) }}</div>
+    </div>
+
+    <button class="btn btn-success" type="submit" formnovalidate>Зберегти</button>&nbsp;
+    <a href="{{path('crm_agreement_list')}}" class="btn btn-primary">Відміна</a>
+{{ form_end(form) }}

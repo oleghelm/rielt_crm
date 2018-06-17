@@ -1,0 +1,54 @@
+<h1>{{agreement.name}}
+{#    {% if(agreement.canEdit(app.user)) %}#}
+    <a href="{{ path('crm_agreement_edit', {'id': agreement.id}) }}" title="Редагувати" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>
+{#    {% endif %}#}
+</h1>
+<table class='table table-hover'>
+    <tr>
+        <th>І'мя</th>
+        <td>{{agreement.name}}</td>
+    </tr>
+    <tr>
+        <th>Статус</th>
+        <td>
+            {% if(agreement.status == 'active') %}
+                Активний
+            {% elseif(agreement.status == 'archive') %}
+                В архіві
+            {% endif %}
+        </td>
+    </tr>
+    {% if(agreement.user) %}
+    <tr>
+        <th>Ріелтор</th>
+        <td>{{agreement.user.name}}</td>
+    </tr>
+    {% endif %}
+    {% if(agreement.client) %}
+    <tr>
+        <th>Клієнт</th>
+        <td>{{agreement.client.name}}</td>
+    </tr>
+    {% endif %}
+    {% if(agreement.object) %}
+    <tr>
+        <th>Об'єкт</th>
+        <td>{{agreement.object.name}}</td>
+    </tr>
+    {% endif %}
+   
+    <tr>
+        <th>Дата</th>
+        <td>
+        {% if(agreement.date) %}
+            {{agreement.date|date('d.m.Y')}}
+        {% else %}
+            Не встановлено
+        {% endif %}
+        </td>
+    </tr>
+    <tr>
+        <th>Загальна інформація</th>
+        <td>{{agreement.info}}</td>
+    </tr>
+</table>

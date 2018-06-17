@@ -101,3 +101,7 @@
     </tr>
     {% endfor %}
 </table>
+{% if(bid.favourites|length) %}
+    {% set objects = bid.objects %}
+    {{ include('crm/bid/_list_fav_obj.html.twig') }}
+{% endif %}

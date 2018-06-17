@@ -98,6 +98,13 @@ class Bid
      */
     private $params;
     
+    /**
+     * @ORM\OneToMany(targetEntity="Favourite", mappedBy="bid", orphanRemoval=true)
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $favourites;
+    private $objects = [];
+    
     function getId() {
         return $this->id;
     }
@@ -226,11 +233,33 @@ class Bid
         $this->rooms = $rooms;
     }
 
-        /**
+    /**
      * @return ArrayCollection|ObjectParam[]
      */
     function getParams() {
         return $this->params;
+    }
+    
+    /**
+     * @return ArrayCollection|Favourite[]
+     */
+    function getFavourites() {
+        return $this->favourites;
+    }
+
+    function setFavourites($favourites) {
+        $this->favourites = $favourites;
+    }
+    
+    /**
+     * @return ArrayCollection|Favourite[]
+     */
+    function getObjects() {
+        return $this->objects;
+    }
+
+    function setObjects($objects) {
+        $this->objects = $objects;
     }
     
     public function getParamsArrayMap($joinMultiple = false){

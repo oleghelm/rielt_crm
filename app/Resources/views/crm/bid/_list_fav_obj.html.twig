@@ -1,17 +1,16 @@
 <table class="table table-hover table-responsive-objects">
     <thead>
         <tr>
-            <th>{{knp_pagination_sortable(objects, 'Код', 'ob.code')}}</th>
-            <th>{{knp_pagination_sortable(objects, 'Назва', 'ob.name')}}</th>
-            <th>{{knp_pagination_sortable(objects, 'Статус', 'ob.status')}}</th>
-            <th>{{knp_pagination_sortable(objects, 'Район', 'location.name')}}</th>
-            <th>{{knp_pagination_sortable(objects, 'Ціна', 'ob.price')}}</th>
-            <th>{{knp_pagination_sortable(objects, 'К-сть кімнат', 'ob.rooms')}}</th>
-            <th>{{knp_pagination_sortable(objects, 'Площа', 'ob.area')}}</th>
+            <th>Код</th>
+            <th>Назва</th>
+            <th>Статус</th>
+            <th>Район</th>
+            <th>Ціна</th>
+            <th>К-сть кімнат</th>
+            <th>Площа</th>
             <th>Тип будинку</th>
             <th>Поверх</th>
             <th width="85"></th>
-            <th width="5%">Dom.ria</th>
         </tr>
     </thead>
     <tbody>
@@ -97,22 +96,9 @@
                     {{ object.getParamVal(20) }} / {{ object.getParamVal(26) }}
                 </td>
                 <td>
-                    <a href="{{ path('crm_object_search_bid', {'id': object.id}) }}" class="btn btn-primary btn-sm" title="Знайти відповідні заявки"><i class="fa fa-search"></i></a>{% 
-                        if object.isFavouriteInUser(app.User) 
-                    %}<a href="{{path('crm_favourite_add', {'id': object.id})}}" class="btn btn-warning btn-sm favourite-add" title="Видалили з обраних"><i class="fa fa-star"></i></a>{% 
-                    else 
-                    %}<a href="{{path('crm_favourite_add', {'id': object.id})}}" class="btn btn-default btn-sm favourite-add" title="Додати в обрані"><i class="fa fa-star"></i></a>{% 
-                    endif %}
-{#                    <a href="{{ path('crm_object_show', {'id': object.id}) }}" class="btn btn-success btn-sm" title="Перегляд"><i class="fa fa-user"></i></a>#}
-{#                        <a href="{{ path('crm_object_edit', {'id': object.id}) }}" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>#}
-{#                        <a href="{{path('crm_object_delete', {'id': object.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>#}
-{#                    {{object.isFavouriteInUser(app.User)}}#}
-                </td>
-                <td align="right">
-                    <input type="checkbox" name="domria[{{object.id}}]" data-url="{{path('crm_object_changeadv',{'id':object.id})}}" class="dom-ria-check" id="dom_ria_checker_{{object.id}}" {% if(object.domria) %}checked=""{%endif%} />
+                    <a href="{{ path('crm_favourite_del_from_bid', {'id': object.id,'bid': bid.id}) }}" class="btn btn-danger btn-sm favourite-del-from-bid" title="Видалити з обраних в заявці"><i class="fa fa-star"></i></a>
                 </td>
             </tr>
         {% endfor %}
     </tbody>
 </table>
-{{ knp_pagination_render(objects) }}

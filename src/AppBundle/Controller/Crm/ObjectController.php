@@ -51,7 +51,9 @@ class ObjectController extends Controller {
             $filter = $this->prepareFilterParams($filterData);
         else 
             $filter = $this->prepareFilterParams();
-
+        if(isset($this->listFilter['favourite'])){
+            $filter['favourite'] = $this->listFilter['favourite'];
+        }
         $query = $this->getDoctrine()->getRepository('AppBundle:Object')->getFilteredObjects($filter);
         $paginator  = $this->get('knp_paginator');
         $result = $paginator->paginate(
@@ -92,6 +94,15 @@ class ObjectController extends Controller {
      */
     public function indexComRentAction(Request $request){
         $this->listFilter['type'] = 'comercial_rent';
+        return $this->indexAction($request);
+    }
+    /**
+     * @Route("/objects/favourite", name="crm_object_list_favourite")
+     */
+    public function indexFavouriteAction(Request $request){
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+//        $filter = ['favourite' => $user];
+        $this->listFilter['favourite'] = $user;
         return $this->indexAction($request);
     }
     
@@ -425,6 +436,11 @@ class ObjectController extends Controller {
         
         $paramsMap = $this->getParamsSectionsMap(false);
         
+        //favourite
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $object->favourite = $em->getRepository('AppBundle:Favourite')->checkIfFavourite($object,$user);
+//        dump($object->favourite);die;
         if($request->get('ajax','')=='Y'){
             $tmpl = 'crm/object/_show.html.twig';
         } else {

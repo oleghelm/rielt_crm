@@ -313,6 +313,15 @@ class BidController extends Controller {
             ];
         }
         
+        $favourites = $bid->getFavourites();
+        if($favourites){
+            $objects = [];
+            foreach($favourites as $favourite){
+                $objects[] = $favourite->getObject();
+            }
+            $bid->setObjects($objects);
+        }
+        
         if($request->get('ajax','')=='Y'){
             $tmpl = 'crm/bid/_show.html.twig';
         } else {

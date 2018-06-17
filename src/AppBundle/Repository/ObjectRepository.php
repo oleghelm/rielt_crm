@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Object;
+use AppBundle\Entity\Favourite;
 use Doctrine\ORM\EntityRepository;
 
 class ObjectRepository extends EntityRepository
@@ -228,12 +229,18 @@ class ObjectRepository extends EntityRepository
                 }
             }
             
-            
         } else {
             $queryBuilder->andWhere('ob.status != :status1')
                             ->setParameter('status1', 'archive');
             $queryBuilder->andWhere('ob.status != :status2')
                             ->setParameter('status2', 'saled');
+        }
+//        dump($filter);
+        //favourite
+        if(isset($filter['favourite'])){
+//            $queryBuilder->leftJoin('ob.id', 'favourite');
+            $queryBuilder->leftJoin('AppBundle:Favourite', 'favourite', 'WITH', 'favourite.object=ob');
+            $queryBuilder->andWhere('favourite.user = :fuser')->setParameter('fuser', $filter['favourite']);
         }
         
         $queryBuilder->addOrderBy('ob.id','desc');

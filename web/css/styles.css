@@ -966,3 +966,5 @@ html,body{height: 100%;}
 .object-opts .object-opt{margin-bottom: 10px;}
 .object-opts .object-opt .name{display: inline-block;margin-right: 10px;font-weight: bold;}
 .object-opts .object-opt .val{}
+.nav>li>a.fabourite-btn{margin:8px 15px 8px 0;padding: 9px 10px;background: none;border-color: #ddd;}
+.nav>li>a.fabourite-btn:hover{background-color:#ddd;}

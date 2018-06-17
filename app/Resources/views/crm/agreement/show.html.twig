@@ -1,0 +1,23 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                {{ include('crm/agreement/_show.html.twig') }}
+                <table class='table'>
+                    <tr>
+                        <td colspan="2">
+                            <a href="javascript:void(0);" class="btn btn-primary btn-sm"  title="Повернутись назад" onclick="window.history.back()" ><i class="fa fa-arrow-left"></i></a>
+{#                            {% if(agreement.canEdit(app.user)) %}#}
+                            <a href="{{ path('crm_agreement_edit', {'id': agreement.id}) }}" title="Редагувати" class="btn btn-warning btn-sm" ><i class="fa fa-edit"></i></a>
+                            <a href="{{path('crm_agreement_toarchive', {'id': agreement.id})}}"  title="В архів" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете перенести у архів?')) {} else {return false;}"><i class="fa fa-archive"></i></a>
+                            <a href="{{path('crm_agreement_delete', {'id': agreement.id})}}" title="Видалити" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}"><i class="fa fa-user-times"></i></a>
+{#                            {% endif %}#}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
