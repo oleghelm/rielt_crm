@@ -210,7 +210,10 @@ class Client
         if($this->getUser()){
             $name .= ' від '.$this->getUser()->getName();
         }
-        $name .= ')';
+        $name .= ') ';
+        if($this->getPhones()){
+            $name .= implode(", ",$this->getPhones());
+        }
         return $name;
     }
     

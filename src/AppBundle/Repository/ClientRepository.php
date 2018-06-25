@@ -89,6 +89,8 @@ class ClientRepository extends EntityRepository
     public function findAllClients()
     {
         return $this->createQueryBuilder('user')
+            ->andWhere('user.status != :status')
+            ->setParameter('status', 'archive')
             ->orderBy('user.name', 'ASC');
     }
     public function findAllUserClients($user)
