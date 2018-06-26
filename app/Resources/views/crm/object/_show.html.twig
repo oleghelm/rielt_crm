@@ -64,6 +64,7 @@
                                 <a href="{{path('crm_favourite_add', {'id': object.id})}}" class="btn btn-default btn-sm favourite-add" title="Додати в обрані"><i class="fa fa-star"></i></a>
                             {% endif %}
                             <a href="{{path('crm_favourite_add_to_bid', {'id': object.id})}}" class="btn btn-success btn-sm favourite-add-to-bid" title="Додати до заявки"><i class="fa fa-plus"></i></a>
+                            <a href="{{path('crm_tools_lastActive_update_object',{'id':object.id,'ajax':'Y'})}}" class='btn btn-primary ajax-call-done btn-sm ' data-for_done="object_row_{{object.id}}" data-reload_ajax_page="{{path('crm_object_show',{'id':object.id,'ajax':'Y'})}}" title="Оновити до сьогодні"><i class="fa fa-phone"></i></a>
                         {% endif %}
                 </div>
                 <div class="col-sm-12">
@@ -83,7 +84,7 @@
                         <div class="col-md-6 col-xs-12 object-opt"><span class="name">Компанія</span><span class="val">{{object.company.name}}</span></div>
                     {% endif %}
                     {% if(object.client) %}
-                        <div class="col-md-6 col-xs-12 object-opt"><span class="name">Клієнт</span><span class="val"><a href="{{path("crm_client_show",{'id':object.client.id,'ajax':'Y'})}}" class='ajax-page-load'>{{object.client.name}}</a></span></div>
+                        <div class="col-md-6 col-xs-12 object-opt"><span class="name">Клієнт</span><span class="val"><a href="{{path("crm_client_show",{'id':object.client.id,'ajax':'Y'})}}" class='ajax-page-load' data-popup-id="ajax-form-popup">{{object.client.name}}</a></span></div>
                     {% endif %}
                     {% if(object.created) %}
                         <div class="col-md-6 col-xs-12 object-opt"><span class="name">Створено</span><span class="val">{{object.created|date('d.m.Y')}}</span></div>

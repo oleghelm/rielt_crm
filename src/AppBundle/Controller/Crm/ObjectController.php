@@ -40,7 +40,11 @@ class ObjectController extends Controller {
     public function indexAction(Request $request)
     {
         //saved filter
-        setcookie("object_lastpage", $request->getRequestUri());
+        if (isset($_COOKIE['object_lastpage'])) {
+//            unset($_COOKIE['object_lastpage']);
+            setcookie('object_lastpage', null, -1, '/');
+        }
+        setcookie("object_lastpage", $request->getRequestUri(),time()+3600,'/');
         //render params form
         $filterType = isset($this->listFilter['type']) ? $this->listFilter['type'] : '';
         $paramsForm = $this->getParamsFilterForm([],$filterType);
@@ -118,7 +122,10 @@ class ObjectController extends Controller {
      * @Route("/objects/new", name="crm_object_new")
      */
     public function newAction(Request $request, FileUploader $fileUploader){
-        $form = $this->createForm(ObjectFormType::class);
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $object = new Object();
+        $object->setUser($user);
+        $form = $this->createForm(ObjectFormType::class,$object);
 
         //render params form
         $paramsForm = $this->getParamsForm([]);

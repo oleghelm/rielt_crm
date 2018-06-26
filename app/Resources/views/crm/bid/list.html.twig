@@ -9,9 +9,12 @@
             <div class="col-lg-2 col-sm-4 col-xs-6">{{ form_row(paramsForm['user']) }}</div>
             <div class="col-lg-2 col-sm-4 col-xs-6">
                 <br />
-                <a href="javascript:void(0);" class="btn btn-primary showOtherFIlter"><i class="fa fa-arrow-down"></i></a>
-                <button type="submit" formnovalidate name="setFIlter" value="Y" class="btn btn-success"><i class="fa fa-search"></i></button>
-                <a href="{{ path('crm_bid_list',{'removeFilter':'Y'})}}" class="btn btn-success"><i class="fa fa-times"></i></a>
+                <div class="btn-group">
+                    <a href="{{app.request.pathInfo}}?form%5Buser%5D={{app.User.id}}" class="btn btn-warning" title="мої заявки"><i class="fa fa-user"></i></a>
+                    <a href="javascript:void(0);" class="btn btn-primary showOtherFIlter"><i class="fa fa-arrow-down"></i></a>
+                    <button type="submit" formnovalidate name="setFIlter" value="Y" class="btn btn-success"><i class="fa fa-search"></i></button>
+                    <a href="{{ path('crm_bid_list',{'removeFilter':'Y'})}}" class="btn btn-success"><i class="fa fa-times"></i></a>
+                </div>
                 <br />
             </div>
             <div class="col-lg-12">

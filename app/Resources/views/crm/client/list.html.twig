@@ -4,17 +4,20 @@
     <div class="container-fluid">
         {{ form_start(form, {'action': path('crm_client_list')}) }}
         <div class="row">
-            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(form.name) }}</div>
-            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(form.phones) }}</div>
-            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(form.user, {'label': 'Хто веде'}) }}</div>
-            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(form.type) }}</div>
-            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(form.status) }}</div>
-            <div class="col-lg-2 col-sm-3 col-xs-6">{{ form_row(form.owner) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.name) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.phones) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.user, {'label': 'Хто веде'}) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.type) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.status) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.owner) }}</div>
 {#            <div class="col-sm-3 col-xs-6">{{ form_row(form.lastUpdate) }}</div>#}
-            <div class="col-lg-2 col-sm-3 col-xs-6">
+            <div class="col-lg-3 col-sm-3 col-xs-6">
                 <br>
-                <button type="submit" formnovalidate class="btn btn-success"><i class="fa fa-search"></i></button>
-                <a href="{{ path('crm_client_list')}}" class="btn btn-success"><i class="fa fa-times"></i></a>
+                <div class="btn-group">
+                    <a href="{{app.request.pathInfo}}?form%5Buser%5D={{app.User.id}}" class="btn btn-warning" title="мої клієнти"><i class="fa fa-user"></i></a>
+                    <button type="submit" formnovalidate class="btn btn-success"><i class="fa fa-search"></i></button>
+                    <a href="{{ path('crm_client_list')}}" class="btn btn-success"><i class="fa fa-times"></i></a>
+                </div>
                 <br>
                 <br>
             </div>

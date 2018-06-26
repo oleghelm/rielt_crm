@@ -34,7 +34,12 @@ class ClientController extends Controller
 //                    ->setParameter('title','%'.$request->query->getAlnum('filter','').'%');
 //        }
 //        $query = $queryBuilder->getQuery();
-        
+        //saved filter
+        if (isset($_COOKIE['client_lastpage'])) {
+            unset($_COOKIE['client_lastpage']);
+            setcookie('client_lastpage', null, -1, '/');
+        }
+        setcookie("client_lastpage", $request->getRequestUri(),time()+3600,'/');
         $filter = $request->get('client_filter_form','');
         
         $form = $this->createForm(ClientFilterFormType::class,null,['method'=>'GET']);
@@ -60,7 +65,10 @@ class ClientController extends Controller
      */
     public function newAction(Request $request)
     {
-        $form = $this->createForm(ClientFormType::class);
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $client = new Client();
+        $client->setUser($user);
+        $form = $this->createForm(ClientFormType::class,$client);
 
         // only handles data on POST
         $form->handleRequest($request);
@@ -75,7 +83,10 @@ class ClientController extends Controller
 
             $this->addFlash('success', 'Client created!');
 
-            return $this->redirectToRoute('crm_client_list');
+            if($_COOKIE['client_lastpage']!="")
+                return $this->redirect($_COOKIE['client_lastpage']);
+            else
+                return $this->redirectToRoute('crm_client_list');
         }
 
         return $this->render('crm/client/new.html.twig', [
@@ -108,7 +119,10 @@ class ClientController extends Controller
             if($request->get('ajax')=='Y')
                 return $this->redirectToRoute('crm_client_edit',['id'=>$client->getId(),'ajax'=>'Y']);
             else
-                return $this->redirectToRoute('crm_client_list');
+                if($_COOKIE['client_lastpage']!="")
+                    return $this->redirect($_COOKIE['client_lastpage']);
+                else
+                    return $this->redirectToRoute('crm_client_list');
         }
 
         if($request->get('ajax')=='Y')
@@ -140,7 +154,10 @@ class ClientController extends Controller
 
         $this->addFlash('success', 'Client deleted!');
         
-        return $this->redirectToRoute('crm_client_list');
+        if($_COOKIE['client_lastpage']!="")
+            return $this->redirect($_COOKIE['client_lastpage']);
+        else
+            return $this->redirectToRoute('crm_client_list');
     }
     
     /**

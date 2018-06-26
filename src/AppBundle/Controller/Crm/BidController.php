@@ -71,8 +71,10 @@ class BidController extends Controller {
      * @Route("/bids/new", name="crm_bid_new")
      */
     public function newAction(Request $request, FileUploader $fileUploader){
-        $form = $this->createForm(BidFormType::class);
         $user = $this->get('security.token_storage')->getToken()->getUser();
+        $bid = new Bid();
+        $bid->setUser($user);
+        $form = $this->createForm(BidFormType::class,$bid);
         $form->add('location',ChoiceType::class, [
                     'label' => 'Райони',
                     'multiple' => true,

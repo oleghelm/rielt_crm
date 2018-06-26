@@ -7,9 +7,9 @@
     </thead>
     {% for item in items %}
     <tr>
-        <td>{{item.name}}</td>
+        <td><a href="{{path('crm_bid_show',{'id':item.id,'ajax':'Y'})}}" class="ajax-page-load">{{item.name}}</a></td>
         <td>{{item.lastUpdate|date('d.m.Y')}}</td>
-        <td>{{item.client.name}}</td>
+        <td><a href="{{path('crm_client_show',{'id':item.client.id,'ajax':'Y'})}}" class="ajax-page-load">{{item.client.name}}</a></td>
         <td>
             <ul>
                 {% for phone in item.client.phones %}

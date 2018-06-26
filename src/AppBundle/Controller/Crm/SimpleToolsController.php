@@ -67,6 +67,11 @@ class SimpleToolsController extends Controller
         $em->persist($object);
         $em->flush();
         
+        $client = $object->getClient();
+        $client->setLastUpdate(new \DateTime());
+        $em->persist($client);
+        $em->flush();
+        
         if($request->get('ajax','N')=='Y'){
             $data = [
                 'code' => 1,

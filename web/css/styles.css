@@ -968,3 +968,6 @@ html,body{height: 100%;}
 .object-opts .object-opt .val{}
 .nav>li>a.fabourite-btn{margin:8px 15px 8px 0;padding: 9px 10px;background: none;border-color: #ddd;}
 .nav>li>a.fabourite-btn:hover{background-color:#ddd;}
+.filter-row{}
+.filter-row > div{padding:0 5px;}
+.t-alignt-right{text-align:right;}

@@ -7,10 +7,12 @@
         $('body').on('click','.ajax-page-load',function(){
             var _this = $(this);
             var url = $(this).attr('href');
+            var popup_id = '#' + ($(this).attr('data-popup-id') ? $(this).attr('data-popup-id') : "ajax-page-popup");
+            console.log(popup_id);
             $.get(url,function(resp){
-                $('#ajax-page-popup').html(resp)
-                $.fancybox.close()
-                $.fancybox.open( $('#ajax-page-popup'),{autoWidth : true});
+                $(popup_id).html(resp)
+//                $.fancybox.close(close)
+                $.fancybox.open( $(popup_id),{autoWidth : true});
                 initStartScripts();
                 if(typeof _this.data('list-update') !== 'undefined' && _this.data('list-update') != "" && $(_this.data('list-update')).length){
                     $(_this.data('list-update')).each(function(){
@@ -59,10 +61,14 @@
             var _this = $(this);
             $.post(url,data,function(resp){
                 if(resp.code === 1 || resp.code === '1'){
-                    $('#ajax-page-popup').html('<h2>'+resp.message+'</h2>');
-                    $.fancybox.close()
-                    $.fancybox.open( $('#ajax-page-popup'),{autoWidth : true});
+                    $('#ajax-form-popup').html('<h2>'+resp.message+'</h2>');
+//                    $.fancybox.close('#ajax-form-popup')
+                    $.fancybox.open( $('#ajax-form-popup'),{autoWidth : true});
                     $("."+_this.data('for_hide')).slideUp('fast');
+                    $("."+_this.data('for_done')).removeClass('danger');
+                    if(_this.data('reload_ajax_page')!=""){
+                        $("#ajax-page-popup").load(_this.data('reload_ajax_page'))
+                    }
                 }
             })
             return false;
