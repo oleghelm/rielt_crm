@@ -3,12 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/oleghelm/symfony/rielt_crm/app/Resources/views/crm/object/list.html.twig</file>
-            <file>file:/home/oleghelm/symfony/rielt_crm/src/AppBundle/Entity/Client.php</file>
-            <file>file:/home/oleghelm/symfony/rielt_crm/src/AppBundle/Repository/ClientRepository.php</file>
-            <file>file:/home/oleghelm/symfony/rielt_crm/app/Resources/views/crm/object/_filter_form.html.twig</file>
-            <file>file:/home/oleghelm/symfony/rielt_crm/app/Resources/views/crm/client/_show.html.twig</file>
-            <file>file:/home/oleghelm/symfony/rielt_crm/.gitignore</file>
+            <file>file:/home/oleghelm/symfony/rielt_crm/app/Resources/views/crm/object/_show.html.twig</file>
+            <file>file:/home/oleghelm/symfony/rielt_crm/app/Resources/views/crm/object/_print.html.twig</file>
+            <file>file:/home/oleghelm/symfony/rielt_crm/src/AppBundle/Controller/Crm/ObjectController.php</file>
+            <file>file:/home/oleghelm/symfony/rielt_crm/web/css/styles.css</file>
+            <file>file:/home/oleghelm/symfony/rielt_crm/app/Resources/views/crm/object/print.html.twig</file>
         </group>
     </open-files>
 </project-private>

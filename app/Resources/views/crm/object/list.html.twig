@@ -6,8 +6,17 @@
             {{ include('crm/object/_filter_form.html.twig') }}
         {%endif%}
         <a href="{{ path('crm_object_new')}}" class="btn btn-success">Створити</a>
+        <div class="pull-right">
+            <a href="javascript:void(0);" class="btn btn-default" onclick="setCookie('view_type','table',{path:'/'});window.location.reload();"><i class="fa fa-table" title="Таблиця"></i></a>
+            <a href="javascript:void(0);" class="btn btn-default" onclick="setCookie('view_type','list',{path:'/'});window.location.reload();"><i class="fa fa-list" title="Список"></i></a>
+{#            <a href="javascript:void(0);" class="btn btn-default" onclick="setCookie('view_type','grid',{path:'/'});window.location.reload();"><i class="fa fa-th" title="Список"></i></a>#}
+        </div>
         <br />
         <br />
     </div>
-    {{ include('crm/object/_list.html.twig') }}
+    {%if(app.request.cookies.get('view_type')=='list')%}
+        {{ include('crm/object/_list_list.html.twig') }}
+    {%else%}
+        {{ include('crm/object/_list.html.twig') }}
+    {%endif%}
 {% endblock %}

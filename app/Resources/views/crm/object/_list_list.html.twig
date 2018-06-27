@@ -1,0 +1,133 @@
+<div class="t-alignt-right_">
+    &nbsp; Сортувати по: 
+{{knp_pagination_sortable(objects, 'Дата створення', 'ob.created')}}
+{{knp_pagination_sortable(objects, 'Код', 'ob.code')}}
+{{knp_pagination_sortable(objects, 'Назва', 'ob.name')}}
+{{knp_pagination_sortable(objects, 'Статус', 'ob.status')}}
+{{knp_pagination_sortable(objects, 'Район', 'location.name')}}
+{{knp_pagination_sortable(objects, 'Ціна', 'ob.price')}}
+{{knp_pagination_sortable(objects, 'К-сть кімнат', 'ob.rooms')}}
+{{knp_pagination_sortable(objects, 'Площа', 'ob.area')}}
+</div>
+<div class="list-responsive-objects">
+    {% for object in objects %}
+        <div class="{% if( date(object.lastUpdate) < date('-14days') ) %}
+                    danger
+                {% elseif(object.status=='reserved') %}
+                    warning
+                {% elseif(object.status=='insale') %}
+
+                {% elseif(object.status=='saled') %}
+                    success
+                {% elseif(object.status=='archive') %}
+                    active
+                {% endif %} object_row object_row_{{object.id}}
+                {% if(not object.photos) %} no-photos{% endif %}">
+            {% if(object.photos) %}
+            <div class="photos">
+                {% for key,photo in object.photos %}
+                    {%if(photo is not iterable)%}
+                        <a class="photo" href="{{photo}}" class='fancybox' data-fancybox="gallery{{object.id}}" {%if key < 3 %}style="background-image:url({{photo}});"{%endif%} {%if key == 2 and object.photos|length > 3 %}data-after="+{{object.photos|length - 3}}"{%endif%}>
+{#                                <img src="{{photo}}" alt="" height="" />#}
+                        </a>
+                    {%endif%}
+                {% endfor %}
+                <div class="clearfix"></div>
+            </div>
+            {% endif %}
+            <div class="info">
+                <h3 class="title"><a href="{{ path('crm_object_show', {'id': object.id,'ajax':'Y'}) }}"  class="ajax-page-load">{{ object.name }} <span> ({{ object.code }})</span></a></h3>
+                {% if(object.location) %}<div class="location">{{ object.location.name }}</div>{% endif %}
+                <div class="price">{{ object.price }}</div>
+                <div class="ob-icons">
+                    {% if(object.photos|length > 0) %}
+                        <i class="fa fa-image primary-color" title="Є фото"></i>
+                    {% else %}
+                        <i class="fa fa-image" title="Нема фото" style="color:#ddd;"></i>
+                    {% endif %}
+                    {% if(object.exclusive) %}
+                        <i class="fa fa-star warning-color" title="Ексклюзив"></i>
+                    {% else %}
+                        <i class="fa fa-star" title="Не ексклюзив" style="color:#ddd;"></i>
+                    {% endif %}
+                    {% if(object.important) %}
+                        <i class="fa fa-warning danger-color" title="Важливий"></i>
+                    {% else %}
+                        <i class="fa fa-warning" title="Не важливий" style="color:#ddd;"></i>
+                    {% endif %}
+                    {% if(object.advertising) %}
+                        <i class="fa fa-bullhorn success-color" title="Рекламується"></i>
+                    {% else %}
+                        <i class="fa fa-bullhorn" title="Не рекламується" style="color:#ddd;"></i>
+                    {% endif %}
+
+                </div>
+                <div class="status">{% if(object.status=='insale') %}
+                        В продажу
+                    {% elseif(object.status=='reserved') %}
+                        Зарезервовано
+                    {% elseif(object.status=='saled') %}
+                        Продано
+                    {% elseif(object.status=='archive') %}
+                        В архіві
+                    {% endif %}</div>
+                <div class="props">
+                    <div class="prop">
+                        <div class="name">Вид нерухомості</div>
+                        <div class="val">{{ object.getParamVal(54) }}</div>
+                    </div>
+                    <div class="prop">
+                        <div class="name">Площа</div>
+                        <div class="val">
+                            {%if(object.area!="")%}{{ object.area }}
+                            {%elseif(object.getParamVal(34)!="")%}{{object.getParamVal(34)}}{%endif%}
+                            {%if(object.getParamVal(37)!="")%}/ {{ object.getParamVal(37) }}{%endif%}
+                            {%if(object.getParamVal(35)!="")%}/ {{ object.getParamVal(35) }}{%endif%}
+                        </div>
+                    </div>
+                    <div class="prop">
+                        <div class="name">К-сть кімнат</div>
+                        <div class="val">{{ object.rooms }}</div>
+                    </div>
+                    <div class="prop">
+                        <div class="name">Тип будинку</div>
+                        <div class="val">{{ object.getParamVal(24) }}</div>
+                    </div>
+                    <div class="prop">
+                        <div class="name">Поверх</div>
+                        <div class="val">{{ object.getParamVal(20) }} / {{ object.getParamVal(26) }}</div>
+                    </div>
+                    <div class="prop">
+                        <div class="name">Стан</div>
+                        <div class="val">{{ object.getParamVal(27) }}</div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="btn-group">
+                    <a href="{{ path('crm_object_search_bid', {'id': object.id}) }}" class="btn btn-primary btn-sm" title="Знайти відповідні заявки"><i class="fa fa-search"></i></a>{% 
+                        if object.isFavouriteInUser(app.User) 
+                    %}<a href="{{path('crm_favourite_add', {'id': object.id})}}" class="btn btn-warning btn-sm favourite-add" title="Видалили з обраних"><i class="fa fa-star"></i></a>{% 
+                    else 
+                    %}<a href="{{path('crm_favourite_add', {'id': object.id})}}" class="btn btn-default btn-sm favourite-add" title="Додати в обрані"><i class="fa fa-star"></i></a>{% 
+                    endif %}<a href="{{path('crm_tools_lastActive_update_object',{'id':object.id,'ajax':'Y'})}}" class='btn btn-primary ajax-call-done btn-sm ' data-for_done="object_row_{{object.id}}" title="Оновити до сьогодні"><i class="fa fa-phone"></i></a>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    {% endfor %}
+</div>
+
+<table class="table table-hover table-responsive-objects">
+    <thead>
+        <tr>
+        </tr>
+        <tr>
+            
+            <th>Тип будинку</th>
+            <th>Поверх</th>
+            <th width="115"></th>
+{#            <th width="5%">Dom.ria</th>#}
+        </tr>
+    </thead>
+</table>
+{{ knp_pagination_render(objects) }}

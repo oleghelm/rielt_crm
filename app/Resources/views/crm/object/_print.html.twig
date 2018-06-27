@@ -2,9 +2,9 @@
     <div class="row">
         <div class="col-xs-12">
             <h1>
-                {{object.name}} 
-                <span>({{object.code}})</span>
-                <span class="pull-right">
+                {{object.name}}<br>
+                <span>Код: {{object.code}}</span>
+                {#<span class="pull-right">
                     {% if(object.photos|length > 0) %}
                         <i class="fa fa-image primary-color" title="Є фото"></i>
                     {% else %}
@@ -26,31 +26,13 @@
                         <i class="fa fa-bullhorn" title="Не рекламується" style="color:#ddd;"></i>
                     {% endif %}
 
-                </span>
+                </span>#}
             </h1>
         </div>
-        {% if(object.photos) %}
-            <div class="{%if(not app.request.get('ajax'))%}col-sm-5{%endif%} col-sm-5 col-xs-12">
-                <div class="object-gallery">
-                    <div id="main-object-photo">
-                            <a class="photo" href="{{object.photos[0]}}" class='fancybox'  data-fancybox="gallery">
-                                <img src="{{object.photos[0]}}" alt="" height="" />
-                            </a>
-                    </div>
-                    {% for photo in object.photos %}
-                        {%if(photo is not iterable)%}
-                            <a class="photo" href="{{photo}}" class='fancybox'  data-fancybox="gallery" style="background-image:url({{photo}});">
-{#                                <img src="{{photo}}" alt="" height="" />#}
-                            </a>
-                        {%endif%}
-                    {% endfor %}
-                </div>
-            </div>
-        {% endif %}
-        <div class="{%if(not app.request.get('ajax'))%}col-sm-7{%endif%} col-sm-7 col-xs-12">
+       
+        <div class="col-sm-12 col-xs-12">
             <div class="row">
-                <div class="col-sm-12">
-                    {#                            <a href="{{ path('crm_object_list') }}" class="btn btn-primary btn-sm" ><i class="fa fa-arrow-left"></i></a>#}
+                {#<div class="col-sm-12">
                         <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="window.history.back()" title="Повернутись"><i class="fa fa-arrow-left"></i></a>
                         {% if object.canEdit(app.User) %}
                             <a href="{{ path('crm_object_edit', {'id': object.id}) }}" class="btn btn-warning btn-sm" title="Редагувати"><i class="fa fa-edit"></i></a>
@@ -66,19 +48,19 @@
                             <a href="{{path('crm_favourite_add_to_bid', {'id': object.id})}}" class="btn btn-success btn-sm favourite-add-to-bid" title="Додати до заявки"><i class="fa fa-plus"></i></a>
                             <a href="{{path('crm_tools_lastActive_update_object',{'id':object.id,'ajax':'Y'})}}" class='btn btn-primary ajax-call-done btn-sm ' data-for_done="object_row_{{object.id}}" data-reload_ajax_page="{{path('crm_object_show',{'id':object.id,'ajax':'Y'})}}" title="Оновити до сьогодні"><i class="fa fa-phone"></i></a>
                         {% endif %}
-{#                        <a href="{{path('crm_object_show_print',{'id':object.id})}}" class='btn btn-primary btn-sm' title="Друк"><i class="fa fa-print"></i></a>#}
-                </div>
+                        <a href="{{path('crm_object_show_print',{'id':object.id})}}" class='btn btn-primary btn-sm' title="Друк"><i class="fa fa-print"></i></a>
+                </div>#}
                 <div class="col-sm-12">
                     <br />
                 </div>
             </div>
             <div class="object-opts">
                 <div class="row">
-                    <div class="col-md-6 col-xs-12 object-opt"><span class="name">Статус</span><span class="val">{% if(object.status=='insale') %}В продажу{% elseif(object.status=='reserved') %}Зарезервовано{% elseif(object.status=='saled') %}Продано{% elseif(object.status=='archive') %}В архіві{% endif %}</span></div>
+{#                    <div class="col-md-6 col-xs-12 object-opt"><span class="name">Статус</span><span class="val">{% if(object.status=='insale') %}В продажу{% elseif(object.status=='reserved') %}Зарезервовано{% elseif(object.status=='saled') %}Продано{% elseif(object.status=='archive') %}В архіві{% endif %}</span></div>#}
                     {% if(object.location) %}
                         <div class="col-md-6 col-xs-12 object-opt"><span class="name">Розташування</span><span class="val">{{object.location.name}}</span></div>
                     {% endif %}
-                    {% if(object.user) %}
+                    {#{% if(object.user) %}
                         <div class="col-md-6 col-xs-12 object-opt"><span class="name">Ріелтор</span><span class="val">{{object.user.name}}</span></div>
                     {% endif %}
                     {% if(object.company) %}
@@ -92,11 +74,11 @@
                     {% endif %}
                     {% if(object.lastUpdate) %}
                         <div class="col-md-6 col-xs-12 object-opt"><span class="name">Останній контакт</span><span class="val">{{object.lastUpdate|date('d.m.Y')}}</span></div>
-                    {% endif %}
+                    {% endif %}#}
                     <div class="col-md-12 col-xs-12"><hr /></div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6 col-sm-12 col-xs-12">
+                    <div class="col-lg-6 col-sm-6 col-xs-6">
                         <div class="row">
                             <div class="col-lg-12"><h3>Тип нерухомості</h3></div>
                             <div class="col-md-6 col-xs-12 object-opt"><span class="name">Тип</span><span class="val">{% if(object.type=='simple_sale') %}Продаж{% elseif(object.type=='simple_rent') %}Оренда{% elseif(object.type=='comercial_sale') %}Комерція продаж{% elseif(object.type=='comercial_rent') %}Комерція оренда{% endif %}</span></div>
@@ -106,13 +88,18 @@
                             {% endif %}
                         </div>
                     </div>
-                    <div class="col-lg-6 col-sm-12 col-xs-12">
+                    <div class="col-lg-6 col-sm-6 col-xs-6">
                         <div class="row">
                             <div class="col-lg-12"><h3>Вартість</h3></div>
-                                <div class="col-md-6 col-xs-12 object-opt"><span class="name">$</span><span class="val">{{object.price}}</span></div>
-                                <div class="col-md-6 col-xs-12 object-opt"><span class="name">грн</span><span class="val">{{object.priceuah}}</span></div>
-                                <div class="col-md-6 col-xs-12 object-opt"><span class="name">$ за м2</span><span class="val">{{object.pricem2}}</span></div>
-                                <div class="col-md-6 col-xs-12 object-opt"><span class="name">грн за 1 м2</span><span class="val">{{object.pricem2uah}}</span></div>
+                            {% if object.baseprice == 'price' %}
+                                <div class="col-md-6 col-xs-12 object-opt"><span class="val">{{object.price}}<span class="name">$</span></span></div>
+                            {% elseif object.baseprice == 'price_m2' %}
+                                <div class="col-md-6 col-xs-12 object-opt"><span class="val">{{object.priceuah}}</span><span class="name">грн</span></div>
+                            {% elseif object.baseprice == 'price_uah' %}
+                                <div class="col-md-6 col-xs-12 object-opt"><span class="val">{{object.pricem2}}</span><span class="name">$ за м2</span></div>
+                            {% elseif object.baseprice == 'price_m2_uah' %}
+                                <div class="col-md-6 col-xs-12 object-opt"><span class="val">{{object.pricem2uah}}</span><span class="name">грн за 1 м2</span></div>
+                            {% endif %}
                                 <div class="col-md-6 col-xs-12 object-opt"><span class="name">Комісія</span><span class="val">{%if(object.comission==1)%}Власник{%else%}Клієнт{%endif%}</span></div>
                                 {% if(paramsMap['price'] is defined) %}
                                     {% set sectionParams = paramsMap['price'] %}
@@ -123,7 +110,7 @@
                     <div class="col-md-12 col-xs-12"><hr /></div>
                 </div>
                 <div class="row">
-                    <div class="col-lg-6 col-sm-12 col-xs-12">
+                    <div class="col-lg-6 col-sm-6 col-xs-6">
                         <div class="row">
                             <div class="col-lg-12"><h3>Параметри об'єкта</h3></div>
                             <div class="col-md-6 col-xs-12 object-opt"><span class="name">Кількість кімнат</span><span class="val">{{object.rooms}}</span></div>
@@ -133,7 +120,7 @@
                             {% endif %}
                         </div>
                     </div>
-                    <div class="col-lg-6 col-sm-12 col-xs-12">
+                    <div class="col-lg-6 col-sm-6 col-xs-6">
                         <div class="row">
                             <div class="col-lg-12"><h3>Властивості об'єкта</h3></div>
                             {% if(paramsMap['options'] is defined) %}
@@ -151,13 +138,44 @@
                     <div class="col-md-12 col-xs-12"><hr /></div>
                     <div class="col-md-12 col-xs-12 object-opt"><span class="name">Адреса</span><span class="val">{{object.address}}</span></div>
                     <div class="col-md-12 col-xs-12 object-opt"><span class="name">Опис</span><span class="val">{{object.info}}</span></div>
-                    <div class="col-lg-12"><h3>Інша інформація</h3></div>
                     {% if(paramsMap['none'] is defined) %}
                         {% set sectionParams = paramsMap['none'] %}
+                        {% set break = false %}
+                        {% for param in sectionParams if not break %}
+                            {%if(params[param] is defined)%}
+                                <div class="col-lg-12"><h3>Інша інформація</h3></div>
+                                {% set break = true %}
+                            {% endif %}
+                        {% endfor %}
                         {{ include('crm/object/_params_section.html.twig') }}
                     {% endif %}
                 </div>
             </div>
         </div>
+        {% if(object.photos) %}
+            <div class="col-sm-12 col-xs-12">
+                <div class="row">
+                    {% for photo in object.photos %}
+                        {%if(photo is not iterable)%}
+                            <div class="col-md-6 col-sm-6 col-xs-6 t-align-center"><img src="{{photo}}" alt="" height="300"/><br><br></div>
+                        {%endif%}
+                    {% endfor %}
+                </div>
+                {#<div class="object-gallery">
+                    <div id="main-object-photo">
+                            <a class="photo" href="{{object.photos[0]}}" class='fancybox'  data-fancybox="gallery">
+                                <img src="{{object.photos[0]}}" alt="" height="" />
+                            </a>
+                    </div>
+                    {% for photo in object.photos %}
+                        {%if(photo is not iterable)%}
+                            <a class="photo" href="{{photo}}" class='fancybox'  data-fancybox="gallery" style="background-image:url({{photo}});">
+                                <img src="{{photo}}" alt="" height="" />
+                            </a>
+                        {%endif%}
+                    {% endfor %}
+                </div>#}
+            </div>
+        {% endif %}
     </div>
 </div>

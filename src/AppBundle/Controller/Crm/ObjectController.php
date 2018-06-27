@@ -409,6 +409,58 @@ class ObjectController extends Controller {
     }
     
     /**
+     * @Route("/objects/{id}/print", name="crm_object_show_print")
+     */
+    public function showPrintAction(Request $request, Object $object){
+        
+        if (!$object) {
+            throw $this->createNotFoundException('No object found');
+        }
+        
+        //prepare params array
+        $params = [];
+        $objectParams = $object->getParams();
+        foreach ($objectParams as $objectParam){
+            $param = $objectParam->getParam();
+            $multiple = $param->getMultiple();
+            switch ($param->getType()){
+                case 'diapazon': 
+                case 'integer': $val = $objectParam->getNumber(); break;
+                case 'floatdiapazon': 
+                case 'float': $val = $objectParam->getFloatnumber(); break;
+                case 'text': $val = $objectParam->getString(); break;
+                case 'select': $val = $objectParam->getProperty()->getName(); break;
+            }
+            if($multiple){
+                $params[$param->getId()]['val'][] = $val;
+            } else {
+                $params[$param->getId()]['val'] = $val;
+            }
+            $params[$param->getId()]['name'] = $param->getName();
+            $params[$param->getId()]['type'] = $param->getType();
+            $params[$param->getId()]['multiple'] = $multiple;
+        }
+        
+        $paramsMap = $this->getParamsSectionsMap(false);
+        
+        //favourite
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $object->favourite = $em->getRepository('AppBundle:Favourite')->checkIfFavourite($object,$user);
+//        dump($object->favourite);die;
+        if($request->get('ajax','')=='Y'){
+            $tmpl = 'crm/object/_print.html.twig';
+        } else {
+            $tmpl = 'crm/object/print.html.twig';
+        }
+        
+        return $this->render($tmpl, array(
+            'object' => $object,
+            'params' => $params,
+            'paramsMap' => $paramsMap
+        ));
+    }
+    /**
      * @Route("/objects/{id}", name="crm_object_show")
      */
     public function showAction(Request $request, Object $object){
