@@ -1073,3 +1073,4 @@ html,body{height: 100%;}
     #sidebar-wrapper{display:none!important;}
     #wrapper{padding:0;}
 }
+.ui-menu-item span{background: yellow;}

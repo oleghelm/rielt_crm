@@ -107,7 +107,13 @@
     </div>
     <div id="tab4" class="tab-pane fade">
         <div class="row">
-            <div class="col-lg-3 col-sm-3 col-xs-6 check_old_client">{{ form_row(form.client) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-6 check_old_client">
+                <div class="form-group"> 
+                    <label for="exampleInputPassword1">Введіть клієнта</label>
+                    <input type="text" class="form-control client_autocomplete" value="{%if(object.client)%}{{object.client.__toString}}{%endif%}" placeholder="Введіть клієнта" />
+                </div>
+                {{ form_row(form.client) }}
+            </div>
             <div class="col-lg-3 col-sm-3 col-xs-6 check_old_client" style="padding:0;"><label for="">&nbsp;</label><br><a href="javascript:void(0);" class="btn btn-warning edit_old_client"><i class="fa fa-edit"></i></a></div>
             <div class="clearfix"></div>
             <div class="col-lg-3 col-sm-3 col-xs-6"><label><input type="checkbox" name="new_client" value="Y" /> Створити нововго</label></div>

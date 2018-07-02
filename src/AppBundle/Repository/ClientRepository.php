@@ -101,4 +101,10 @@ class ClientRepository extends EntityRepository
             ->orderBy('cl.name', 'ASC');
     }
 
+    public function searchByText($text){
+        return $this->createQueryBuilder('cl')
+                ->where("cl.name LIKE :text OR cl.phones LIKE :text OR cl.id LIKE :text")
+                ->setParameter('text', '%'.$text.'%')
+            ->orderBy('cl.name', 'ASC');
+    }
 }

@@ -17,7 +17,13 @@
             <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.baseprice) }}</div>
             <div class="clearfix"></div>
             <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.user) }}</div>
-            <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.client) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-6">
+                <div class="form-group"> 
+                    <label for="exampleInputPassword1">Введіть клієнта</label>
+                    <input type="text" class="form-control client_autocomplete" value="{%if(object.client)%}{{object.client.__toString}}{%endif%}" placeholder="Введіть клієнта" />
+                </div>
+                {{ form_row(form.client) }}
+            </div>
             <div class="clearfix"></div>
             <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.status) }}</div>
             <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.important) }}</div>

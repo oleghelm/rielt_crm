@@ -78,6 +78,11 @@ class BidFormType extends AbstractType
                         return $repo->findAllUsers();
                     }
                 ])
+//                ->add('client',EntityHiddenType::class,[
+//                    'label' => 'Власник',
+//                    'attr' => ['class'=>'entity_autocomplete client_id','data-href'=>'/crm/clients/search_ajax','data-hidden-input-text'=>'.client_autocomplete','data-input-label-text'=>'Введіть клієнта'],
+//                    'class' => Client::class,
+//                ])
 //                ->add('client',EntityType::class,[
 //                    'label' => 'Хто подав заявку',
 //                    'placeholder' => "Виберіть хто подав заявку",

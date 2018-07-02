@@ -10,6 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
+use Symfony\Component\HttpFoundation\JsonResponse;
 //use Symfony\Component\HttpFoundation\File\File;
 //use AppBundle\Service\FileUploader;
 /**
@@ -60,6 +62,38 @@ class ClientController extends Controller
         ));
     }
 
+    /**
+     * @Route("/clients/search_ajax", name="crm_client_search_ajax")
+     */
+    public function searchAjaxAction(Request $request){
+        $q = $request->get('term',null);
+        $data = [];
+        if($q){
+            $user = $this->get('security.token_storage')->getToken()->getUser();
+            $em = $this->getDoctrine()->getEntityManager();
+            $query = $em->getRepository('AppBundle:Client')->searchByText($q);
+//            dump($query);die;
+            $clients = $query->getQuery()->execute();
+            foreach($clients as $client){
+                $name = $client->getName().' (№'.$client->getId();
+                if($this->getUser()){
+                    $name .= ' від '.$client->getUser()->getName();
+                }
+                $name .= ') ';
+                if($client->canEdit($user))
+                    if($client->getPhones()){
+                        $name .= implode(", ",$client->getPhones());
+                    }
+//                $name = str_replace($q, '<span>'.$q.'</span>', $name);
+                $data[] = [
+                    'id'=>$client->getId(),
+                    'value'=>$name,
+                    'label'=>str_replace($q, '<span>'.$q.'</span>', strtolower($name))
+                        ];
+            }
+        }
+        return new JsonResponse($data);
+    }
     /**
      * @Route("/clients/new", name="crm_client_new")
      */

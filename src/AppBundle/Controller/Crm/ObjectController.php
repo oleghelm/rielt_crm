@@ -202,6 +202,7 @@ class ObjectController extends Controller {
      * @Route("/objects/{id}/edit", name="crm_object_edit")
      */
     public function editAction(Request $request, Object $object, FileUploader $fileUploader){
+//        $user = $this->get('security.token_storage')->getToken()->getUser();
 //        if(file_exists($this->getParameter('user_photo_directory').'/'.$object->getPhotos()) && is_file($this->getParameter('user_photo_directory').'/'.$object->getPhotos()))
         $object->setPhotos($object->getPhotos());
         $old_photos = $object->getPhotos();

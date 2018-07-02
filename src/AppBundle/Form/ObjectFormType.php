@@ -25,6 +25,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use AppBundle\Form\Type\EntityHiddenType;
 
 class ObjectFormType extends AbstractType 
 {
@@ -132,14 +133,19 @@ class ObjectFormType extends AbstractType
                         return $repo->findAllUsers();
                     }
                 ])
-                ->add('client',EntityType::class,[
+                ->add('client',EntityHiddenType::class,[
                     'label' => 'Власник',
-                    'placeholder' => "Виберіть Кому належить об'єкт",
+                    'attr' => ['class'=>'entity_autocomplete client_id','data-href'=>'/crm/clients/search_ajax','data-hidden-input-text'=>'.client_autocomplete','data-input-label-text'=>'Введіть клієнта'],
                     'class' => Client::class,
-                    'query_builder' => function(ClientRepository $repo) {
-                        return $repo->findAllClients();
-                    }
                 ])
+//                ->add('client',EntityType::class,[
+//                    'label' => 'Власник',
+//                    'placeholder' => "Виберіть Кому належить об'єкт",
+//                    'class' => Client::class,
+//                    'query_builder' => function(ClientRepository $repo) {
+//                        return $repo->findAllClients();
+//                    }
+//                ])
                 ->add('company',EntityType::class,[
                     'label' => 'Компанія',
                     'placeholder' => "Виберіть компанію",
