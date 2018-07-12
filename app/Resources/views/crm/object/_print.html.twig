@@ -222,6 +222,10 @@
                     {% endfor %}
                 </div>
             </div>
+        {% else %}
+            <div class="printer_hide">
+                {{ form_row(form['photos']) }}
+            </div>
         {% endif %}
     </div>
 </div>
