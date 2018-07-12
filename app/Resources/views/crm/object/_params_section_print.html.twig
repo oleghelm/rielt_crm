@@ -1,0 +1,24 @@
+{% for param in sectionParams%}
+    {%if(params[param] is defined)%}
+        {%if(params[param].id in form['params'].vars.value)%}
+        <div class="col-md-12 col-xs-12 object-opt">
+            <span class="name">{{params[param].name}}</span>
+            <span class="val">
+                {% if(params[param].multiple) %}
+                    {% if(params[param].type == 'diapazon' or params[param].type == 'floatdiapazon') %}
+                        від {{params[param].val[0]}}{%if(params[param].val[1] is defined)%} до {{params[param].val[1]}}{%endif%}
+                    {% else %}
+                        {{params[param].val|join(', ')}}
+                    {% endif %}
+                {% else %}
+                    {% if 'http' in params[param].val %}
+                        <a href="{{params[param].val}}" target="blank">Посилання</a>
+                    {% else %}
+                        {{params[param].val}}
+                    {% endif %}
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+    {% endif %}
+{% endfor %}

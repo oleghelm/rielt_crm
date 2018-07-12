@@ -1,8 +1,40 @@
+{{ form_start(form, {'action': app.request.pathInfo,'attr':{id:'preprint_form'} }) }}
 <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 col-xs-5">
+            {%if(object.company)%}
+                <img src="/images/company/{{object.company.logo}}" alt="" style="max-width:100%"/>
+            {%endif%}
+        </div>
+        <div class="col-md-8 col-xs-7">
+            <div class="printer_hide">
+                {{ form_row(form['user']) }}
+            </div>
+            {%if(rieltors)%}
+                {%for rieltor in rieltors%}
+                    <div class="rieltor-contact">
+                        <div class="name">{{rieltor.name}}</div>
+                        {%if(rieltor.phones)%}
+                        <div class="tel">
+                            <div class="title">Тел.</div>
+                            <ul>
+                                {%for phone in rieltor.phones%}
+                                <li>{{phone}}</li>
+                                {%endfor%}
+                            </ul>
+                        </div>
+                        {%endif%}
+                    </div>
+                {%endfor%}
+            {%endif%}
+            {#            {{dump(form['user'].vars.value)}}#}
+
+        </div>
+    </div>
     <div class="row">
         <div class="col-xs-12">
             <h1>
-                {{object.name}}<br>
+                {{object.name}} 
                 <span>Код: {{object.code}}</span>
                 {#<span class="pull-right">
                     {% if(object.photos|length > 0) %}
@@ -30,6 +62,11 @@
             </h1>
         </div>
        
+            <div class="col-sm-12 col-xs-12 printer_hide">
+                <div class="checkboxes-inline">
+                    {{ form_row(form['params']) }}
+                </div>
+            </div>
         <div class="col-sm-12 col-xs-12">
             <div class="row">
                 {#<div class="col-sm-12">
@@ -50,16 +87,16 @@
                         {% endif %}
                         <a href="{{path('crm_object_show_print',{'id':object.id})}}" class='btn btn-primary btn-sm' title="Друк"><i class="fa fa-print"></i></a>
                 </div>#}
-                <div class="col-sm-12">
+                {#<div class="col-sm-12">
                     <br />
-                </div>
+                </div>#}
             </div>
             <div class="object-opts">
                 <div class="row">
 {#                    <div class="col-md-6 col-xs-12 object-opt"><span class="name">Статус</span><span class="val">{% if(object.status=='insale') %}В продажу{% elseif(object.status=='reserved') %}Зарезервовано{% elseif(object.status=='saled') %}Продано{% elseif(object.status=='archive') %}В архіві{% endif %}</span></div>#}
-                    {% if(object.location) %}
+                    {#{% if(object.location) %}
                         <div class="col-md-6 col-xs-12 object-opt"><span class="name">Розташування</span><span class="val">{{object.location.name}}</span></div>
-                    {% endif %}
+                    {% endif %}#}
                     {#{% if(object.user) %}
                         <div class="col-md-6 col-xs-12 object-opt"><span class="name">Ріелтор</span><span class="val">{{object.user.name}}</span></div>
                     {% endif %}
@@ -81,29 +118,35 @@
                     <div class="col-lg-6 col-sm-6 col-xs-6">
                         <div class="row">
                             <div class="col-lg-12"><h3>Тип нерухомості</h3></div>
+                            {%if('type' in form['params'].vars.value)%}
                             <div class="col-md-6 col-xs-12 object-opt"><span class="name">Тип</span><span class="val">{% if(object.type=='simple_sale') %}Продаж{% elseif(object.type=='simple_rent') %}Оренда{% elseif(object.type=='comercial_sale') %}Комерція продаж{% elseif(object.type=='comercial_rent') %}Комерція оренда{% endif %}</span></div>
+                            {%endif%}
                             {% if(paramsMap['type'] is defined) %}
                                 {% set sectionParams = paramsMap['type'] %}
-                                {{ include('crm/object/_params_section.html.twig') }}
+                                {{ include('crm/object/_params_section_print.html.twig') }}
                             {% endif %}
                         </div>
                     </div>
                     <div class="col-lg-6 col-sm-6 col-xs-6">
                         <div class="row">
-                            <div class="col-lg-12"><h3>Вартість</h3></div>
-                            {% if object.baseprice == 'price' %}
-                                <div class="col-md-6 col-xs-12 object-opt"><span class="val">{{object.price}}<span class="name">$</span></span></div>
-                            {% elseif object.baseprice == 'price_m2' %}
-                                <div class="col-md-6 col-xs-12 object-opt"><span class="val">{{object.priceuah}}</span><span class="name">грн</span></div>
-                            {% elseif object.baseprice == 'price_uah' %}
-                                <div class="col-md-6 col-xs-12 object-opt"><span class="val">{{object.pricem2}}</span><span class="name">$ за м2</span></div>
-                            {% elseif object.baseprice == 'price_m2_uah' %}
-                                <div class="col-md-6 col-xs-12 object-opt"><span class="val">{{object.pricem2uah}}</span><span class="name">грн за 1 м2</span></div>
-                            {% endif %}
-                                <div class="col-md-6 col-xs-12 object-opt"><span class="name">Комісія</span><span class="val">{%if(object.comission==1)%}Власник{%else%}Клієнт{%endif%}</span></div>
+                            {%if('price' in form['params'].vars.value)%}
+                                <div class="col-lg-12"><h3>Вартість</h3></div>
+                                {% if object.baseprice == 'price' %}
+                                    <div class="col-md-12 col-xs-12 object-opt"><span class="val">{{object.price}}<span class="name">$</span></span></div>
+                                {% elseif object.baseprice == 'price_m2' %}
+                                    <div class="col-md-12 col-xs-12 object-opt"><span class="val">{{object.priceuah}}</span><span class="name">грн</span></div>
+                                {% elseif object.baseprice == 'price_uah' %}
+                                    <div class="col-md-12 col-xs-12 object-opt"><span class="val">{{object.pricem2}}</span><span class="name">$ за м2</span></div>
+                                {% elseif object.baseprice == 'price_m2_uah' %}
+                                    <div class="col-md-12 col-xs-12 object-opt"><span class="val">{{object.pricem2uah}}</span><span class="name">грн за 1 м2</span></div>
+                                {% endif %}
+                            {%endif%}
+                            {%if('comission' in form['params'].vars.value)%}
+                                <div class="col-md-12 col-xs-12 object-opt"><span class="name">Комісія</span><span class="val">{%if(object.comission==1)%}Власник{%else%}Клієнт{%endif%}</span></div>
+                            {%endif%}
                                 {% if(paramsMap['price'] is defined) %}
                                     {% set sectionParams = paramsMap['price'] %}
-                                    {{ include('crm/object/_params_section.html.twig') }}
+                                    {{ include('crm/object/_params_section_print.html.twig') }}
                                 {% endif %}
                         </div>
                     </div>
@@ -113,10 +156,17 @@
                     <div class="col-lg-6 col-sm-6 col-xs-6">
                         <div class="row">
                             <div class="col-lg-12"><h3>Параметри об'єкта</h3></div>
-                            <div class="col-md-6 col-xs-12 object-opt"><span class="name">Кількість кімнат</span><span class="val">{{object.rooms}}</span></div>
+                            {%if('location' in form['params'].vars.value)%}
+                                {% if(object.location) %}
+                                    <div class="col-md-12 col-xs-12 object-opt"><span class="name">Розташування</span><span class="val">{{object.location.name}}</span></div>
+                                {% endif %}
+                            {%endif%}
+                            {%if('rooms' in form['params'].vars.value)%}
+                                <div class="col-md-12 col-xs-12 object-opt"><span class="name">Кількість кімнат</span><span class="val">{{object.rooms}}</span></div>
+                            {%endif%}
                             {% if(paramsMap['params'] is defined) %}
                                 {% set sectionParams = paramsMap['params'] %}
-                                {{ include('crm/object/_params_section.html.twig') }}
+                                {{ include('crm/object/_params_section_print.html.twig') }}
                             {% endif %}
                         </div>
                     </div>
@@ -125,7 +175,7 @@
                             <div class="col-lg-12"><h3>Властивості об'єкта</h3></div>
                             {% if(paramsMap['options'] is defined) %}
                                 {% set sectionParams = paramsMap['options'] %}
-                                {{ include('crm/object/_params_section.html.twig') }}
+                                {{ include('crm/object/_params_section_print.html.twig') }}
                             {% endif %}
                         </div>
                     </div>
@@ -136,8 +186,12 @@
             <div class="object-opts">
                 <div class="row">
                     <div class="col-md-12 col-xs-12"><hr /></div>
-                    <div class="col-md-12 col-xs-12 object-opt"><span class="name">Адреса</span><span class="val">{{object.address}}</span></div>
-                    <div class="col-md-12 col-xs-12 object-opt"><span class="name">Опис</span><span class="val">{{object.info}}</span></div>
+                    {%if('address' in form['params'].vars.value)%}
+                        <div class="col-md-12 col-xs-12 object-opt"><span class="name">Адреса</span><span class="val">{{object.address}}</span></div>
+                    {% endif %}
+                    {%if('info' in form['params'].vars.value)%}
+                        <div class="col-md-12 col-xs-12 object-opt"><span class="name">Опис</span><span class="val">{{object.info}}</span></div>
+                    {% endif %}
                     {% if(paramsMap['none'] is defined) %}
                         {% set sectionParams = paramsMap['none'] %}
                         {% set break = false %}
@@ -147,7 +201,7 @@
                                 {% set break = true %}
                             {% endif %}
                         {% endfor %}
-                        {{ include('crm/object/_params_section.html.twig') }}
+                        {{ include('crm/object/_params_section_print.html.twig') }}
                     {% endif %}
                 </div>
             </div>
@@ -155,27 +209,20 @@
         {% if(object.photos) %}
             <div class="col-sm-12 col-xs-12">
                 <div class="row">
-                    {% for photo in object.photos %}
+                    <div class="col-sm-12 col-xs-12"></div>
+                    {% for key,photo in object.photos %}
                         {%if(photo is not iterable)%}
-                            <div class="col-md-6 col-sm-6 col-xs-6 t-align-center"><img src="{{photo}}" alt="" height="300"/><br><br></div>
+                            <div class="col-md-6 col-sm-6 col-xs-6 t-align-center {%if(photo not in form['photos'].vars.value)%}printer_hide{%endif%}">
+                                <div class="printer_hide">
+                                    {{ form_row(form['photos'].children[key]) }}
+                                </div>
+                                <img src="{{photo}}" alt="" height="300"/><br><br>
+                            </div>
                         {%endif%}
                     {% endfor %}
                 </div>
-                {#<div class="object-gallery">
-                    <div id="main-object-photo">
-                            <a class="photo" href="{{object.photos[0]}}" class='fancybox'  data-fancybox="gallery">
-                                <img src="{{object.photos[0]}}" alt="" height="" />
-                            </a>
-                    </div>
-                    {% for photo in object.photos %}
-                        {%if(photo is not iterable)%}
-                            <a class="photo" href="{{photo}}" class='fancybox'  data-fancybox="gallery" style="background-image:url({{photo}});">
-                                <img src="{{photo}}" alt="" height="" />
-                            </a>
-                        {%endif%}
-                    {% endfor %}
-                </div>#}
             </div>
         {% endif %}
     </div>
 </div>
+{{ form_end(form) }}

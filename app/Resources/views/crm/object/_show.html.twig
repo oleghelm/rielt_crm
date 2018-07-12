@@ -66,7 +66,7 @@
                             <a href="{{path('crm_favourite_add_to_bid', {'id': object.id})}}" class="btn btn-success btn-sm favourite-add-to-bid" title="Додати до заявки"><i class="fa fa-plus"></i></a>
                             <a href="{{path('crm_tools_lastActive_update_object',{'id':object.id,'ajax':'Y'})}}" class='btn btn-primary ajax-call-done btn-sm ' data-for_done="object_row_{{object.id}}" data-reload_ajax_page="{{path('crm_object_show',{'id':object.id,'ajax':'Y'})}}" title="Оновити до сьогодні"><i class="fa fa-phone"></i></a>
                         {% endif %}
-{#                        <a href="{{path('crm_object_show_print',{'id':object.id})}}" class='btn btn-primary btn-sm' title="Друк"><i class="fa fa-print"></i></a>#}
+                        <a href="{{path('crm_object_show_preprint',{'id':object.id})}}" class='btn btn-primary btn-sm' title="Друк"><i class="fa fa-print"></i></a>
                 </div>
                 <div class="col-sm-12">
                     <br />

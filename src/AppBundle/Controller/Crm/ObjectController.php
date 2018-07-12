@@ -410,9 +410,9 @@ class ObjectController extends Controller {
     }
     
     /**
-     * @Route("/objects/{id}/print", name="crm_object_show_print")
+     * @Route("/objects/{id}/preprint", name="crm_object_show_preprint")
      */
-    public function showPrintAction(Request $request, Object $object){
+    public function showPrePrintAction(Request $request, Object $object){
         
         if (!$object) {
             throw $this->createNotFoundException('No object found');
@@ -421,7 +421,9 @@ class ObjectController extends Controller {
         //prepare params array
         $params = [];
         $objectParams = $object->getParams();
+        $ch_params = [];
         foreach ($objectParams as $objectParam){
+            $ch_params[$objectParam->getParam()->getName()] = $objectParam->getParam()->getId();
             $param = $objectParam->getParam();
             $multiple = $param->getMultiple();
             switch ($param->getType()){
@@ -437,6 +439,7 @@ class ObjectController extends Controller {
             } else {
                 $params[$param->getId()]['val'] = $val;
             }
+            $params[$param->getId()]['id'] = $param->getId();
             $params[$param->getId()]['name'] = $param->getName();
             $params[$param->getId()]['type'] = $param->getType();
             $params[$param->getId()]['multiple'] = $multiple;
@@ -448,6 +451,51 @@ class ObjectController extends Controller {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $em = $this->getDoctrine()->getManager();
         $object->favourite = $em->getRepository('AppBundle:Favourite')->checkIfFavourite($object,$user);
+        
+        $formParams = array();
+        $formParams[] = [
+            'id' => 'user',
+            'type' => 'select',
+            'label' => 'Ріелтор',
+            'multiple' => true,
+            'choices' =>  $this->getDoctrine()->getRepository('AppBundle:User')->getUsersForFilter(),
+        ];
+        $ch_params['Тип'] = 'type';
+        $ch_params['Вартість'] = 'price';
+        $ch_params['Комісія'] = 'comission';
+        $ch_params['Розташування'] = 'location';
+        $ch_params['Кількість кімнат'] = 'rooms';
+        $ch_params['Адреса'] = 'address';
+        $ch_params['Опис'] = 'info';
+        $formParams[] = [
+            'id' => 'params',
+            'type' => 'checkbox',
+            'label' => 'Параметри під вивід',
+            'multiple' => true,
+            'choices' =>  $ch_params,
+            'choice_attr' => null
+        ];
+        $photos = [];
+        foreach($object->getPhotos() as $key=>$photo){
+            $photos['Виводити №'.($key+1)] = $photo;
+        }
+        $formParams[] = [
+            'id' => 'photos',
+            'type' => 'checkbox',
+            'label' => 'Фото',
+            'multiple' => true,
+            'choices' =>  $photos,
+            'choice_attr' => null
+        ];
+        $form = $this->generateParamsForm($formParams,['data'=>['photos'=>$photos,'params'=>$ch_params,'user'=>[$object->getUser()->getId()]]]);
+        $form->handleRequest($request);
+        $form_view = $form->getViewData();
+        if(!empty($form_view['user']))
+            $users = $em->getRepository('AppBundle:User')->findBy(['id'=>$form_view['user']]);
+        else 
+            $users = null;
+//        dump($users);
+        
 //        dump($object->favourite);die;
         if($request->get('ajax','')=='Y'){
             $tmpl = 'crm/object/_print.html.twig';
@@ -457,8 +505,10 @@ class ObjectController extends Controller {
         
         return $this->render($tmpl, array(
             'object' => $object,
+            'rieltors' => $users,
             'params' => $params,
-            'paramsMap' => $paramsMap
+            'paramsMap' => $paramsMap,
+            'form' => $form->createView()
         ));
     }
     /**

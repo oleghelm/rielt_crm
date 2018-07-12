@@ -1072,5 +1072,12 @@ html,body{height: 100%;}
     .sf-toolbar,
     #sidebar-wrapper{display:none!important;}
     #wrapper{padding:0;}
+    .printer_hide{display:none!important;}
 }
 .ui-menu-item span{background: yellow;}
+.checkboxes-inline .checkbox{margin-top:0;display:inline-block;width:200px;}
+.rieltor-contact{}
+.rieltor-contact .name{font-size:20px}
+.rieltor-contact .tel{font-size:16px}
+.rieltor-contact .tel .title{display:inline-block;vertical-align:top;}
+.rieltor-contact .tel ul{display:inline-block;vertical-align:top;list-style:none;}

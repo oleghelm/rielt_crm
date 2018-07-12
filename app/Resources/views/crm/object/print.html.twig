@@ -3,3 +3,19 @@
 {% block body %}
     {{ include('crm/object/_print.html.twig') }}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+{#        jQuery(document).ready(function(){#}
+{#            var preprint_form = $("#preprint_form")#}
+            $("#page-content-wrapper").on('change','#preprint_form input,#preprint_form select',function(){
+                $.post($("#preprint_form").attr('action'),$("#preprint_form").serialize()+'&ajax=Y',function(resp){
+{#                    console.log(resp)#}
+                    $("#preprint_form").replaceWith(resp);
+                    initStartScripts();
+                })
+            })
+{#        })#}
+    </script>
+{% endblock %}
