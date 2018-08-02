@@ -217,5 +217,19 @@
         function setErrorToGroup(id){
             $('#'+id).parents('.form-group').addClass('error');
         }
+        function hideNoTypeFilds(){
+            var type = $("#object_form_type").val();
+            if(typeof type == 'undefined'){return;}
+            for(var i in fldIds){
+                $("#"+fldIds[i]).parent().parent().hide();
+            }
+            for(var i in paramsMap[type]){
+                $("#form_"+paramsMap[type][i]).parent().parent().show();
+            }
+        }
+        hideNoTypeFilds();
+        $("#object_form_type").change(function(){
+            hideNoTypeFilds();
+        })
     </script>
 {% endblock %}

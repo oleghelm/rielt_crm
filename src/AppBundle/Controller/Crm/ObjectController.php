@@ -132,6 +132,7 @@ class ObjectController extends Controller {
         $paramsForm->handleRequest($request);
         
         $paramsMap = $this->getParamsSectionsMap();
+        $paramsDetailMap = $this->getParamsDetailMap();
         
         $clientForm = $this->createForm(ClientShortFormType::class);
         $clientForm->handleRequest($request);
@@ -193,6 +194,7 @@ class ObjectController extends Controller {
             'form' => $form->createView(),
             'paramsForm' => $paramsForm->createView(),
             'paramsMap' => $paramsMap,
+            'paramsDetailMap' => $paramsDetailMap,
             'clientForm' => $clientForm->createView(),
             'object' => null
         ]);
@@ -215,6 +217,7 @@ class ObjectController extends Controller {
         $paramsForm->handleRequest($request);
         
         $paramsMap = $this->getParamsSectionsMap();
+        $paramsDetailMap = $this->getParamsDetailMap();
         
         $clientForm = $this->createForm(ClientShortFormType::class);
         $clientForm->handleRequest($request);
@@ -287,6 +290,7 @@ class ObjectController extends Controller {
             'form' => $form->createView(),
             'paramsForm' => $paramsForm->createView(),
             'paramsMap' => $paramsMap,
+            'paramsDetailMap' => $paramsDetailMap,
             'clientForm' => $clientForm->createView(),
             'object' => $object
         ]);
@@ -564,6 +568,16 @@ class ObjectController extends Controller {
         ));
     }
     
+    public function getParamsDetailMap($setMinMax = true){
+        $formParams = $this->getParamsForForm();
+        $map = [];
+        foreach($formParams as $formParam){
+            foreach($formParam['detail'] as $detail){
+                $map[$detail][] = $formParam['id'];
+            }
+        }
+        return $map;
+    }
     public function getParamsSectionsMap($setMinMax = true){
         $formParams = $this->getParamsForForm();
         $map = [];
@@ -661,6 +675,7 @@ class ObjectController extends Controller {
                 'label' => $param->getName(),
                 'section' => $param->getSection(),
                 'multiple' => $param->getMultiple(),
+                'detail' => $param->getDetail(),
             ];
             if(in_array($formParam['type'],['select'])){
                 $choices = [];

@@ -1,0 +1,75 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <div id="graph-wrapper">
+        <div class="graph-info">
+            <a href="#" id="bars"><span></span></a>
+            <a href="#" id="lines" class="active"><span></span></a>
+        </div>
+        <h2>Статистика додавання об'єктів компаніями по місяцях поточного року</h2>
+        <div class="graph-container">
+            <div id="graph-lines"></div>
+            <div id="graph-bars"></div>
+        </div>
+        <h2>Статистика додавання об'єктів працівниками по місяцях поточного року</h2>
+        <div class="graph-container">
+            <div id="graph-lines-users"></div>
+        </div>
+    </div>
+{#    {{dump(res)}}#}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{ asset('js/jquery.flot.min.js') }}"></script>
+    <script>
+        var graphData = [
+            {% for company_id, company in statistic.yearly_companies_by_month %}
+            {   label: '{{companies[company_id].name}}',
+                data: [ 
+                    {% for month, val in company.items %}[{{month}},{{val}}],{% endfor %}
+                ],color: "{{company.color}}"},
+            {% endfor %}
+        ];
+        // Lines
+        jQuery.plot(jQuery("#graph-lines"), graphData, {
+            series: {points: {show: true, radius: 5},lines: {show: true},shadowSize: 0},
+            grid: {color: "#646464",borderColor: "transparent",borderWidth: 20,hoverable: true},
+            xaxis: {tickColor: "transparent",tickDecimals: 2},
+            yaxis: {tickSize: 37}
+        });
+
+        var usersData = [
+            {% for user_id, user in statistic.yearly_users_by_month %}
+            {   label: '{{users[user_id].name}}',
+                data: [ 
+                    {% for month, val in user.items %}[{{month}},{{val}}],{% endfor %}
+                ],color: "{{user.color}}"},
+            {% endfor %}
+        ]
+        // Lines
+        jQuery.plot(jQuery("#graph-lines-users"), usersData, {
+            series: {points: {show: true, radius: 5},lines: {show: true},shadowSize: 0},
+            grid: {color: "#646464",borderColor: "transparent",borderWidth: 20,hoverable: true},
+            xaxis: {tickColor: "transparent",tickDecimals: 2},
+            yaxis: {tickSize: 37}
+        });
+        // Bars
+        {#jQuery.plot(jQuery("#graph-bars"), graphData, {
+            series: {bars: {show: true,barWidth: .9,align: "center"},shadowSize: 0},
+            grid: {color: "#646464",borderColor: "transparent",borderWidth: 20,hoverable: true},
+            xaxis: {tickColor: "transparent",tickDecimals: 2},
+            yaxis: {tickSize: 37}
+        });#}
+        </script>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+    .graph-container,.graph-container div,.graph-container a,.graph-container span {margin: 0;padding: 0;}
+    .graph-container, #tooltip, .graph-info a {background: #ffffff;background: linear-gradient(to bottom, #ffffff 0%,#f9f9f9 100%);border-radius: 3px;}
+    .graph-container {position: relative;width: 95%;height: 300px;padding: 20px;box-shadow: 0px 1px 2px rgba(0,0,0,.1);}
+    .graph-container > div {position: absolute;width: inherit;height: inherit;top: 10px;left: 25px;}
+    .graph-info {width: 590px;margin-bottom: 10px;}
+    #graph-lines{height:100%}</style>
+{% endblock %}

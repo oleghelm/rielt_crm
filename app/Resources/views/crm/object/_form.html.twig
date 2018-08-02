@@ -1,3 +1,22 @@
+{#object_form_photos#}
+<script type="text/javascript">
+    var fldIds = [];
+    {#{%for fld in form.children%}
+        {%if fld.vars.id != 'object_form_photos' and fld.vars.id != 'object_form__token' and fld.vars.id != 'object_form_area'%}
+        fldIds.push('{{fld.vars.id}}');
+        {%endif%}
+    {%endfor%}#}
+    {%for fld in paramsForm.children%}
+        {%if fld.vars.id != 'form__token'%}
+        fldIds.push('{{fld.vars.id}}');
+        {%endif%}
+    {%endfor%}
+    var paramsMap = {
+        {%for type,ids in paramsDetailMap%}
+                '{{type}}':[{{ids|join(',')}}],
+        {%endfor%}
+    };
+</script>
 {{ form_start(form) }}
 <button class="btn btn-primary" name="submitType" value="apply" type="submit" formnovalidate title="Зберегти"><i class="fa fa-save"></i></button>&nbsp;
 <button class="btn btn-success" name="submitType" value="save" type="submit" formnovalidate title="Зберегти і вийти"><i class="fa fa-save"></i>&nbsp;<i class="fa fa-plus"></i>&nbsp;<i class="fa fa-sign-out"></i></button>&nbsp;
@@ -18,6 +37,7 @@
             <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.status) }}</div>
             <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.location) }}</div>
             <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.lastUpdate) }}</div>
+            <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.created) }}</div>
             <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.user) }}</div>
             <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.company) }}</div>
         </div>

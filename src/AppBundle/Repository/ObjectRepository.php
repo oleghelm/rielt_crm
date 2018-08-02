@@ -256,4 +256,18 @@ class ObjectRepository extends EntityRepository
             ->orderBy('object.name', 'ASC');
     }
 
+    /*
+     * @return ArrayCollection|Object[]
+     */
+    public function getStatistcByCompanies(){
+            $queryBuilder = $this->_em->getRepository('AppBundle:Object')->createQueryBuilder('ob');
+    //        $queryBuilder->orderBy('ob.lastUpdate', 'asc');
+    //        $queryBuilder->andWhere('ob.user = :user')->setParameter('user', $user);
+    //        $date = new \DateTime('now -14 days');
+    //        $queryBuilder->andWhere('ob.lastUpdate <= :lastUpdate')->setParameter('lastUpdate', $date);
+//            $queryBuilder->andWhere('ob.status NOT IN (:status)')->setParameter('status', ['saled','archive']);
+//            $queryBuilder->andWhere('(ob.important = :important OR ob.exclusive = :important)')->setParameter('important', true);
+            $query = $queryBuilder->getQuery()->execute();
+            return $query;
+        }
 }

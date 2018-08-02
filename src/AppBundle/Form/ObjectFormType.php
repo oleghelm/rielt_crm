@@ -160,6 +160,12 @@ class ObjectFormType extends AbstractType
                     'html5' => false,
                     'attr' => ['class' => 'js-datepicker']
                 ])
+                ->add('created',DateType::class,[
+                    'label' => 'Створено',
+                    'widget' => 'single_text',
+                    'html5' => false,
+                    'attr' => ['class' => 'js-datepicker']
+                ])
                 ->add('location',EntityType::class,[
                     'label' => 'Розташування',
                     'placeholder' => "Виберіть розташування",
