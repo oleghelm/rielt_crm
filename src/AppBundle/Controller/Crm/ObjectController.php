@@ -163,6 +163,7 @@ class ObjectController extends Controller {
                 $em->persist($object);
                 $em->flush();
             }
+            $object->setCreatedBy($user);
             //work with file
             $files = $object->getPhotos();
             if($files){
@@ -206,6 +207,7 @@ class ObjectController extends Controller {
     public function editAction(Request $request, Object $object, FileUploader $fileUploader){
 //        $user = $this->get('security.token_storage')->getToken()->getUser();
 //        if(file_exists($this->getParameter('user_photo_directory').'/'.$object->getPhotos()) && is_file($this->getParameter('user_photo_directory').'/'.$object->getPhotos()))
+        $start_status = $object->getStatus();
         $object->setPhotos($object->getPhotos());
         $old_photos = $object->getPhotos();
 
@@ -265,6 +267,11 @@ class ObjectController extends Controller {
                 $object->setPhotos(array_merge($old_photos,$fileNames));
             } else {
                 $object->setPhotos($old_photos);
+            }
+            
+            //change status date
+            if($start_status != $object->getStatus()){
+                $object->setLastUpdate(new \DateTime());
             }
             
             $em = $this->getDoctrine()->getManager();
@@ -328,12 +335,10 @@ class ObjectController extends Controller {
         if (!$object) {
             throw $this->createNotFoundException('No object found');
         }
-        //remove photos
-//        if(is_dir($this->getParameter('assets_directory').$this->getParameter('objects_photo_directory').'/'.$object->getId()))
-//            $this->deleteDir($this->getParameter('assets_directory').$this->getParameter('objects_photo_directory').'/'.$object->getId());
         
         $em = $this->getDoctrine()->getEntityManager();
         $object->setStatus($request->get('status','new'));
+        $object->setLastUpdate(new \DateTime());
         $em->persist($object);
         $em->flush();
 
@@ -349,9 +354,6 @@ class ObjectController extends Controller {
         if (!$object) {
             throw $this->createNotFoundException('No object found');
         }
-        //remove photos
-//        if(is_dir($this->getParameter('assets_directory').$this->getParameter('objects_photo_directory').'/'.$object->getId()))
-//            $this->deleteDir($this->getParameter('assets_directory').$this->getParameter('objects_photo_directory').'/'.$object->getId());
         
         $em = $this->getDoctrine()->getEntityManager();
         if($request->get('domria','')!="")
@@ -359,7 +361,6 @@ class ObjectController extends Controller {
         $em->persist($object);
         $em->flush();
 
-//        $this->addFlash('success', 'Статус змінено');
         $data = [
                 'code' => 1,
                 'message' => 'Публікацію змінено'

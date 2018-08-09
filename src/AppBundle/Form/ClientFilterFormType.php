@@ -43,6 +43,8 @@ class ClientFilterFormType extends AbstractType
                     'choices' => [
                         'Продаж'  => 'sale',
                         'Оренда'  => 'rent',
+                        'Комерція продаж'  => 'comercial_sale',
+                        'Комерція оренда'  => 'comercial_rent',
 //                        'Все'  => 'all',
                     ]
                 ])

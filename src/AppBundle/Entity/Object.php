@@ -136,6 +136,12 @@ class Object
     private $created;
         
     /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="objects")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $created_by;
+    
+    /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $baseprice;
@@ -435,6 +441,14 @@ class Object
         $this->favourites = $favourites;
     }
 
+    function getCreatedBy() {
+        return $this->created_by;
+    }
+
+    function setCreatedBy($created_by) {
+        $this->created_by = $created_by;
+    }
+    
     function isFavouriteInUser(User $user){
         $favs = $this->getFavourites();
         foreach ($favs as $fav){

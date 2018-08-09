@@ -130,7 +130,7 @@
             <div class="col-lg-3 col-sm-3 col-xs-6 check_old_client">
                 <div class="form-group"> 
                     <label for="exampleInputPassword1">Введіть клієнта</label>
-                    <input type="text" class="form-control client_autocomplete" value="{%if(object.client)%}{{object.client.__toString}}{%endif%}" placeholder="Введіть клієнта" />
+                    <input type="text" class="form-control client_autocomplete" value="{%if(object and object.client)%}{{object.client.__toString}}{%endif%}" placeholder="Введіть клієнта" />
                 </div>
                 {{ form_row(form.client) }}
             </div>

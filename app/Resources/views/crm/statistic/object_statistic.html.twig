@@ -15,6 +15,10 @@
         <div class="graph-container">
             <div id="graph-lines-users"></div>
         </div>
+        <h2>Статистика продажів об'єктів працівниками по місяцях поточного року</h2>
+        <div class="graph-container">
+            <div id="graph-lines-users-sells"></div>
+        </div>
     </div>
 {#    {{dump(res)}}#}
 {% endblock %}
@@ -49,6 +53,22 @@
         ]
         // Lines
         jQuery.plot(jQuery("#graph-lines-users"), usersData, {
+            series: {points: {show: true, radius: 5},lines: {show: true},shadowSize: 0},
+            grid: {color: "#646464",borderColor: "transparent",borderWidth: 20,hoverable: true},
+            xaxis: {tickColor: "transparent",tickDecimals: 2},
+            yaxis: {tickSize: 37}
+        });
+
+        var sellsData = [
+            {% for user_id, user in statistic.yearly_users_selling_by_month %}
+            {   label: '{{users[user_id].name}}',
+                data: [ 
+                    {% for month, val in user.items %}[{{month}},{{val}}],{% endfor %}
+                ],color: "{{user.color}}"},
+            {% endfor %}
+        ]
+        // Lines
+        jQuery.plot(jQuery("#graph-lines-users-sells"), sellsData, {
             series: {points: {show: true, radius: 5},lines: {show: true},shadowSize: 0},
             grid: {color: "#646464",borderColor: "transparent",borderWidth: 20,hoverable: true},
             xaxis: {tickColor: "transparent",tickDecimals: 2},

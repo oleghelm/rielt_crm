@@ -20,6 +20,8 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use AppBundle\Form\Type\EntityHiddenType;
 
 class BidFormType extends AbstractType 
 {
@@ -77,6 +79,11 @@ class BidFormType extends AbstractType
                     'query_builder' => function(UserRepository $repo) {
                         return $repo->findAllUsers();
                     }
+                ])
+                ->add('client',EntityHiddenType::class,[
+                    'label' => 'Власник',
+                    'attr' => ['class'=>'entity_autocomplete client_id','data-href'=>'/crm/clients/search_ajax','data-hidden-input-text'=>'.client_autocomplete','data-input-label-text'=>'Введіть клієнта'],
+                    'class' => Client::class,
                 ])
 //                ->add('client',EntityHiddenType::class,[
 //                    'label' => 'Власник',

@@ -80,12 +80,6 @@ class BidController extends Controller {
                     'multiple' => true,
                     'choices' => $this->getDoctrine()->getRepository('AppBundle:Location')->getLocationsForFilter()
                 ]);
-        $form->add('client',EntityType::class,[
-            'label' => 'Хто подав заявку',
-            'placeholder' => "Виберіть хто подав заявку",
-            'class' => Client::class,
-            'query_builder' => $this->getDoctrine()->getRepository('AppBundle:Client')->findAllUserClients($user)
-        ]);
 
         //render params form
         $paramsForm = $this->getParamsForm(null);
@@ -133,12 +127,7 @@ class BidController extends Controller {
                     'multiple' => true,
                     'choices' => $this->getDoctrine()->getRepository('AppBundle:Location')->getLocationsForFilter()
                 ]);
-        $form->add('client',EntityType::class,[
-            'label' => 'Хто подав заявку',
-            'placeholder' => "Виберіть хто подав заявку",
-            'class' => Client::class,
-            'query_builder' => $this->getDoctrine()->getRepository('AppBundle:Client')->findAllUserClients($user)
-        ]);
+        
         $form->handleRequest($request);
         
         //render params form

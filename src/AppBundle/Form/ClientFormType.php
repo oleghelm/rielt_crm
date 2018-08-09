@@ -33,10 +33,12 @@ class ClientFormType extends AbstractType
                     ]
                 ])
                 ->add('type',ChoiceType::class, [
-                    'label' => 'Тип',
+                    'label' => 'Тип співпраці',
                     'choices' => [
                         'Продаж'  => 'sale',
                         'Оренда'  => 'rent',
+                        'Комерція продаж'  => 'comercial_sale',
+                        'Комерція оренда'  => 'comercial_rent',
 //                        'Все'  => 'all',
                     ]
                 ])
