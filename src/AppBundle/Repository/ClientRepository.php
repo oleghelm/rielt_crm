@@ -107,4 +107,16 @@ class ClientRepository extends EntityRepository
                 ->setParameter('text', '%'.$text.'%')
             ->orderBy('cl.name', 'ASC');
     }
+    
+    public function changeUserInClients($user = false, $ids = false){
+        if(!$user || !$ids){return false;}
+        $queryBuilder = $this->_em->getRepository('AppBundle:Client')->createQueryBuilder('cl');
+        $queryBuilder->update()
+                ->set('cl.user',':user')
+                ->setParameter('user', $user)
+                ->where('cl.id IN (:ids)')
+                ->setParameter('ids', $ids)
+                ->getQuery()->execute()
+                ;
+    }
 }

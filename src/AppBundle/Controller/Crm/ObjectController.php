@@ -11,6 +11,7 @@ use AppBundle\Entity\ObjectParam;
 use AppBundle\Entity\Client;
 use AppBundle\Form\ObjectFormType;
 use AppBundle\Form\ClientShortFormType;
+use AppBundle\Form\ObjectMigrationFormType;
 use AppBundle\Form\OpfType;
 use AppBundle\Form\ObjectFilterFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -199,6 +200,60 @@ class ObjectController extends Controller {
             'clientForm' => $clientForm->createView(),
             'object' => null
         ]);
+    }
+    
+    /**
+     * @Route("/objects/user_migration", name="crm_object_user_migration")
+     */
+    public function userMigrationAction(Request $request){
+        $paramsForm = $this->getParamsFilterForm([],'');
+        $paramsForm->handleRequest($request);
+        $filterData = $paramsForm->getData();
+        
+        if($filterData)
+            $filter = $this->prepareFilterParams($filterData);
+        else 
+            $filter = $this->prepareFilterParams();
+        
+        $migrationForm = $this->createForm(ObjectMigrationFormType::class);
+        $migrationForm->handleRequest($request);
+        if ($migrationForm->isSubmitted() && $migrationForm->isValid()) {
+            $migrationData = $migrationForm->getData();
+            if($migrationData['make_migration']=='Y'){
+                $filter = $this->prepareFilterParams($request->get('form'));
+                $migrateObjects = $this->getDoctrine()->getRepository('AppBundle:Object')->getFilteredObjects($filter)->execute();
+                $migrateClients = [];
+                $migrateObjectsIds = [];
+                foreach ($migrateObjects as $migrateObject){
+                    $migrateObjectsIds[] = $migrateObject->getId();
+                    $client = $migrateObject->getClient();
+                    if($client && !isset($migrateClients[$client->getId()]))
+                        $migrateClients[$client->getId()] = $client->getId();
+                }
+                $this->getDoctrine()->getRepository('AppBundle:Object')->changeUserInObjects($migrationData['user'],$migrateObjectsIds);
+                $this->getDoctrine()->getRepository('AppBundle:Client')->changeUserInClients($migrationData['user'],$migrateClients);
+                $this->addFlash('success', "Ріелтору ".$migrationData['user']->getName()." передано ".count($migrateObjectsIds)." об'єктів та ".count($migrateClients)." клієнтів");
+//                dump($migrateObjectsIds);
+//                dump($migrateClients);
+            }
+        }
+        
+        $query = $this->getDoctrine()->getRepository('AppBundle:Object')->getFilteredObjects($filter);
+        $paginator  = $this->get('knp_paginator');
+        $result = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 20)
+        );
+        
+//        $users = $this->getDoctrine()->getRepository('AppBundle:User')->getUsersForFilter();
+
+        return $this->render('crm/object/list_migrate.html.twig', array(
+            'objects' => $result,
+//            'users' => $users,
+            'paramsForm' => $paramsForm->createView(),
+            'migrationForm' => $migrationForm->createView(),
+        ));
     }
     
     /**

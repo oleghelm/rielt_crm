@@ -1,0 +1,33 @@
+{% extends 'desk.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid listfilterform">
+        {%if(paramsForm is defined)%}
+            {{ include('crm/object/_filter_form.html.twig') }}
+        {%endif%}
+        {{ form_start(migrationForm, {'action': app.request.requestUri,'attr':{'onsubmit': 'return confirm("Ви впевнені, що хочете передати ці позиції?");'} }) }}
+        <div class="row_">
+            <div class="col-md-4 col-sm-6">
+                {{ form_row(migrationForm['user']) }}
+            </div>
+            <div class="col-md-4 col-sm-4">
+                <br />
+                <input type="submit" class='btn btn-danger' value='передати' />
+            </div>
+        </div>
+        {{ form_end(migrationForm) }}
+        <div class="pull-right">
+            <a href="javascript:void(0);" class="btn btn-default" onclick="setCookie('view_type','table',{path:'/'});window.location.reload();"><i class="fa fa-table" title="Таблиця"></i></a>
+            <a href="javascript:void(0);" class="btn btn-default" onclick="setCookie('view_type','list',{path:'/'});window.location.reload();"><i class="fa fa-list" title="Список"></i></a>
+{#            <a href="javascript:void(0);" class="btn btn-default" onclick="setCookie('view_type','grid',{path:'/'});window.location.reload();"><i class="fa fa-th" title="Список"></i></a>#}
+        </div>
+        <br />
+        <br />
+    </div>
+{#        {{dump(app.request.requestUri)}}#}
+    {%if(app.request.cookies.get('view_type')=='list')%}
+        {{ include('crm/object/_list_list.html.twig') }}
+    {%else%}
+        {{ include('crm/object/_list.html.twig') }}
+    {%endif%}
+{% endblock %}

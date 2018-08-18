@@ -270,4 +270,15 @@ class ObjectRepository extends EntityRepository
             $query = $queryBuilder->getQuery()->execute();
             return $query;
         }
+        
+        public function changeUserInObjects($user, $ids){
+            $queryBuilder = $this->_em->getRepository('AppBundle:Object')->createQueryBuilder('ob');
+            $queryBuilder->update()
+                    ->set('ob.user',':user')
+                    ->setParameter('user', $user)
+                    ->where('ob.id IN (:ids)')
+                    ->setParameter('ids', $ids)
+                    ->getQuery()->execute()
+                    ;
+        }
 }

@@ -89,9 +89,11 @@ class CrmController extends Controller
 //            ksort($yearly_companies_by_month[$i]);
             $yearly_companies_by_month[$i]['color'] = next($colors);
         }
+        reset($colors);
         foreach ($yearly_users_by_month as $i=>$yearly_users_by_month_){
             $yearly_users_by_month[$i]['color'] = next($colors);
         }
+        reset($colors);
         foreach ($yearly_users_selling_by_month as $i=>$yearly_users_selling_by_month_){
             $yearly_users_selling_by_month[$i]['color'] = next($colors);
         }
