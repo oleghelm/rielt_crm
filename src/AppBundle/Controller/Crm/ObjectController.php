@@ -284,10 +284,10 @@ class ObjectController extends Controller {
             if(!$object->getCreated() && $object->getLastUpdate()){
                 $object->setCreated($object->getLastUpdate());
             }
-            if($object->getPrice()!="" && $object->getPriceM2()=="" && $object->getArea()!=""){
+            if($object->getPrice()!="" && $object->getPriceM2()==null && $object->getArea()!=""){
                 $object->setPriceM2(round(($object->getPrice()/$object->getArea()),2));
             }
-            if($object->getPriceUah()!="" && $object->getPriceM2Uah()=="" && $object->getArea()!=""){
+            if($object->getPriceUah()!="" && $object->getPriceM2Uah()==null && $object->getArea()!=""){
                 $object->setPriceM2Uah(round(($object->getPriceUah()/$object->getArea()),2));
             }
             

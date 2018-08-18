@@ -67,4 +67,54 @@ class UserRepository extends EntityRepository
         }
         return $arr;
     }
+    public function userStatisticNumbers($user){
+        $result = [];
+        
+        $repository = $this->_em->getRepository('AppBundle:Object')->createQueryBuilder('o');
+        
+        $qb = $repository->select('count(o.id)')
+            ->where('o.created_by = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+        $result['count_created'] = $qb;
+
+        $qb = $repository->select('count(o.id)')
+            ->where('o.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+        $result['count_in_use'] = $qb;
+        
+        $qb = $repository->select('count(o.id) as num, o.status')
+            ->where('o.user = :user')
+            ->setParameter('user', $user)
+            ->groupBy('o.status')
+            ->getQuery()
+            ->getArrayResult();
+        $result['count_in_use_by_statys'] = $qb;
+        
+        $repository = $this->_em->getRepository('AppBundle:Client')->createQueryBuilder('cl');
+        
+        $qb = $repository->select('count(cl.id)')
+            ->where('cl.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+        $result['count_clients'] = $qb;
+        
+        
+        
+        return $result;
+    }
+    
+    public function getUserFavouritesCount($user){
+        $repository = $this->_em->getRepository('AppBundle:Favourite')->createQueryBuilder('f');
+        $qb = $repository->select('count(f.id)')
+            ->where('f.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+        return $qb;
+    }
 }

@@ -3,7 +3,7 @@
 {% block body %}
     <div class="container-fluid">
 {#        <h1>Вітаю у RieltCRM</h1>#}
-        <h3>Завдання</h3>
+        {#<h3>Завдання</h3>
         <div class="row">
             <div class="col-md-12 col sm-12">
                 <hr />
@@ -15,7 +15,7 @@
                 <h4>Доступні</h4>
                 <div class="ajax-list ajax-onready-load tickets-list" data-list-src="{{path('crm_user_free_tickets',{'id': app.user.id})}}"></div>
             </div>
-        </div>
+        </div>#}
         <div class="row">
             <div class="col-md-6 col sm-12">
                 <hr />
@@ -53,6 +53,38 @@
             </div>#}
             <div class="col-md-12 col sm-12">
                 <hr />
+                <h3>Моя статистика</h3>
+                <ul>
+                    <li>Створено об'єктів: <b>{{statistic.personal.count_created}}</b></li>
+                    <li>Веду об'єктів: <b>{{statistic.personal.count_in_use}}</b></li>
+                    <li>Веду об'єктів по статусам:
+                        <ul>
+                            {%for status in statistic.personal.count_in_use_by_statys %}
+                            <li>{% if(status.status=='insale') %}В продажу{% elseif(status.status=='reserved') %}Зарезервовано{% elseif(status.status=='saled') %}Продано{% elseif(status.status=='archive') %}В архіві{% endif %}: <b>{{status.num}}</b></li>
+                            {%endfor%}
+                        </ul>
+                    </li>
+                    <li>Веду клієнтів: <b>{{statistic.personal.count_clients}}</b></li>
+                </ul>
+                <div id="graph-wrapper">
+                    <div class="graph-info">
+                        <a href="#" id="bars"><span></span></a>
+                        <a href="#" id="lines" class="active"><span></span></a>
+                    </div>
+                    <h2>Статистика додавання об'єктів по місяцях поточного року</h2>
+                    <div class="graph-container">
+                        <div id="graph-lines-users"></div>
+                    </div>
+                    <h2>Статистика продажів об'єктів по місяцях поточного року</h2>
+                    <div class="graph-container">
+                        <div id="graph-lines-users-sells"></div>
+                    </div>
+                </div>
+
+            
+            </div>
+            <div class="col-md-12 col sm-12">
+                <hr />
                 <h3>Важливі об'єкти</h3>
                 {% set items = importantObjects %}
                 {{ include('crm/object/_list_important.html.twig') }}
@@ -60,20 +92,61 @@
         </div>
     </div>
 {% endblock %}
+
+
 {% block javascripts %}
     {{ parent() }}
-{#    <script src="{{ asset('js/react.js') }}"></script>#}
-{#    <script src="{{ asset('js/react-dom.js') }}"></script>#}
-{#    <script src="{{ asset('js/browser.min.js') }}"></script>#}
-{#    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>#}
-{#    <script src="//cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js"></script>#}
-{#    <script src="//cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>#}
-{#    <script type="text/babel" src="{{ asset('js/tickets.react.js') }}"></script>#}
-    {#<script type="text/babel">
-        var ticketsUrl = '{{ path('crm_user_tickets', {'id': app.user.id}) }}';
-        ReactDOM.render(
-                <TicketsSection url={ticketsUrl} />,
-                document.getElementById('tickets_crm_main')
-        );
-    </script>#}
+    <script src="{{ asset('js/jquery.flot.min.js') }}"></script>
+    <script>
+        var usersData = [
+            {% for user_id, user in statistic.statistic.yearly_users_by_month %}
+                {%if(user_id==app.user.id)%}
+                {   label: 'я',
+                    data: [ 
+                        {% for month, val in user.items %}[{{month}},{{val}}],{% endfor %}
+                    ],color: "{{user.color}}"},
+                {%endif%}
+            {% endfor %}
+        ]
+        // Lines
+        jQuery.plot(jQuery("#graph-lines-users"), usersData, {
+            series: {points: {show: true, radius: 5},lines: {show: true},shadowSize: 0},
+            grid: {color: "#646464",borderColor: "transparent",borderWidth: 20,hoverable: true},
+            xaxis: {tickColor: "transparent",tickDecimals: 2},
+{#            yaxis: {tickSize: 37}#}
+        });
+
+        var sellsData = [
+            {% for user_id, user in statistic.statistic.yearly_users_selling_by_month %}
+            {   label: 'я',
+                data: [ 
+                    {% for month, val in user.items %}[{{month}},{{val}}],{% endfor %}
+                ],color: "{{user.color}}"},
+            {% endfor %}
+        ]
+        // Lines
+        jQuery.plot(jQuery("#graph-lines-users-sells"), sellsData, {
+            series: {points: {show: true, radius: 5},lines: {show: true},shadowSize: 0},
+            grid: {color: "#646464",borderColor: "transparent",borderWidth: 20,hoverable: true},
+            xaxis: {tickColor: "transparent",tickDecimals: 2},
+{#            yaxis: {tickSize: 37}#}
+        });
+        // Bars
+        {#jQuery.plot(jQuery("#graph-bars"), graphData, {
+            series: {bars: {show: true,barWidth: .9,align: "center"},shadowSize: 0},
+            grid: {color: "#646464",borderColor: "transparent",borderWidth: 20,hoverable: true},
+            xaxis: {tickColor: "transparent",tickDecimals: 2},
+            yaxis: {tickSize: 37}
+        });#}
+        </script>
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+    .graph-container,.graph-container div,.graph-container a,.graph-container span {margin: 0;padding: 0;}
+    .graph-container, #tooltip, .graph-info a {background: #ffffff;background: linear-gradient(to bottom, #ffffff 0%,#f9f9f9 100%);border-radius: 3px;}
+    .graph-container {position: relative;width: 95%;height: 300px;padding: 20px;box-shadow: 0px 1px 2px rgba(0,0,0,.1);}
+    .graph-container > div {position: absolute;width: inherit;height: inherit;top: 10px;left: 25px;}
+    .graph-info {width: 590px;margin-bottom: 10px;}
+    #graph-lines{height:100%}</style>
 {% endblock %}

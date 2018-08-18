@@ -37,7 +37,8 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li class="active" ><button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2"> <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span></button></li>
-                                <li><a href="{{path('crm_object_list_favourite')}}" class="fabourite-btn btn btn-default"><i class="fa fa-star"></i></a></li>
+                                <li><a href="{{path('crm_object_list_favourite')}}" class="fabourite-btn btn btn-default"><i class="fa fa-star"></i>
+                                        <span class="ajax-list ajax-onready-load" data-list-src="{{path('crm_get_fav_count')}}"></span></a></li>
                                 <li class="pull-right"><a href="{{ path('security_logout') }}">Вийти</a></li>
                             </ul>
                 </div><!-- bs-example-navbar-collapse-1 -->

@@ -21,8 +21,14 @@ class CrmController extends Controller
      */
     public function indexAction()
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $statistic = $this->getBasicStatistic($user);
+        $statistic['personal'] = $this->getDoctrine()->getRepository('AppBundle:User')->userStatisticNumbers($user);
+//        dump($total);
+        
         $importantObjects = $this->getDoctrine()->getRepository('AppBundle:Object')->getImportant();
         return $this->render('crm/index.html.twig',[
+            'statistic' => $statistic,
             'importantObjects' => $importantObjects,
         ]);
     }
@@ -32,7 +38,30 @@ class CrmController extends Controller
      */
     public function objectStatisticAction()
     {
-        $total = $this->getDoctrine()->getRepository('AppBundle:Object')->getStatistcByCompanies();
+        $statistic = $this->getBasicStatistic();
+        return $this->render('crm/statistic/object_statistic.html.twig',[
+            'statistic' => $statistic['statistic'],
+            'users' => $statistic['users'],
+            'companies' => $statistic['companies']
+        ]);
+    }
+      
+    /**
+     * @Route("/crm/get_fav_count", name="crm_get_fav_count")
+     */
+    public function getFavouritesCount(){
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $count = $this->getDoctrine()->getRepository('AppBundle:User')->getUserFavouritesCount($user);
+        return $this->render('crm/tools/fav_count.html.twig',[
+            'count' => $count,
+        ]);
+    }
+    
+    public function getBasicStatistic($user = false){
+        if($user)
+            $total = $this->getDoctrine()->getRepository('AppBundle:Object')->getStatistcByUser($user);
+        else
+            $total = $this->getDoctrine()->getRepository('AppBundle:Object')->getStatistcByCompanies();
         //make work array with basic data
         $res = [];
         $users = [];
@@ -106,11 +135,12 @@ class CrmController extends Controller
             'yearly_users_by_month' => $yearly_users_by_month,
             'yearly_users_selling_by_month' => $yearly_users_selling_by_month
         ];
-        return $this->render('crm/statistic/object_statistic.html.twig',[
+        
+        return [
             'statistic' => $statistic,
             'users' => $users,
             'companies' => $companies
-        ]);
+        ];
     }
-
+  
 }

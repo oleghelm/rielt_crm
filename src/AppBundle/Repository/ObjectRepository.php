@@ -270,6 +270,12 @@ class ObjectRepository extends EntityRepository
             $query = $queryBuilder->getQuery()->execute();
             return $query;
         }
+    public function getStatistcByUser($user){
+        $queryBuilder = $this->_em->getRepository('AppBundle:Object')->createQueryBuilder('ob');
+        $queryBuilder->andWhere('ob.user = :user')->setParameter('user', $user);
+        $query = $queryBuilder->getQuery()->execute();
+        return $query;
+    }
         
         public function changeUserInObjects($user, $ids){
             $queryBuilder = $this->_em->getRepository('AppBundle:Object')->createQueryBuilder('ob');
