@@ -11,7 +11,9 @@
 </div>
 <div class="list-responsive-objects">
     {% for object in objects %}
-        <div class="{% if( date(object.lastUpdate) < date('-14days') ) %}
+        <div class="{% if( object.domriaid ) %}
+                    primary
+                {% elseif( date(object.lastUpdate) < date('-14days') ) %}
                     danger
                 {% elseif(object.status=='reserved') %}
                     warning

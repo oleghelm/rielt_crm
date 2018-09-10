@@ -38,6 +38,20 @@ class FileUploader
 
         return $fileNames;
     }
+    public function multipleUploadFromUrl($files)
+    {
+        $fileNames = array();
+        foreach($files as $file){
+            $tmp = explode('/',$file);
+            list($name,$format) = explode('.',$tmp[count($tmp)-1]);
+            $fileName = md5(uniqid()).'.'.$format;
+            $data = $this->getSslPage($file);
+            file_put_contents($this->getTargetDir().$this->getCurrentDir().'/'.$fileName, $data);
+            $fileNames[] = $this->getCurrentDir().'/'.$fileName;
+        }
+
+        return $fileNames;
+    }
 
     public function getTargetDir()
     {
@@ -57,4 +71,18 @@ class FileUploader
     }
 
 
+    private function getSslPage($url) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_REFERER, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        return $result;
+        
+    }
 }

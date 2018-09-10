@@ -20,7 +20,9 @@
     <tbody>
         {% for object in objects %}
             <tr class="
-                {% if( date(object.lastUpdate) < date('-14days') ) %}
+                {% if( object.domriaid ) %}
+                    primary
+                {% elseif( date(object.lastUpdate) < date('-14days') ) %}
                     danger
                 {% elseif(object.status=='reserved') %}
                     warning

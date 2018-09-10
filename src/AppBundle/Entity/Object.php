@@ -77,6 +77,11 @@ class Object
     private $domria = false;
     
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $domria_id = false;
+    
+    /**
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $comission = false;
@@ -447,6 +452,14 @@ class Object
 
     function setCreatedBy($created_by) {
         $this->created_by = $created_by;
+    }
+    
+    function getDomriaId() {
+        return $this->domria_id;
+    }
+
+    function setDomriaId($domria_id) {
+        $this->domria_id = $domria_id;
     }
     
     function isFavouriteInUser(User $user){

@@ -277,14 +277,20 @@ class ObjectRepository extends EntityRepository
         return $query;
     }
         
-        public function changeUserInObjects($user, $ids){
-            $queryBuilder = $this->_em->getRepository('AppBundle:Object')->createQueryBuilder('ob');
-            $queryBuilder->update()
-                    ->set('ob.user',':user')
-                    ->setParameter('user', $user)
-                    ->where('ob.id IN (:ids)')
-                    ->setParameter('ids', $ids)
-                    ->getQuery()->execute()
-                    ;
-        }
+    public function changeUserInObjects($user, $ids){
+        $queryBuilder = $this->_em->getRepository('AppBundle:Object')->createQueryBuilder('ob');
+        $queryBuilder->update()
+                ->set('ob.user',':user')
+                ->setParameter('user', $user)
+                ->where('ob.id IN (:ids)')
+                ->setParameter('ids', $ids)
+                ->getQuery()->execute()
+                ;
+    }
+    
+    public function getObjectsByDomriaIds($ids){
+        $queryBuilder = $this->createQueryBuilder('object');
+        $queryBuilder->where('object.domria_id IN (:ids)')->setParameter('ids', $ids);
+        return $queryBuilder->getQuery()->execute();
+    }
 }

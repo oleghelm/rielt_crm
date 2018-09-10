@@ -27,12 +27,12 @@ class PropertyFormType extends AbstractType
                     'class' => Param::class,
                     'query_builder' => function(ParamRepository $repo) {
                         $qb = $repo->findAllParamsForProperties();
-                        if(isset($_REQUEST['param_id']) && $_REQUEST['param_id']!=""){
-                            $qb->andWhere('param.id = :id')->setParameter('id', $_REQUEST['param_id']);
-                        }
+//                        if(isset($_REQUEST['param_id']) && $_REQUEST['param_id']!=""){
+//                            $qb->andWhere('param.id = :id')->setParameter('id', $_REQUEST['param_id']);
+//                        }
                         return $qb;
                     },
-                    'data'=>(isset($_REQUEST['param_id']) && $_REQUEST['param_id']!="") ? $_REQUEST['param_id'] : null
+//                    'data'=>(isset($_REQUEST['param_id']) && $_REQUEST['param_id']!="") ? $_REQUEST['param_id'] : null
                 ])
                 ;
     }

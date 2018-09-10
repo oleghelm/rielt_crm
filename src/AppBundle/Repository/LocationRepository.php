@@ -32,4 +32,14 @@ class LocationRepository extends EntityRepository
         }
         return $arr;
     }
+    public function getLocationByexportName($ename){
+        $val = $this->createQueryBuilder('location')
+            ->andWhere('location.nameru = :ename')
+            ->setParameter('ename', $ename)
+            ->getQuery()
+            ->getResult();
+        if(!empty($val))
+            return $val[0];
+        else return NULL;
+    }
 }

@@ -1081,3 +1081,15 @@ html,body{height: 100%;}
 .rieltor-contact .tel{font-size:16px}
 .rieltor-contact .tel .title{display:inline-block;vertical-align:top;}
 .rieltor-contact .tel ul{display:inline-block;vertical-align:top;list-style:none;}
+.table-hover>tbody>tr.primary>td{background-color: #D8EDFF;}
+.table-hover>tbody>tr.primary:hover>td{background-color: #BDD6EB;}
+.list-responsive-objects >div.primary{background-color:#D8EDFF;}
+.list-responsive-objects >div.danger{background-color:#f2dede;}
+.list-responsive-objects >div.warning{background-color:#fcf8e3;}
+.list-responsive-objects >div.success{background-color:#dff0d8;}
+.list-responsive-objects >div.active{background-color:#f5f5f5;}
+.list-responsive-objects >div.primary:hover{background-color:#BDD6EB;}
+.list-responsive-objects >div.danger:hover{background-color:#ebcccc;}
+.list-responsive-objects >div.warning:hover{background-color:#faf2cc;}
+.list-responsive-objects >div.success:hover{background-color:#d0e9c6;}
+.list-responsive-objects >div.active:hover{background-color:#e8e8e8;}
