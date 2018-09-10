@@ -44,10 +44,10 @@ class DomRiaParserController extends Controller {
         if(!empty($this->ids)){
             $this->getCompareCurrentObjectsList();
         }
-//        $this->addObjects();
-        $d_object = $this->getDomRiaObjectByID(14769144);
-        $this->addDomriaObject(14769144,$d_object);
-        die;
+        $this->addObjects();
+//        $d_object = $this->getDomRiaObjectByID(14769144);
+//        $this->addDomriaObject(14769144,$d_object);
+//        die;
             
 //        dump($this->ids);
 //        $this->getDomRiaObjectByID(14769144);
@@ -135,7 +135,7 @@ class DomRiaParserController extends Controller {
             $d_object = $this->getDomRiaObjectByID($id);
             $this->addDomriaObject($id,$d_object);
             $i++;
-            if($i>=5)die;
+            if($i>=10)die;
         }
     }
     
