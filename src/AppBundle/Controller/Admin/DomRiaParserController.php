@@ -47,7 +47,7 @@ class DomRiaParserController extends Controller {
         $this->addObjects();
 //        $d_object = $this->getDomRiaObjectByID(14769144);
 //        $this->addDomriaObject(14769144,$d_object);
-//        die;
+        die;
             
 //        dump($this->ids);
 //        $this->getDomRiaObjectByID(14769144);
@@ -79,7 +79,7 @@ class DomRiaParserController extends Controller {
             $response = Unirest\Request::get('https://developers.ria.com/dom/search',$headers,$query);
             if($response->body->count > 0)
                 $this->ids = array_merge($this->ids,$response->body->items);
-            
+//            dump($response->body);
             if($response->body->count > 100){
                 for($page = 1;$page<=($response->body->count-$response->body->count%100)/100;$page++){
                     $query['page'] = $page;
@@ -153,6 +153,7 @@ class DomRiaParserController extends Controller {
         if(isset($d_object->total_square_meters))
             $object->setArea($d_object->total_square_meters);
         $object->setDomriaId($id);
+        $object->setCode($id);
         $object->setCreated(new \DateTime('now'));
         $object->setLastUpdate(new \DateTime('now'));
         $object->setStatus('insale');
@@ -254,12 +255,15 @@ class DomRiaParserController extends Controller {
 //            $this->domria_params[$k];
             if(isset($this->domria_params[$k]->field_name)){
                 $field_name = $this->domria_params[$k]->field_name;
+                $value = false;
                 if(isset($this->domria_params[$k]->children) && !empty($this->domria_params[$k]->children)){
                     $value = $this->domria_params[$k]->children->$v->name;
                 } else {
-                    $value = $d_object->$field_name;
+                    if(isset($d_object->$field_name))
+                        $value = $d_object->$field_name;
                 }
-                $result[$field_name] = $value;
+                if($value)
+                    $result[$field_name] = $value;
             }
         }
         if(isset($result['floors_count'])){$result['floors'] = $result['floors_count'];unset($result['floors_count']);}
