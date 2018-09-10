@@ -72,7 +72,7 @@ class DomRiaParserController extends Controller {
                 'state_id' => '4',
                 'city_id' => '4',
                 'district_id' => '0',
-                'date_from' => '2018-09-01',
+                'date_from' => '2018-09-05',
                 'exclude_agencies' => '1',
                 'api_key' => $this->API_KEY,
                 );
@@ -140,9 +140,9 @@ class DomRiaParserController extends Controller {
     }
     
     private function addDomriaObject($id,$d_object){
-        $data = $this->getSslPage('https://dom.ria.com/uk/'.$d_object->beautiful_url);
+//        $data = $this->getSslPage('https://dom.ria.com/uk/'.$d_object->beautiful_url);
         
-        dump($data);die;
+//        dump($data);die;
         //create object object
         $object = new Object();
         //set basic parameters
