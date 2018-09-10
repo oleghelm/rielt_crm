@@ -67,8 +67,8 @@ class DomRiaParserController extends Controller {
             $headers = array('Accept' => 'application/json');
             $query = array(
                 'category' => $category_id, 
-                'realty_type' => '0',
-                'operation_type' => '0',
+                'realty_type' => '2',
+                'operation_type' => '1',
                 'state_id' => '4',
                 'city_id' => '4',
                 'district_id' => '0',
@@ -135,7 +135,7 @@ class DomRiaParserController extends Controller {
             $d_object = $this->getDomRiaObjectByID($id);
             $this->addDomriaObject($id,$d_object);
             $i++;
-            if($i>=10)die;
+            if($i>=1)die;
         }
     }
     
@@ -219,7 +219,8 @@ class DomRiaParserController extends Controller {
         
         //set parameters
         $preset_params = [
-            'source_link'=>'https://dom.ria.com/uk/'.$d_object->beautiful_url
+            'source_link'=>'https://dom.ria.com/uk/'.$d_object->beautiful_url,
+            'source_type'=>'DOM.RIA',
         ];
         $this->makeParamsSaveArray($d_object,$object,$preset_params);
 //        dump($object);die;
