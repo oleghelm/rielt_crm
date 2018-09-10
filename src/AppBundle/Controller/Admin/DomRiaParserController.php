@@ -277,32 +277,31 @@ class DomRiaParserController extends Controller {
         if($object){
             $em = $this->getDoctrine()->getManager();
             foreach($result as $param_code => $param_value){
-                $op = new ObjectParam();
-                $op->setObject($object);
-//                $param = $this->getDoctrine()->getRepository('AppBundle:Param')->find($forInsert['param_id']);
-//                $param = $this->getDoctrine()->getRepository('AppBundle:Property')->findPropertyByExportName($forInsert['param_id']);
-                $op->setParam($this->params[$param_code]);
-                switch($this->params[$param_code]->getType()){
-                    case 'text': 
-                        $op->setString($param_value);
-                        break;
-                    case 'integer': 
-                    case 'diapazon': 
-                        $op->setNumber($param_value);
-                        break;
-                    case 'floatdiapazon': 
-                    case 'float': 
-                        $op->setFloatnumber(floatval($param_value));
-                        break;
-                    case 'select': 
-                        $property = $this->getParamsProperty($this->params[$param_code], $param_value);
-                        if(!$property)continue;
-                        $op->setProperty($property);
-                        break;
+                if(isset($this->params[$param_code])){
+                    $op = new ObjectParam();
+                    $op->setObject($object);
+                    $op->setParam($this->params[$param_code]);
+                    switch($this->params[$param_code]->getType()){
+                        case 'text': 
+                            $op->setString($param_value);
+                            break;
+                        case 'integer': 
+                        case 'diapazon': 
+                            $op->setNumber($param_value);
+                            break;
+                        case 'floatdiapazon': 
+                        case 'float': 
+                            $op->setFloatnumber(floatval($param_value));
+                            break;
+                        case 'select': 
+                            $property = $this->getParamsProperty($this->params[$param_code], $param_value);
+                            if(!$property)continue;
+                            $op->setProperty($property);
+                            break;
+                    }
+                    $em->persist($op);
+                    $em->flush();
                 }
-//                dump($op);
-                $em->persist($op);
-                $em->flush();
             }
         }
     }
