@@ -135,7 +135,7 @@ class DomRiaParserController extends Controller {
             $d_object = $this->getDomRiaObjectByID($id);
             $this->addDomriaObject($id,$d_object);
             $i++;
-            if($i>=1)die;
+            if($i>=5)die;
         }
     }
     
