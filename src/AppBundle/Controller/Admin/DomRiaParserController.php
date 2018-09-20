@@ -24,6 +24,7 @@ class DomRiaParserController extends Controller {
     public $domria_params_grupped = [];
     public $domria_params = [];
     public $params = [];
+    public $companies = [];
     /**
      * @Route("/parser/domria_get_objects", name="admin_parser_domria_get_objects")
      */
@@ -35,6 +36,10 @@ class DomRiaParserController extends Controller {
         $params = $this->getDoctrine()->getRepository('AppBundle:Param')->findAll();
         foreach($params as $param){
             $this->params[$param->getExportName()] = $param;
+        }
+        $companies = $this->getDoctrine()->getRepository('AppBundle:Company')->findAll();
+        foreach($companies as $company){
+            $this->companies[$company->getId()] = $company;
         }
         
         $this->getDomRiaParams();
@@ -76,6 +81,7 @@ class DomRiaParserController extends Controller {
                 'exclude_agencies' => '1',
                 'api_key' => $this->API_KEY,
                 );
+            //https://developers.ria.com/dom/search?category=1&realty_type=2&operation_type=1&state_id=4&city_id=4&district_id=0&date_from=2018-09-05&exclude_agencies=1&api_key=2q62xWJLweTZYLePhocwyOZszrS9OCrsbf9Q3r8p
             $response = Unirest\Request::get('https://developers.ria.com/dom/search',$headers,$query);
             if($response->body->count > 0)
                 $this->ids = array_merge($this->ids,$response->body->items);
@@ -194,7 +200,6 @@ class DomRiaParserController extends Controller {
         if(isset($d_object->building_number_str) && $d_object->building_number_str!="")
             $addr .= 'б. '.$d_object->building_number_str.', ';
         $object->setAddress($addr);
-        $object->setName('DOM.RIA '.$id.' '.$d_object->advert_type_name.' '.$d_object->realty_type_name.' '.$addr);
         
         if(isset($d_object->district_name))
             $object->setLocation($this->getLocation($d_object->district_name));
@@ -202,28 +207,35 @@ class DomRiaParserController extends Controller {
             $object->setLocation($this->getLocation('set_default'));
         
         $em = $this->getDoctrine()->getManager();
-        $em->persist($object);
-        $em->flush();
         
-        //set images
-        if(!empty($d_object->photos)){
-            //make photopath
-            $tmp = explode("-",$d_object->beautiful_url);
-            unset($tmp[count($tmp)-1]);
-            unset($tmp[0]);
-            $photos = $this->getImages($d_object->photos,$object->getId(),'https://cdn.riastatic.com/photosnew/dom/photo/'.implode('-',$tmp).'__');
-            if(!empty($photos))
-                $object->setPhotos($photos);
+        foreach($this->companies as $company){
+            if($object->getId()){
+                $object = clone $object;
+            }
+            $object->setName('DOM.RIA '.$id.' '.$company->getName().' '.$d_object->advert_type_name.' '.$d_object->realty_type_name.' '.$addr);
+            $object->setCompany($company);
             $em->persist($object);
             $em->flush();
+            //set images
+            if(!empty($d_object->photos)){
+                //make photopath
+                $tmp = explode("-",$d_object->beautiful_url);
+                unset($tmp[count($tmp)-1]);
+                unset($tmp[0]);
+                $photos = $this->getImages($d_object->photos,$object->getId(),'https://cdn.riastatic.com/photosnew/dom/photo/'.implode('-',$tmp).'__');
+                if(!empty($photos))
+                    $object->setPhotos($photos);
+                $em->persist($object);
+                $em->flush();
+            }
+
+            //set parameters
+            $preset_params = [
+                'source_link'=>'https://dom.ria.com/uk/'.$d_object->beautiful_url,
+                'source_type'=>'DOM.RIA',
+            ];
+            $this->makeParamsSaveArray($d_object,$object,$preset_params);
         }
-        
-        //set parameters
-        $preset_params = [
-            'source_link'=>'https://dom.ria.com/uk/'.$d_object->beautiful_url,
-            'source_type'=>'DOM.RIA',
-        ];
-        $this->makeParamsSaveArray($d_object,$object,$preset_params);
 //        dump($object);die;
     }
     
