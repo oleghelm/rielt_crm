@@ -571,6 +571,28 @@ class ObjectController extends Controller {
             'form' => $form->createView()
         ));
     }
+    
+    /**
+     * @Route("/objects/{id}/grabtome", name="crm_object_grabtome")
+     */
+    public function objectGrabToMeAction(Request $request, Object $object)
+    {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        
+        $em = $this->getDoctrine()->getEntityManager();
+        $object->setUser($user);
+        $em->persist($object);
+        $em->flush();
+        
+        $html = '';
+        
+        $data = [
+            'status' => '1',
+            'html' => $html
+        ];
+        return new JsonResponse($data);
+    }
+    
     /**
      * @Route("/objects/{id}", name="crm_object_show")
      */

@@ -178,6 +178,17 @@
         });
         return false;
     })
+    $('body').on('click','.object-grab-tome', function(){
+        var btn = $(this);
+        $.get(btn.attr('href'),function(resp){
+            if(resp.status == '1'){
+                btn.removeClass('btn-default').addClass('btn-warning').attr('title','Забрано').removeClass('object-grab-tome').attr('href','javascript:void(0);');
+            } else {
+                alert('Some error!');
+            }
+        });
+        return false;
+    })
     $('body').on('click','.favourite-add-to-bid', function(){
         var btn = $(this);
         var bid = '';
