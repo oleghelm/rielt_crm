@@ -80,6 +80,7 @@ class DomRiaParserController extends Controller {
                 'date_from' => '2018-09-05',
                 'exclude_agencies' => '1',
                 'api_key' => $this->API_KEY,
+                'characteristic' => [1437=>[2=>1436]]//exclude_agencies
                 );
             //https://developers.ria.com/dom/search?category=1&realty_type=2&operation_type=1&state_id=4&city_id=4&district_id=0&date_from=2018-09-05&exclude_agencies=1&api_key=2q62xWJLweTZYLePhocwyOZszrS9OCrsbf9Q3r8p
             $response = Unirest\Request::get('https://developers.ria.com/dom/search',$headers,$query);
