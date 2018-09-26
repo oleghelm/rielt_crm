@@ -2,6 +2,7 @@
 namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\Object;
+use AppBundle\Entity\Domriaid;
 use AppBundle\Entity\Param;
 use AppBundle\Entity\ObjectParam;
 use AppBundle\Entity\Location;
@@ -124,13 +125,16 @@ class DomRiaParserController extends Controller {
     }
     
     private function getCompareCurrentObjectsList(){
-        //compare current objects in db with ids in parsing list
-        $query = $this->getDoctrine()->getRepository('AppBundle:Object')->getObjectsByDomriaIds($this->ids);
-        $objects = $query;
         $issetIds = [];
+        //compare current objects in db with ids in parsing list
+        $objects = $this->getDoctrine()->getRepository('AppBundle:Object')->getObjectsByDomriaIds($this->ids);
         foreach ($objects as $object){
-            //collect isset ids
             $issetIds[] = $object->getDomriaID();//array_search($object->getDomriaID(), $this->ids);
+        }
+        //compare current dids in db with ids in parsing list
+        $objects = $this->getDoctrine()->getRepository('AppBundle:Domriaid')->getObjectsByDomriaIds($this->ids);
+        foreach ($objects as $object){
+            $issetIds[] = $object->getDid();//array_search($object->getDomriaID(), $this->ids);
         }
         //removeisset ids from collection
         $this->ids = array_diff($this->ids,$issetIds);
@@ -237,7 +241,10 @@ class DomRiaParserController extends Controller {
             ];
             $this->makeParamsSaveArray($d_object,$object,$preset_params);
         }
-//        dump($object);die;
+        $domriaid = new Domriaid;
+        $domriaid->setDid($id);
+        $em->persist($domriaid);
+        $em->flush();
     }
     
     private function getImages($images = [], $id = 'test',$preurl){
