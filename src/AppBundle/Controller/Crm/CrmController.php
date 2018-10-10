@@ -81,6 +81,12 @@ class CrmController extends Controller
                     $users[$user_id] = $object->getUser();
                 }
             } else {continue;}
+            $createdBy = $object->getCreatedBy();
+            if($createdBy){
+                $createdBy = $createdBy->getId();
+            } else {
+                $createdBy = null;
+            }
             $res[] = [
                 'company_id' => $company_id,
                 'object_id' => $object->getId(),
