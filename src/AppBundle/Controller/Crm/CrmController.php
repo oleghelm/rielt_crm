@@ -92,7 +92,7 @@ class CrmController extends Controller
                 'object_id' => $object->getId(),
                 'created' => $object->getCreated(),
                 'user_id' => $object->getUser()->getId(),
-                'created_by' => $object->getCreatedBy()->getId(),
+                'created_by' => $createdBy,
                 'status' => $object->getStatus()
             ];
         }
