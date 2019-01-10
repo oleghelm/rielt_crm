@@ -114,6 +114,8 @@ class ObjectRepository extends EntityRepository
             } else {
                     $queryBuilder->andWhere('ob.status != :status')
                             ->setParameter('status', 'archive');
+                    $queryBuilder->andWhere('ob.status != :status2')
+                            ->setParameter('status2', 'saled');
             }
             
             if(isset($filter['type'])){
