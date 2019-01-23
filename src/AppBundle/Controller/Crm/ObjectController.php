@@ -399,7 +399,10 @@ class ObjectController extends Controller {
 
         $this->addFlash('success', 'Статус змінено');
         
-        return $this->redirectToRoute('crm_object_list');
+        if($_COOKIE['object_lastpage']!="")
+            return $this->redirect($_COOKIE['object_lastpage']);
+        else
+            return $this->redirectToRoute('crm_object_list');
     }
     /**
      * @Route("/objects/{id}/changeadv", name="crm_object_changeadv")

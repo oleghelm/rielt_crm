@@ -48,6 +48,7 @@ class TicketFormType extends AbstractType
                 ->add('task',ChoiceType::class, [
                     'label' => 'Ціль',
                     'choices' => [
+                        'Дзвінок' => 'call',
                         'Зустріч'  => 'meet',
                         "Показ об'єкту"  => 'show',
                         "Оформлення нового об'єкту"  => 'creating',
@@ -58,6 +59,7 @@ class TicketFormType extends AbstractType
                 ->add('result',ChoiceType::class, [
                     'label' => 'Результат',
                     'choices' => [
+                        'Новий'  => 'no',
                         'Успішно'  => 'success',
                         "Не успішно"  => 'notsuccess',
                     ]

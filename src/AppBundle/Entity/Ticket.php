@@ -116,6 +116,7 @@ class Ticket{
     }
     function getTaskTranslate() {
         $names = [
+            'call' => 'Дзвінок',
             'meet' => 'Зустріч',
             'show' => "Показ об'єкту",
             'creating' => "Оформлення нового об'єкту",

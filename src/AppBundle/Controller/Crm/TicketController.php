@@ -68,8 +68,8 @@ class TicketController extends Controller
             $form->get('date_current')->setData(new \DateTime('now'));
         }
         if($filter['date_type']!='period' && !$filter['date_current']){
-            $filter['date_type'] = 'day';
-            $filter['date_current'] = new \DateTime('now');
+//            $filter['date_type'] = 'day';
+//            $filter['date_current'] = new \DateTime('now');
         }
         
         $user = $this->get('security.token_storage')->getToken()->getUser();
@@ -326,5 +326,25 @@ class TicketController extends Controller
         return $this->render('crm/ticket/show.html.twig', array(
             'ticket' => $ticket
         ));
+    }
+    
+    
+    /**
+     * @Route("/tickets/user/{id}/plannedcalllist", name="crm_tickets_planned_call_list")
+     */
+    public function getPlannedCallsListAction(User $user)
+    {
+        $date = new \DateTime();
+        $date->setDate(date('Y'), date('m'), date('d'));
+        $date->setTime(0, 0, 0);
+        $filter = [
+            'date_type' => 'date_from',
+            'date_from' => $date,
+            'task' => 'call',
+            'status' => ['replace','inwork','new']
+        ];
+//        dump($filter);
+        $tickets = $this->getDoctrine()->getRepository('AppBundle:Ticket')->getFilteredUserTickets($user, $filter, true);
+        return $this->render('crm/ticket/_list_calls.html.twig',['items'=>$tickets]);
     }
 }

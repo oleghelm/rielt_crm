@@ -263,6 +263,9 @@ class ObjectRepository extends EntityRepository
      */
     public function getStatistcByCompanies(){
             $queryBuilder = $this->_em->getRepository('AppBundle:Object')->createQueryBuilder('ob');
+            $date = new \DateTime('now');
+            $date->setDate(2019,1,1);
+            $queryBuilder->andWhere('ob.created >= :yearStart')->setParameter('yearStart', $date);
     //        $queryBuilder->orderBy('ob.lastUpdate', 'asc');
     //        $queryBuilder->andWhere('ob.user = :user')->setParameter('user', $user);
     //        $date = new \DateTime('now -14 days');

@@ -57,7 +57,7 @@ class BidController extends Controller {
             'paramsForm' => $paramsForm->createView(),
         ));
     }
-    
+        
     /**
      * @Route("/bids/user/{id}/checklastactive", name="crm_bid_checklastactive_list")
      */
@@ -627,7 +627,7 @@ class BidController extends Controller {
         //find diapazone hack
         foreach ($newParams as $k=>$newParam){
             if(strpos($k,'_')){
-                $tmp = explode('_',$k);dump($tmp);
+                $tmp = explode('_',$k);//dump($tmp);
                 if(is_array($newParams) && !isset($newParams[$tmp[1]])){$newParams[$tmp[1]] = [];}
                 unset($newParams[$tmp[1]][0]);
                 unset($newParams[$tmp[1]][1]);

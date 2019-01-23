@@ -49,6 +49,10 @@ class TicketRepository extends EntityRepository
                 $queryBuilder->andWhere('t.date <= :date_to')
                         ->setParameter('date_to', $filter['date_to']);
             }            
+            if(isset($filter['task'])){
+                $queryBuilder->andWhere('t.task = :task')
+                        ->setParameter('task', $filter['task']);
+            }            
         } else {
             $date = new \DateTime();
             $date->setDate(date('Y'), date('m'), 1);
@@ -61,14 +65,14 @@ class TicketRepository extends EntityRepository
         
         return $query;
     }
-    public function getFilteredUserTickets($user, $filter){
+    public function getFilteredUserTickets($user, $filter, $execute = false){
         $queryBuilder = $this->_em->getRepository('AppBundle:Ticket')->createQueryBuilder('t');
         $queryBuilder->orderBy('t.date', 'asc');
         $queryBuilder->andWhere('t.user = :user')
                 ->setParameter('user', $user);
 
         if($filter && is_array($filter)){
-            if($filter['date_type']=='day'){
+            if(isset($filter['date_type']) && $filter['date_type']=='day'){
                 if(isset($filter['date_current'])){
                     $queryBuilder->andWhere('t.date = :date_current')
                             ->setParameter('date_current', $filter['date_current']);
@@ -83,6 +87,18 @@ class TicketRepository extends EntityRepository
                             ->setParameter('date_to', $filter['date_to']);
                 }            
             }
+            if(isset($filter['task'])){
+                $queryBuilder->andWhere('t.task = :task')
+                        ->setParameter('task', $filter['task']);
+            }
+            if(isset($filter['status'])){
+                if(is_array($filter['status'])){
+                    $queryBuilder->andWhere('t.status IN (:status)')
+                        ->setParameter('status', $filter['status']);
+                } else
+                    $queryBuilder->andWhere('t.status = :status')
+                        ->setParameter('status', $filter['status']);
+            }
         } else {
             $date = new \DateTime();
             $date->setDate(date('Y'), date('m'), 1);
@@ -90,8 +106,10 @@ class TicketRepository extends EntityRepository
                     ->setParameter('date_from', $date);
         }
         
-        
         $query = $queryBuilder->getQuery();
+        
+        if($execute)
+            $query = $query->execute();
         
         return $query;
     }

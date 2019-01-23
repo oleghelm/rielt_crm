@@ -1,4 +1,4 @@
-<div class="row ticket-items">
+<div class="row ticket-items calls-list">
     {% set currDate = null %}
     {% for item in items %}
         {% if(currDate != item.date) %}
@@ -10,38 +10,10 @@
             <div class="clearfix"></div>
         {% endif %}
 {#        <div class="col-md-6 col-sm-6 com-xs-12">#}
-            <div class="ticket-item status-{{ item.status }}">
-                <div class="inforow">
-                    <div class="title">Ріелтор</div>
-                    <div class="val">
-                        {% if(item.user) %}
-                            {{ item.user.name }}
-                        {% else %}
-                            не призначений
-                        {% endif %}
-                    </div>
-                </div>
+            <div class="ticket-item status-{{ item.status }} w95">
                 <div class="inforow">
                     <div class="title">Дата/Час</div>
                     <div class="val">{{  item.date|date("d.m.Y") }} / {{ item.time }}</div>
-                </div>
-                <div class="inforow">
-                    <div class="title">Тип</div>
-                    <div class="val">
-                        {% if(item.task == 'meet') %}
-                            Зустріч
-                        {% elseif(item.task == 'call') %}
-                            Дзвінок
-                        {% elseif(item.task == 'show') %}
-                            Показ об'єкту
-                        {% elseif(item.task == 'creating') %}
-                            Оформлення нового об'єкту
-                        {% elseif(item.task == 'docs') %}
-                            Оформлення документів
-                        {% elseif(item.task == 'standup') %}
-                            Збори в офісі
-                        {% endif %}
-                    </div>
                 </div>
                 <div class="inforow">
                     <div class="title">Статус</div>
@@ -59,6 +31,12 @@
                         {% endif %}
                     </div>
                 </div>
+                {% if item.client %}
+                <div class="inforow">
+                    <div class="title">Клієнт</div>
+                    <div class="val">{{  item.client.name }}</div>
+                </div>
+                {% endif %}
                 <div class="inforow buttons">
                     <a href="{{ path('crm_ticket_status', {'id': item.id}) }}" class="btn btn-primary btn-sm ajax-page-load" ><i class="fa fa-unsorted"></i></a>
                     <a href="{{ path('crm_ticket_show', {'id': item.id}) }}" class="btn btn-success btn-sm ajax-page-load" ><i class="fa fa-arrows"></i></a>

@@ -17,6 +17,13 @@
             </div>
         </div>#}
         <div class="row">
+            <div class="col-md-12 col sm-12">
+                <hr />
+                <h3>Позвон клієнтів(запланований)</h3>
+                <div class="ajax-list ajax-onready-load tickets-list" data-list-src="{{path('crm_tickets_planned_call_list',{'id': app.user.id})}}"></div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-6 col sm-12">
                 <hr />
                 <h3>Позвон клієнтів(більше 2 тиждні без активності)</h3>

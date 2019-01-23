@@ -1,4 +1,3 @@
-{#{{dump(ticket)}}#}
 <table class="table">
     {% if(ticket.user) %}
     <tr>
@@ -31,6 +30,16 @@
         <th>Клієнт</th>
         <td>{{ticket.client.name}}</td>
     </tr>
+        {% if(ticket.client.canEdit(app.user)) %}
+        <tr>
+            <th>Телефони</th>
+            <td>
+                {% for phone in ticket.client.phones %}
+                    <a href="tel:{{phone}}">{{phone}}</a><br>
+                {% endfor %}
+            </td>
+        </tr>
+        {% endif %}
     {% endif %}
     {% if(ticket.object) %}
     <tr>

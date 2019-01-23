@@ -144,6 +144,7 @@ class DomRiaParserController extends Controller {
         $i=0;
         foreach ($this->ids as $id){
             $d_object = $this->getDomRiaObjectByID($id);
+//            dump($d_object);die;
             $this->addDomriaObject($id,$d_object);
             $i++;
             if($i>=5)die;
