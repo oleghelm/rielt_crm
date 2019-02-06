@@ -52,7 +52,7 @@
                 <div class="col-sm-12">
                     {#                            <a href="{{ path('crm_object_list') }}" class="btn btn-primary btn-sm" ><i class="fa fa-arrow-left"></i></a>#}
                         <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="window.history.back()" title="Повернутись"><i class="fa fa-arrow-left"></i></a>
-                        {% if object.canEdit(app.User) %}
+                        {% if object.canEdit(app.User) or not object.user %}
                             <a href="{{ path('crm_object_edit', {'id': object.id}) }}" class="btn btn-warning btn-sm" title="Редагувати"><i class="fa fa-edit"></i></a>
                             <a href="{{path('crm_object_changestatus', {'id': object.id,'status':'saled'})}}"  title="Продано" class="btn btn-success btn-sm" onclick="if (confirm('Ви впевнені, що хочете встанови статус продано?')) {} else {return false;}"><i class="fa fa-money"></i></a>
                             <a href="{{path('crm_object_changestatus', {'id': object.id,'status':'reserved'})}}"  title="Зарезервувати" class="btn btn-warning btn-sm" onclick="if (confirm('Ви впевнені, що хочете встанови статус продано?')) {} else {return false;}"><i class="fa fa-clock-o"></i></a>

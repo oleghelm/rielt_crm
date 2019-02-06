@@ -303,6 +303,7 @@ class DomRiaParserController extends Controller {
         if($object){
             $em = $this->getDoctrine()->getManager();
             foreach($result as $param_code => $param_value){
+                if(is_null($param_value)){continue;}
                 if(isset($this->params[$param_code])){
                     $op = new ObjectParam();
                     $op->setObject($object);
