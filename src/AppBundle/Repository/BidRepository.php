@@ -21,6 +21,7 @@ class BidRepository extends EntityRepository
         $queryBuilder = $this->_em->getRepository('AppBundle:Bid')->createQueryBuilder('bp');
         $queryBuilder->leftJoin('bp.user', 'user');
         $queryBuilder->leftJoin('bp.client', 'client');
+        $queryBuilder->leftJoin('bp.company', 'company');
         if($filter && is_array($filter)){
             if(isset($filter['name']) && $filter['name']['val'] !=""){
                 $queryBuilder->andWhere('bp.name LIKE :obname')
@@ -40,7 +41,13 @@ class BidRepository extends EntityRepository
                     $queryBuilder->andWhere('bp.client = :client')
                             ->setParameter('client', $filter['client']['val']);
             }
-            
+            if(isset($filter['company'])){
+                if(is_array($filter['company']['val']))
+                    $queryBuilder->andWhere('company.id IN '.'('.implode(',',$filter['company']['val']).')');
+                elseif($filter['company']['val']!="")
+                    $queryBuilder->andWhere('company = :company')
+                            ->setParameter('company', $filter['company']['val']);
+            }
             if(isset($filter['status'])){
                 if(is_array($filter['status']['val']))
                     $queryBuilder->andWhere('bp.status IN '.'(:status)')

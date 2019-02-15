@@ -4,9 +4,11 @@ namespace AppBundle\Form;
 
 use AppBundle\Entity\Client;
 use AppBundle\Entity\User;
+use AppBundle\Entity\Company;
 use AppBundle\Repository\UserRepository;
 use AppBundle\Repository\ClientRepository;
 use AppBundle\Repository\LocationRepository;
+use AppBundle\Repository\CompanyRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -98,6 +100,14 @@ class BidFormType extends AbstractType
 //                        return $repo->findAllClients();
 //                    }
 //                ])
+                ->add('company',EntityType::class,[
+                    'label' => 'Компанія',
+                    'placeholder' => "Виберіть компанію",
+                    'class' => Company::class,
+                    'query_builder' => function(CompanyRepository $repo) {
+                        return $repo->findAllCompanies();
+                    }
+                ])
                 ->add('lastUpdate',DateType::class,[
                     'label' => 'Останній контакт',
                     'widget' => 'single_text',

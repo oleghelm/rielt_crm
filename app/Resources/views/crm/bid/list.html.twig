@@ -4,6 +4,23 @@
     <div class="container-fluid listfilterform">
         {{ form_start(paramsForm, {'action': path('crm_bid_list')}) }}
         <div class="row">
+            <div class="col-lg-2 col-sm-3 col-xs-6">
+                <div class="form-group checkbox-group">
+                    <label class="control-label required">Компанія</label>
+                    <div id="form_company">
+                        {% for ch in paramsForm.company.children %}
+                            <div class="checkbox">
+                                <input style="display:none;" type="checkbox" id="{{ch.vars.id}}" name="{{ch.vars.full_name}}" value="{{ch.vars.value}}" {% if(ch.vars.checked) %}checked="checked"{% endif %}>
+                                <label for="{{ch.vars.id}}">
+                                    <img src="{{ch.vars.attr['data-image']}}" height="30">
+                                    {{ch.vars.label}}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% do paramsForm.company.setRendered %}
+            </div>
             <div class="col-lg-2 col-sm-4 col-xs-6">{{ form_row(paramsForm['status']) }}</div>
             <div class="col-lg-2 col-sm-4 col-xs-6">{{ form_row(paramsForm['type']) }}</div>
             <div class="col-lg-2 col-sm-4 col-xs-6">{{ form_row(paramsForm['user']) }}</div>

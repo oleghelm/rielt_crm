@@ -93,6 +93,12 @@ class Bid
     private $rooms;
     
     /**
+     * @ORM\ManyToOne(targetEntity="Company", inversedBy="objects")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $company;
+    
+    /**
      * @ORM\OneToMany(targetEntity="BidParam", mappedBy="bid", orphanRemoval=true)
      * @ORM\JoinColumn(nullable=true)
      */
@@ -303,5 +309,16 @@ class Bid
             $Params = $formParams;
         }
         return $Params;
+    }
+    /**
+     * 
+     * @return Company
+     */
+    function getCompany() {
+        return $this->company;
+    }
+
+    function setCompany($company) {
+        $this->company = $company;
     }
 }

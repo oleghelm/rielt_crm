@@ -22,6 +22,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 /**
  * @Security("is_granted('ROLE_CRM_USER') or is_granted('ROLE_SUPERADMIN')")
@@ -257,7 +258,7 @@ class BidController extends Controller {
                     break;
             }
         }
-//dump($queryString);die;
+
         $this->addFlash('success', 'Фльтр заповнено згідно заявки №'.$bid->getId());
         
         return $this->redirectToRoute('crm_object_list',['bid'=>$bid->getId(),'form'=>$queryString]);
@@ -481,11 +482,12 @@ class BidController extends Controller {
      */
     public function getParamsFilterForm(){
         $formParams = $this->getParamsFilterFormParams();
-        
+//        dump($formParams);
         return $this->generateParamsForm($formParams,['method'=>'GET']);
     }
     
     public function addDefaultBidSearchFields($formParams = []){
+        
         $formParams[] = [
             'id' => 'status',
             'type' => 'select',
@@ -521,6 +523,14 @@ class BidController extends Controller {
             'multiple' => false,
             'choices' =>  $this->getDoctrine()->getRepository('AppBundle:User')->getUsersForFilter(),
         ];
+        $formParams[] = [
+            'id' => 'company',
+            'type' => 'checkbox',
+            'label' => 'Компанія',
+            'multiple' => true,
+            'choices' =>  $this->getDoctrine()->getRepository('AppBundle:Company')->getForFilter(),
+            'choice_attr' =>  $this->getDoctrine()->getRepository('AppBundle:Company')->getImagesForFilter(),
+        ];
 //        $formParams[] = [
 //            'id' => 'min_price',
 //            'type' => 'integer',
@@ -547,6 +557,15 @@ class BidController extends Controller {
                         'label' => $formParam['label'],
                         'choices' => $formParam['choices'],
                         'multiple' => $formParam['multiple']
+                    ]);
+                    break;
+                case 'checkbox':
+                    $formBuilder->add($formParam['id'],ChoiceType::class, [
+                        'label' => $formParam['label'],
+                        'choices' => $formParam['choices'],
+                        'choice_attr' => $formParam['choice_attr'],
+                        'multiple' => $formParam['multiple'],
+                        'expanded' => true,
                     ]);
                     break;
                 case 'text':
@@ -627,7 +646,7 @@ class BidController extends Controller {
         //find diapazone hack
         foreach ($newParams as $k=>$newParam){
             if(strpos($k,'_')){
-                $tmp = explode('_',$k);//dump($tmp);
+                $tmp = explode('_',$k);
                 if(is_array($newParams) && !isset($newParams[$tmp[1]])){$newParams[$tmp[1]] = [];}
                 unset($newParams[$tmp[1]][0]);
                 unset($newParams[$tmp[1]][1]);
