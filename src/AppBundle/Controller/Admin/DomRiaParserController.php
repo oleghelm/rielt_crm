@@ -47,43 +47,51 @@ class DomRiaParserController extends Controller {
         
         //get ids to parse
         $this->getListObjectsByFilter();
+//        dump($this->ids);die;
         if(!empty($this->ids)){
             $this->getCompareCurrentObjectsList();
         }
         $this->addObjects();
-//        $d_object = $this->getDomRiaObjectByID(14769144);
-//        $this->addDomriaObject(14769144,$d_object);
         die;
-            
-//        dump($this->ids);
-//        $this->getDomRiaObjectByID(14769144);
     }
     
     private function getListObjectsByFilter(){
-        //curl query to domria
-        //category=1 - kvartiru
-        //category=4 - doma
-        //category=13 - komrcial nedv
-        //category=10 - ofisu
-        //category=24 - zemelni uchastku
-        //category=30 - garaji
-        // search Songs of Frank Sinatra
-        $check_ids = array(1);
-        foreach($check_ids as $category_id){
-            $headers = array('Accept' => 'application/json');
-            $query = array(
-                'category' => $category_id, 
-                'realty_type' => '2',
-                'operation_type' => '1',
+        $filters = [
+            ['category' => 1,   'realty_type' => 2,     'operation_type' => 1],//продажа квартир і домів від власників
+            ['category' => 13,  'realty_type' => 11,    'operation_type' => 1],//Продажа офисного помещения
+            ['category' => 13,  'realty_type' => 12,    'operation_type' => 1],//Продажа офисного здания
+            ['category' => 13,  'realty_type' => 14,    'operation_type' => 1],//Продажа торговых площадей
+            ['category' => 13,  'realty_type' => 15,    'operation_type' => 1],//Продажа складских помещений
+            ['category' => 13,  'realty_type' => 16,    'operation_type' => 1],//Продажа производственных помещений
+            ['category' => 13,  'realty_type' => 17,    'operation_type' => 1],//Продажа кафе, бара, ресторана
+            ['category' => 13,  'realty_type' => 18,    'operation_type' => 1],//Продажа объекта сферы услуг
+            ['category' => 13,  'realty_type' => 19,    'operation_type' => 1],//Продажа отеля, гостиницы
+            ['category' => 13,  'realty_type' => 20,    'operation_type' => 1],//Продажа базы отдыха, пансионата
+            ['category' => 13,  'realty_type' => 21,    'operation_type' => 1],//Продажа помещений свободного назн.
+            ['category' => 13,  'realty_type' => 22,    'operation_type' => 1],//Продажа готового бизнеса
+            ['category' => 13,  'realty_type' => 11,    'operation_type' => 2],//Долгосрочная аренда офисного помещения
+            ['category' => 13,  'realty_type' => 12,    'operation_type' => 2],//Долгосрочная аренда офисного здания
+            ['category' => 13,  'realty_type' => 14,    'operation_type' => 2],//Долгосрочная аренда торговые площади
+            ['category' => 13,  'realty_type' => 15,    'operation_type' => 2],//Долгосрочная аренда складских помещений
+            ['category' => 13,  'realty_type' => 16,    'operation_type' => 2],//Долгосрочная аренда производственных помещений
+            ['category' => 13,  'realty_type' => 17,    'operation_type' => 2],//Долгосрочная аренда кафе, бара, ресторана
+            ['category' => 13,  'realty_type' => 18,    'operation_type' => 2],//Долгосрочная аренда объекта сферы услуг
+            ['category' => 13,  'realty_type' => 19,    'operation_type' => 2],//Долгосрочная аренда отеля, гостиницы
+//            ['category' => 13,  'realty_type' => 20,    'operation_type' => 2],//
+            ['category' => 13,  'realty_type' => 21,    'operation_type' => 2],//Долгосрочная аренда помещений свободного назн.
+            ['category' => 13,  'realty_type' => 22,    'operation_type' => 2],//Долгосрочная аренда готового бизнеса
+        ];
+        $headers = array('Accept' => 'application/json');
+        foreach($filters as $filter){
+            $query = array_merge($filter,[
                 'state_id' => '4',
                 'city_id' => '4',
                 'district_id' => '0',
-                'date_from' => '2018-09-05',
+                'date_from' => '2019-01-01',
                 'exclude_agencies' => '1',
                 'api_key' => $this->API_KEY,
                 'characteristic' => [1437=>[2=>1436]]//exclude_agencies
-                );
-            //https://developers.ria.com/dom/search?category=1&realty_type=2&operation_type=1&state_id=4&city_id=4&district_id=0&date_from=2018-09-05&exclude_agencies=1&api_key=2q62xWJLweTZYLePhocwyOZszrS9OCrsbf9Q3r8p
+            ]);
             $response = Unirest\Request::get('https://developers.ria.com/dom/search',$headers,$query);
             if($response->body->count > 0)
                 $this->ids = array_merge($this->ids,$response->body->items);
@@ -94,6 +102,49 @@ class DomRiaParserController extends Controller {
                     $response = Unirest\Request::get('https://developers.ria.com/dom/search',$headers,$query);
                     if($response->body->count > 0)
                         $this->ids = array_merge($this->ids,$response->body->items);
+                }
+            }
+        }
+        return;
+        //curl query to domria
+        //category=1 - kvartiru
+        //category=4 - doma
+        //category=13 - komrcial nedv
+        //category=10 - ofisu
+        //category=24 - zemelni uchastku
+        //category=30 - garaji
+        $check_ids = array(1,13);
+        $realty_types_for_cats = array(
+            1 => array(2),
+            13 => array(11,12,14,15,16,17,18,19,20,21,22),
+        );
+        foreach($check_ids as $category_id){
+            foreach($realty_types_for_cats[$category_id] as $realty_type){
+                $headers = array('Accept' => 'application/json');
+                $query = array(
+                    'category' => $category_id, 
+                    'realty_type' => $realty_type,
+                    'operation_type' => '1',//1 - prodaga, 2 - , 3 - dolgostr.arenda, 4 - posutochnaz arenda
+                    'state_id' => '4',
+                    'city_id' => '4',
+                    'district_id' => '0',
+                    'date_from' => '2019-01-01',
+                    'exclude_agencies' => '1',
+                    'api_key' => $this->API_KEY,
+                    'characteristic' => [1437=>[2=>1436]]//exclude_agencies
+                    );
+                //https://developers.ria.com/dom/search?category=1&realty_type=2&operation_type=1&state_id=4&city_id=4&district_id=0&date_from=2018-09-05&exclude_agencies=1&api_key=2q62xWJLweTZYLePhocwyOZszrS9OCrsbf9Q3r8p
+                $response = Unirest\Request::get('https://developers.ria.com/dom/search',$headers,$query);
+                if($response->body->count > 0)
+                    $this->ids = array_merge($this->ids,$response->body->items);
+    //            dump($response->body);
+                if($response->body->count > 100){
+                    for($page = 1;$page<=($response->body->count-$response->body->count%100)/100;$page++){
+                        $query['page'] = $page;
+                        $response = Unirest\Request::get('https://developers.ria.com/dom/search',$headers,$query);
+                        if($response->body->count > 0)
+                            $this->ids = array_merge($this->ids,$response->body->items);
+                    }
                 }
             }
             
@@ -153,8 +204,7 @@ class DomRiaParserController extends Controller {
     
     private function addDomriaObject($id,$d_object){
 //        $data = $this->getSslPage('https://dom.ria.com/uk/'.$d_object->beautiful_url);
-        
-//        dump($data);die;
+
         //create object object
         $object = new Object();
         //set basic parameters
@@ -173,7 +223,8 @@ class DomRiaParserController extends Controller {
 //        $object->setClient(...);
 //        $object->setUser(...);
         
-        if($d_object->is_commercial == 0)
+//        if($d_object->is_commercial == 0 || $d_object->realty_type_parent_id == 13)
+        if($d_object->realty_type_parent_id == 1)
             $type = 'simple_';
         else
             $type = 'comercial_';
@@ -242,6 +293,8 @@ class DomRiaParserController extends Controller {
             ];
             $this->makeParamsSaveArray($d_object,$object,$preset_params);
         }
+//        dump($d_object);
+//        dump($object);die;
         $domriaid = new Domriaid;
         $domriaid->setDid($id);
         $em->persist($domriaid);
