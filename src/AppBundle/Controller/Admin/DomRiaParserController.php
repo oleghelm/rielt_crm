@@ -58,28 +58,28 @@ class DomRiaParserController extends Controller {
     private function getListObjectsByFilter(){
         $filters = [
             ['category' => 1,   'realty_type' => 2,     'operation_type' => 1],//продажа квартир і домів від власників
-            ['category' => 13,  'realty_type' => 11,    'operation_type' => 1],//Продажа офисного помещения
-            ['category' => 13,  'realty_type' => 12,    'operation_type' => 1],//Продажа офисного здания
-            ['category' => 13,  'realty_type' => 14,    'operation_type' => 1],//Продажа торговых площадей
-            ['category' => 13,  'realty_type' => 15,    'operation_type' => 1],//Продажа складских помещений
-            ['category' => 13,  'realty_type' => 16,    'operation_type' => 1],//Продажа производственных помещений
-            ['category' => 13,  'realty_type' => 17,    'operation_type' => 1],//Продажа кафе, бара, ресторана
-            ['category' => 13,  'realty_type' => 18,    'operation_type' => 1],//Продажа объекта сферы услуг
-            ['category' => 13,  'realty_type' => 19,    'operation_type' => 1],//Продажа отеля, гостиницы
-            ['category' => 13,  'realty_type' => 20,    'operation_type' => 1],//Продажа базы отдыха, пансионата
-            ['category' => 13,  'realty_type' => 21,    'operation_type' => 1],//Продажа помещений свободного назн.
-            ['category' => 13,  'realty_type' => 22,    'operation_type' => 1],//Продажа готового бизнеса
-            ['category' => 13,  'realty_type' => 11,    'operation_type' => 2],//Долгосрочная аренда офисного помещения
-            ['category' => 13,  'realty_type' => 12,    'operation_type' => 2],//Долгосрочная аренда офисного здания
-            ['category' => 13,  'realty_type' => 14,    'operation_type' => 2],//Долгосрочная аренда торговые площади
-            ['category' => 13,  'realty_type' => 15,    'operation_type' => 2],//Долгосрочная аренда складских помещений
-            ['category' => 13,  'realty_type' => 16,    'operation_type' => 2],//Долгосрочная аренда производственных помещений
-            ['category' => 13,  'realty_type' => 17,    'operation_type' => 2],//Долгосрочная аренда кафе, бара, ресторана
-            ['category' => 13,  'realty_type' => 18,    'operation_type' => 2],//Долгосрочная аренда объекта сферы услуг
-            ['category' => 13,  'realty_type' => 19,    'operation_type' => 2],//Долгосрочная аренда отеля, гостиницы
-//            ['category' => 13,  'realty_type' => 20,    'operation_type' => 2],//
-            ['category' => 13,  'realty_type' => 21,    'operation_type' => 2],//Долгосрочная аренда помещений свободного назн.
-            ['category' => 13,  'realty_type' => 22,    'operation_type' => 2],//Долгосрочная аренда готового бизнеса
+//            ['category' => 13,  'realty_type' => 11,    'operation_type' => 1],//Продажа офисного помещения
+//            ['category' => 13,  'realty_type' => 12,    'operation_type' => 1],//Продажа офисного здания
+//            ['category' => 13,  'realty_type' => 14,    'operation_type' => 1],//Продажа торговых площадей
+//            ['category' => 13,  'realty_type' => 15,    'operation_type' => 1],//Продажа складских помещений
+//            ['category' => 13,  'realty_type' => 16,    'operation_type' => 1],//Продажа производственных помещений
+//            ['category' => 13,  'realty_type' => 17,    'operation_type' => 1],//Продажа кафе, бара, ресторана
+//            ['category' => 13,  'realty_type' => 18,    'operation_type' => 1],//Продажа объекта сферы услуг
+//            ['category' => 13,  'realty_type' => 19,    'operation_type' => 1],//Продажа отеля, гостиницы
+//            ['category' => 13,  'realty_type' => 20,    'operation_type' => 1],//Продажа базы отдыха, пансионата
+//            ['category' => 13,  'realty_type' => 21,    'operation_type' => 1],//Продажа помещений свободного назн.
+//            ['category' => 13,  'realty_type' => 22,    'operation_type' => 1],//Продажа готового бизнеса
+//            ['category' => 13,  'realty_type' => 11,    'operation_type' => 2],//Долгосрочная аренда офисного помещения
+//            ['category' => 13,  'realty_type' => 12,    'operation_type' => 2],//Долгосрочная аренда офисного здания
+//            ['category' => 13,  'realty_type' => 14,    'operation_type' => 2],//Долгосрочная аренда торговые площади
+//            ['category' => 13,  'realty_type' => 15,    'operation_type' => 2],//Долгосрочная аренда складских помещений
+//            ['category' => 13,  'realty_type' => 16,    'operation_type' => 2],//Долгосрочная аренда производственных помещений
+//            ['category' => 13,  'realty_type' => 17,    'operation_type' => 2],//Долгосрочная аренда кафе, бара, ресторана
+//            ['category' => 13,  'realty_type' => 18,    'operation_type' => 2],//Долгосрочная аренда объекта сферы услуг
+//            ['category' => 13,  'realty_type' => 19,    'operation_type' => 2],//Долгосрочная аренда отеля, гостиницы
+////            ['category' => 13,  'realty_type' => 20,    'operation_type' => 2],//
+//            ['category' => 13,  'realty_type' => 21,    'operation_type' => 2],//Долгосрочная аренда помещений свободного назн.
+//            ['category' => 13,  'realty_type' => 22,    'operation_type' => 2],//Долгосрочная аренда готового бизнеса
         ];
         $headers = array('Accept' => 'application/json');
         foreach($filters as $filter){
