@@ -264,6 +264,7 @@ class DomRiaParserController extends Controller {
         
         $em = $this->getDoctrine()->getManager();
         foreach($this->companies as $company){
+            if(($object->getType() == 'comercial_sale' || $object->getType() == 'comercial_rent') && $company->getId() != 1){continue;}
             if($object->getId()){
                 $object = clone $object;
             }
