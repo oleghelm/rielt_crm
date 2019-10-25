@@ -126,6 +126,12 @@ class ObjectController extends Controller {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $object = new Object();
         $object->setUser($user);
+        
+        if($request->get('client_id',false)){
+            $client = $this->getDoctrine()->getRepository('AppBundle:Client')->find($request->get('client_id'));
+            $object->setClient($client);
+        }
+        
         $form = $this->createForm(ObjectFormType::class,$object);
 
         //render params form
@@ -198,7 +204,7 @@ class ObjectController extends Controller {
             'paramsMap' => $paramsMap,
             'paramsDetailMap' => $paramsDetailMap,
             'clientForm' => $clientForm->createView(),
-            'object' => null
+            'object' => $object
         ]);
     }
     

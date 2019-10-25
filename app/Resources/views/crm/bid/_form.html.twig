@@ -2,6 +2,7 @@
 <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#tab1">Об'єкт</a></li>
     <li><a data-toggle="tab" href="#tab3">Параметри</a></li>
+    <li><a data-toggle="tab" href="#tab4">Клієнт</a></li>
 </ul>
 
 <div class="tab-content">
@@ -18,13 +19,13 @@
             <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.baseprice) }}</div>
             <div class="clearfix"></div>
             <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.user) }}</div>
-            <div class="col-lg-3 col-sm-3 col-xs-6">
+            {#<div class="col-lg-3 col-sm-3 col-xs-6">
                 <div class="form-group"> 
                     <label for="exampleInputPassword1">Введіть клієнта</label>
                     <input type="text" class="form-control client_autocomplete" value="{%if(bid and bid.client)%}{{bid.client.__toString}}{%endif%}" placeholder="Введіть клієнта" />
                 </div>
                 {{ form_row(form.client) }}
-            </div>
+            </div>#}
             <div class="clearfix"></div>
             <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.status) }}</div>
             <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(form.important) }}</div>
@@ -35,6 +36,28 @@
     </div>
     <div id="tab3" class="tab-pane fade">
         {{ include('crm/bid/_params_form.html.twig') }}
+    </div>
+    <div id="tab4" class="tab-pane fade">
+        <div class="row">
+            <div class="col-lg-3 col-sm-3 col-xs-6 check_old_client">
+                <div class="form-group"> 
+                    <label for="exampleInputPassword1">Введіть клієнта</label>
+                    <input type="text" class="form-control client_autocomplete" value="{%if(bid and bid.client)%}{{bid.client.__toString}}{%endif%}" placeholder="Введіть клієнта" />
+                </div>
+                {{ form_row(form.client) }}
+            </div>
+            <div class="col-lg-3 col-sm-3 col-xs-6 check_old_client" style="padding:0;"><label for="">&nbsp;</label><br><a href="javascript:void(0);" class="btn btn-warning edit_old_client"><i class="fa fa-edit"></i></a></div>
+            <div class="clearfix"></div>
+            <div class="col-lg-3 col-sm-3 col-xs-6"><label><input type="checkbox" name="new_client" value="Y" /> Створити нововго</label></div>
+            <div class="clearfix"></div>
+            <div class="new_client_form">
+                <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(clientForm.name) }}</div>
+                <div class="clearfix"></div>
+                <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(clientForm.info) }}</div>
+                <div class="clearfix"></div>
+                <div class="col-lg-3 col-sm-3 col-xs-6">{{ form_row(clientForm.phones) }}</div>
+            </div>
+        </div>
     </div>
 </div>
 <button class="btn btn-primary" name="submitType" value="apply" type="submit" formnovalidate title="Зберегти"><i class="fa fa-save"></i></button>&nbsp;

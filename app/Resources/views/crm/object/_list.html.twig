@@ -6,7 +6,8 @@
         <tr>
             <th>{{knp_pagination_sortable(objects, 'Код', 'ob.code')}}</th>
             <th>{{knp_pagination_sortable(objects, 'Назва', 'ob.name')}}</th>
-            <th>{{knp_pagination_sortable(objects, 'Статус', 'ob.status')}}</th>
+{#            <th>{{knp_pagination_sortable(objects, 'Статус', 'ob.status')}}</th>#}
+            <th>Стан</th>
             <th>{{knp_pagination_sortable(objects, 'Район', 'location.name')}}</th>
             <th>{{knp_pagination_sortable(objects, 'Ціна', 'ob.price')}}</th>
             <th>{{knp_pagination_sortable(objects, 'К-сть кімнат', 'ob.rooms')}}</th>
@@ -69,7 +70,8 @@
                     </a>
                 </td>
                 <td>
-                    {% if(object.status=='insale') %}
+                    {%if(object.getParamVal(27)!="")%}{{ object.getParamVal(27) }}{%endif%}
+                    {#{% if(object.status=='insale') %}
                         В продажу
                     {% elseif(object.status=='reserved') %}
                         Зарезервовано
@@ -77,7 +79,7 @@
                         Продано
                     {% elseif(object.status=='archive') %}
                         В архіві
-                    {% endif %}
+                    {% endif %}#}
                 </td>
                 <td>
                     {% if(object.location) %}

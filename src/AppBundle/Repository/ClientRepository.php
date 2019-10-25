@@ -100,6 +100,13 @@ class ClientRepository extends EntityRepository
                 ->setParameter('user', $user)
             ->orderBy('cl.name', 'ASC');
     }
+    public function getByID($client_id)
+    {
+        return $this->createQueryBuilder('cl')
+                ->where("cl.id = :client_id")
+                ->setParameter('client_id', $client_id)
+            ->orderBy('cl.name', 'ASC');
+    }
 
     public function searchByText($text){
         return $this->createQueryBuilder('cl')

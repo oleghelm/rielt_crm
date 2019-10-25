@@ -9,6 +9,7 @@ use AppBundle\Entity\BidParam;
 use AppBundle\Entity\Location;
 use AppBundle\Entity\Client;
 use AppBundle\Form\BidFormType;
+use AppBundle\Form\ClientShortFormType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,6 +76,10 @@ class BidController extends Controller {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $bid = new Bid();
         $bid->setUser($user);
+        if($request->get('client_id',false)){
+            $client = $this->getDoctrine()->getRepository('AppBundle:Client')->find($request->get('client_id'));
+            $bid->setClient($client);
+        }
         $form = $this->createForm(BidFormType::class,$bid);
         $form->add('location',ChoiceType::class, [
                     'label' => 'Райони',
@@ -86,10 +91,23 @@ class BidController extends Controller {
         $paramsForm = $this->getParamsForm(null);
         $paramsForm->handleRequest($request);
         
+        $clientForm = $this->createForm(ClientShortFormType::class);
+        $clientForm->handleRequest($request);
+        
         // only handles data on POST
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $bid = $form->getData();
+            
+            if($request->get('new_client','N')=='Y'){
+                $client = $clientForm->getData();
+                if($bid->getUser())
+                    $client->setUser($bid->getUser());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($client);
+                $em->flush();
+                $bid->setClient($client);
+            }
             
             $em = $this->getDoctrine()->getManager();
             $em->persist($bid);
@@ -111,7 +129,8 @@ class BidController extends Controller {
         return $this->render('crm/bid/new.html.twig', [
             'form' => $form->createView(),
             'paramsForm' => $paramsForm->createView(),
-            'bid' => null
+            'clientForm' => $clientForm->createView(),
+            'bid' => $bid
         ]);
     }
     
@@ -131,11 +150,26 @@ class BidController extends Controller {
         
         $form->handleRequest($request);
         
+        $clientForm = $this->createForm(ClientShortFormType::class);
+        $clientForm->handleRequest($request);
+        
         //render params form
         $paramsForm = $this->getParamsForm($bid);
         $paramsForm->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $bid = $form->getData();
+            
+            //attach new client
+            if($request->get('new_client','N')=='Y'){
+//                dump($request->get('new_client','N'));die;
+                $client = $clientForm->getData();
+                if($bid->getUser())
+                    $client->setUser($bid->getUser());
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($client);
+                $em->flush();
+                $bid->setClient($client);
+            }
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($bid);
@@ -157,6 +191,7 @@ class BidController extends Controller {
         return $this->render('crm/bid/edit.html.twig', [
             'form' => $form->createView(),
             'paramsForm' => $paramsForm->createView(),
+            'clientForm' => $clientForm->createView(),
             'bid' => $bid
         ]);
     }

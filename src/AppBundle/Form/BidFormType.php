@@ -7,6 +7,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\Company;
 use AppBundle\Repository\UserRepository;
 use AppBundle\Repository\ClientRepository;
+use AppBundle\Entity\Location;
 use AppBundle\Repository\LocationRepository;
 use AppBundle\Repository\CompanyRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -113,6 +114,14 @@ class BidFormType extends AbstractType
                     'widget' => 'single_text',
                     'html5' => false,
                     'attr' => ['class' => 'js-datepicker']
+                ])
+                ->add('location',EntityType::class,[
+                    'label' => 'Розташування',
+                    'placeholder' => "Виберіть розташування",
+                    'class' => Location::class,
+                    'query_builder' => function(LocationRepository $repo) {
+                        return $repo->findAllCityLocations();
+                    }
                 ]);
     }
 
