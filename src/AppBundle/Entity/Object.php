@@ -520,10 +520,14 @@ class Object
             elseif($Param['type']=='text')
                 $Param['val'] = $p->getString();
             else{
-                $Param['val'] = $p->getProperty()->getId();
+                if($p->getProperty())
+                    $Param['val'] = $p->getProperty()->getId();
+                else
+                    $Param = false;
             }
             
-            $Params[$p->getId()] = $Param;
+            if($Param)
+                $Params[$p->getId()] = $Param;
         }
         if($joinMultiple){
             $formParams = [];
