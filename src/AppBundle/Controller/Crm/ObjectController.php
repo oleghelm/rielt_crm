@@ -623,7 +623,7 @@ class ObjectController extends Controller {
                 case 'floatdiapazon': 
                 case 'float': $val = $objectParam->getFloatnumber(); break;
                 case 'text': $val = $objectParam->getString(); break;
-                case 'select': if($objectParam->getProperty()){$val = $objectParam->getProperty()->getName(); } else {$val = false; dump($objectParam);} break;
+                case 'select': if($objectParam->getProperty()){$val = $objectParam->getProperty()->getName(); } else {$val = false;} break;
             }
             if($multiple){
                 $params[$param->getId()]['val'][] = $val;
