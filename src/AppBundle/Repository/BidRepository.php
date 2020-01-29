@@ -94,9 +94,13 @@ class BidRepository extends EntityRepository
                 if(is_numeric($key)){
                     switch ($param['type']){
                         case 'select':
-                            $queryBuilder->leftJoin('bp.params', 'bid_param'.$key);
+                            $queryBuilder->leftJoin('bp.params', 'bid_param'.$key, 'WITH', 'bid_param'.$key.'.param = '.$key);
                             $queryBuilder->andWhere('bid_param'.$key.'.property IN (:param'.$key.')')
                                         ->setParameter('param'.$key, $param['val']);
+                            
+//                            $queryBuilder->leftJoin('bp.params', 'bid_param'.$key);
+//                            $queryBuilder->andWhere('bid_param'.$key.'.property IN (:param'.$key.')')
+//                                        ->setParameter('param'.$key, $param['val']);
                             break;
                         case 'text':
                             $queryBuilder->leftJoin('bp.params', 'bid_param'.$key);
@@ -110,19 +114,33 @@ class BidRepository extends EntityRepository
                             break;
                         case 'diapazon':
                             if(isset($param['val']['min']) && isset($param['val']['max'])){
-                                $queryBuilder->leftJoin('bp.params', 'bid_param'.$key);
-                                $queryBuilder->andWhere('bid_param'.$key.'.number <= :param'.$key.'_max AND bid_param'.$key.'.number >= :param'.$key.'_min')
+                                $queryBuilder->leftJoin('bp.params', 'bid_param'.$key, 'WITH', 'bid_param'.$key.'.param = '.$key);
+                                $queryBuilder->andWhere('((bid_param'.$key.'.number <= :param'.$key.'_max AND bid_param'.$key.'.number >= :param'.$key.'_min) OR (bid_param'.$key.'.floatnumber <= :param'.$key.'_max AND bid_param'.$key.'.floatnumber >= :param'.$key.'_min))')
                                             ->setParameter('param'.$key.'_max', $param['val']['max'])
                                             ->setParameter('param'.$key.'_min', $param['val']['min']);
                             } elseif(isset($param['val']['min']) && !isset($param['val']['max'])){
-                                $queryBuilder->leftJoin('bp.params', 'bid_param'.$key);
+                                $queryBuilder->leftJoin('bp.params', 'bid_param'.$key, 'WITH', 'bid_param'.$key.'.param = '.$key);
                                 $queryBuilder->andWhere('bid_param'.$key.'.number >= :param'.$key.'_min')
                                             ->setParameter('param'.$key.'_min', $param['val']['min']);
                             } elseif(!isset($param['val']['min']) && isset($param['val']['max'])){
-                                $queryBuilder->leftJoin('bp.params', 'bid_param'.$key);
+                                $queryBuilder->leftJoin('bp.params', 'bid_param'.$key, 'WITH', 'bid_param'.$key.'.param = '.$key);
                                 $queryBuilder->andWhere('bid_param'.$key.'.number <= :param'.$key.'_max')
                                             ->setParameter('param'.$key.'_max', $param['val']['max']);
                             }
+//                            if(isset($param['val']['min']) && isset($param['val']['max'])){
+//                                $queryBuilder->leftJoin('bp.params', 'bid_param'.$key);
+//                                $queryBuilder->andWhere('bid_param'.$key.'.number <= :param'.$key.'_max AND bid_param'.$key.'.number >= :param'.$key.'_min')
+//                                            ->setParameter('param'.$key.'_max', $param['val']['max'])
+//                                            ->setParameter('param'.$key.'_min', $param['val']['min']);
+//                            } elseif(isset($param['val']['min']) && !isset($param['val']['max'])){
+//                                $queryBuilder->leftJoin('bp.params', 'bid_param'.$key);
+//                                $queryBuilder->andWhere('bid_param'.$key.'.number >= :param'.$key.'_min')
+//                                            ->setParameter('param'.$key.'_min', $param['val']['min']);
+//                            } elseif(!isset($param['val']['min']) && isset($param['val']['max'])){
+//                                $queryBuilder->leftJoin('bp.params', 'bid_param'.$key);
+//                                $queryBuilder->andWhere('bid_param'.$key.'.number <= :param'.$key.'_max')
+//                                            ->setParameter('param'.$key.'_max', $param['val']['max']);
+//                            }
                             break;
                             
                     }
@@ -136,7 +154,6 @@ class BidRepository extends EntityRepository
         }
         
         $query = $queryBuilder->getQuery();
-        
         return $query;
     }
     
