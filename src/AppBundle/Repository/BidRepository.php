@@ -113,7 +113,12 @@ class BidRepository extends EntityRepository
                                         ->setParameter('param'.$key, $param['val']);
                             break;
                         case 'diapazon':
+                            dump($param);
                             if(isset($param['val']['min']) && isset($param['val']['max'])){
+                                if($param['val']['max'] == $param['val']['min']){
+                                    $param['val']['max'] = $param['val']['max'] * 1.5;
+                                    $param['val']['min'] = $param['val']['min'] * 0.5;
+                                }
                                 $queryBuilder->leftJoin('bp.params', 'bid_param'.$key, 'WITH', 'bid_param'.$key.'.param = '.$key);
                                 $queryBuilder->andWhere('((bid_param'.$key.'.number <= :param'.$key.'_max AND bid_param'.$key.'.number >= :param'.$key.'_min) OR (bid_param'.$key.'.floatnumber <= :param'.$key.'_max AND bid_param'.$key.'.floatnumber >= :param'.$key.'_min))')
                                             ->setParameter('param'.$key.'_max', $param['val']['max'])
