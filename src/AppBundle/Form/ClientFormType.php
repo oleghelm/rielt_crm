@@ -61,6 +61,11 @@ class ClientFormType extends AbstractType
                     'html5' => false,
                     'attr' => ['class' => 'js-datepicker']
                 ])
+                ->add('created',DateType::class,[
+                    'widget' => 'single_text',
+                    'html5' => false,
+                    'attr' => ['class' => 'js-datepicker']
+                ])
                 ->add('owner',ChoiceType::class, [
                     'label' => 'Тип',
                     'choices' => [

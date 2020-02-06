@@ -89,6 +89,11 @@ class Client
      * @ORM\OrderBy({"id" = "DESC"})
      */
     private $tickets;
+    
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $created;
             
     function getId() {
         return $this->id;
@@ -224,4 +229,13 @@ class Client
             return true;
         return false;
     }
+    
+    function getCreated() {
+        return $this->created;
+    }
+
+    function setCreated($created) {
+        $this->created = $created;
+    }
+
 }

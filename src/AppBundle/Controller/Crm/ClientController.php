@@ -102,6 +102,7 @@ class ClientController extends Controller
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $client = new Client();
         $client->setUser($user);
+        $client->setCreated(new \DateTime());
         $form = $this->createForm(ClientFormType::class,$client);
 
         // only handles data on POST

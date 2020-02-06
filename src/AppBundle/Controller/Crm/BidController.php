@@ -566,18 +566,32 @@ class BidController extends Controller {
             'choices' =>  $this->getDoctrine()->getRepository('AppBundle:Company')->getForFilter(),
             'choice_attr' =>  $this->getDoctrine()->getRepository('AppBundle:Company')->getImagesForFilter(),
         ];
-//        $formParams[] = [
-//            'id' => 'min_price',
-//            'type' => 'integer',
-//            'label' => 'Ціна від',
-//            'multiple' => false,
-//        ];
-//        $formParams[] = [
-//            'id' => 'max_price',
-//            'type' => 'integer',
-//            'label' => 'Ціна до',
-//            'multiple' => false,
-//        ];
+        $formParams[] = [
+            'id' => 'location',
+            'type' => 'select',
+            'label' => 'Район',
+            'multiple' => true,
+            'choices' =>  $this->getDoctrine()->getRepository('AppBundle:Location')->getLocationsForFilter(),
+        ];
+        $formParams[] = [
+            'id' => 'rooms',
+            'type' => 'select',
+            'label' => 'К-сть кімнат',
+            'multiple' => true,
+            'choices' =>  [1=>1,2=>2,3=>3,4=>4,5=>5,6=>6,7=>7,8=>8,9=>9,10=>10],
+        ];
+        $formParams[] = [
+            'id' => 'min_price',
+            'type' => 'integer',
+            'label' => 'Ціна від',
+            'multiple' => false,
+        ];
+        $formParams[] = [
+            'id' => 'max_price',
+            'type' => 'integer',
+            'label' => 'Ціна до',
+            'multiple' => false,
+        ];
         
         return $formParams;
     }

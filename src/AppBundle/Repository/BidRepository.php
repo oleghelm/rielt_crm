@@ -22,6 +22,7 @@ class BidRepository extends EntityRepository
         $queryBuilder->leftJoin('bp.user', 'user');
         $queryBuilder->leftJoin('bp.client', 'client');
         $queryBuilder->leftJoin('bp.company', 'company');
+//        $queryBuilder->leftJoin('bp.location', 'location');
         if($filter && is_array($filter)){
             if(isset($filter['name']) && $filter['name']['val'] !=""){
                 $queryBuilder->andWhere('bp.name LIKE :obname')
@@ -81,15 +82,54 @@ class BidRepository extends EntityRepository
                 $queryBuilder->andWhere('bp.lastUpdate <= '.'(:lastUpdateEnd)')
                     ->setParameter('lastUpdateEnd', $filter['lastUpdateEnd']['val']);
             }
-//            if(isset($filter['min_price'])){
-//                $queryBuilder->andWhere('bp.price >= :min_price')
-//                        ->setParameter('min_price', $filter['min_price']['val']);
-//            }
-//            if(isset($filter['max_price'])){
-//                $queryBuilder->andWhere('bp.price <= :max_price')
-//                        ->setParameter('max_price', $filter['max_price']['val']);
-//            }
-            
+            if(isset($filter['min_price']) && isset($filter['max_price']) && $filter['min_price']['val'] == $filter['max_price']['val']){
+                $filter['min_price']['val'] = $filter['min_price']['val'] * 0.8;
+                $filter['max_price']['val'] = $filter['max_price']['val'] * 1.2;
+            }
+            if(isset($filter['min_price'])){
+                $queryBuilder->andWhere('bp.min_price >= :min_price')
+                        ->andWhere('bp.max_price >= :min_price')
+                        ->setParameter('min_price', $filter['min_price']['val']);
+            }
+            if(isset($filter['max_price'])){
+                $queryBuilder->andWhere('bp.min_price <= :max_price')
+                        ->andWhere('bp.max_price <= :max_price')
+                        ->setParameter('max_price', $filter['max_price']['val']);
+            }
+            if(isset($filter['location'])){
+                if(is_array($filter['location']['val'])){
+                    $str = [];
+                    foreach($filter['location']['val'] as $k=>$loc):
+                        $str[] = 'bp.location LIKE :location'.$k.'_1';
+                        $queryBuilder->setParameter('location'.$k.'_1', '%['.$loc.',%');
+                        $str[] = 'bp.location LIKE :location'.$k.'_2';
+                        $queryBuilder->setParameter('location'.$k.'_2', '%,'.$loc.',%');
+                        $str[] = 'bp.location LIKE :location'.$k.'_3';
+                        $queryBuilder->setParameter('location'.$k.'_3', '%,'.$loc.']%');
+                    endforeach;
+                    $queryBuilder->andWhere(''.implode(' OR ',$str).'');
+                }
+                elseif($filter['location']['val']!="")
+                    $queryBuilder->andWhere('bp.location = [:location]')
+                            ->setParameter('location', $filter['location']['val']);
+            }
+            if(isset($filter['rooms'])){
+                if(is_array($filter['rooms']['val'])){
+                    $str = [];
+                    foreach($filter['rooms']['val'] as $k=>$loc):
+                        $str[] = 'bp.rooms LIKE :rooms'.$k.'_1';
+                        $queryBuilder->setParameter('rooms'.$k.'_1', '%['.$loc.',%');
+                        $str[] = 'bp.rooms LIKE :rooms'.$k.'_2';
+                        $queryBuilder->setParameter('rooms'.$k.'_2', '%,'.$loc.',%');
+                        $str[] = 'bp.rooms LIKE :rooms'.$k.'_3';
+                        $queryBuilder->setParameter('rooms'.$k.'_3', '%,'.$loc.']%');
+                    endforeach;
+                    $queryBuilder->andWhere(''.implode(' OR ',$str).'');
+                }
+                elseif($filter['rooms']['val']!="")
+                    $queryBuilder->andWhere('bp.rooms = [:rooms]')
+                            ->setParameter('rooms', $filter['rooms']['val']);
+            }
             foreach($filter as $key=>$param){
                 if(is_numeric($key)){
                     switch ($param['type']){
@@ -113,7 +153,6 @@ class BidRepository extends EntityRepository
                                         ->setParameter('param'.$key, $param['val']);
                             break;
                         case 'diapazon':
-//                            dump($param);
                             if(isset($param['val']['min']) && isset($param['val']['max'])){
                                 if($param['val']['max'] == $param['val']['min']){
                                     $param['val']['max'] = $param['val']['max'] * 1.5;

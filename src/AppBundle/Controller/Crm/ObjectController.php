@@ -444,8 +444,9 @@ class ObjectController extends Controller {
         $queryString = [];
         
         $queryString['type'] = $object->getType();
-//        $queryString['min_price'] = $bid->getMinPrice();
-//        $queryString['max_price'] = $bid->getMaxPrice();
+        $queryString['rooms'] = [$object->getRooms()];
+        $queryString['min_price'] = $object->getPrice();
+        $queryString['max_price'] = $object->getPrice();
 //        
         $params = $object->getParamsArrayMap();
         foreach($params as $param){

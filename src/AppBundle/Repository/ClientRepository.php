@@ -75,7 +75,7 @@ class ClientRepository extends EntityRepository
                             ->setParameter('owner', $filter['owner']);
             }            
         }
-        
+        $queryBuilder->orderBy('cl.id','DESC');
         $query = $queryBuilder->getQuery();
         
         return $query;

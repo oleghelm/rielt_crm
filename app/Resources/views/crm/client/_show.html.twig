@@ -62,6 +62,16 @@
         </td>
     </tr>
     <tr>
+        <th>Дата створення</th>
+        <td>
+        {% if(client.created) %}
+            {{client.created|date('d.m.Y')}}
+        {% else %}
+            Не встановлено
+        {% endif %}
+        </td>
+    </tr>
+    <tr>
         <th>Загальна інформація</th>
         <td>{{client.info}}</td>
     </tr>
