@@ -113,7 +113,7 @@ class BidRepository extends EntityRepository
                                         ->setParameter('param'.$key, $param['val']);
                             break;
                         case 'diapazon':
-                            dump($param);
+//                            dump($param);
                             if(isset($param['val']['min']) && isset($param['val']['max'])){
                                 if($param['val']['max'] == $param['val']['min']){
                                     $param['val']['max'] = $param['val']['max'] * 1.5;
