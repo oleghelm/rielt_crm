@@ -83,18 +83,24 @@ class BidRepository extends EntityRepository
                     ->setParameter('lastUpdateEnd', $filter['lastUpdateEnd']['val']);
             }
             if(isset($filter['min_price']) && isset($filter['max_price']) && $filter['min_price']['val'] == $filter['max_price']['val']){
-                $filter['min_price']['val'] = $filter['min_price']['val'] * 0.8;
-                $filter['max_price']['val'] = $filter['max_price']['val'] * 1.2;
-            }
-            if(isset($filter['min_price'])){
-                $queryBuilder->andWhere('bp.min_price >= :min_price')
-                        ->andWhere('bp.max_price >= :min_price')
-                        ->setParameter('min_price', $filter['min_price']['val']);
-            }
-            if(isset($filter['max_price'])){
-                $queryBuilder->andWhere('bp.min_price <= :max_price')
-                        ->andWhere('bp.max_price <= :max_price')
+//                $filter['min_price']['val'] = $filter['min_price']['val'] * 0.8;
+//                $filter['max_price']['val'] = $filter['max_price']['val'] * 1.2;
+                $queryBuilder->andWhere('bp.min_price <= :min_price')
+                        ->andWhere('bp.max_price >= :max_price')
+                        ->setParameter('min_price', $filter['min_price']['val'])
                         ->setParameter('max_price', $filter['max_price']['val']);
+            } else {
+                
+                if(isset($filter['min_price'])){
+                    $queryBuilder->andWhere('bp.min_price >= :min_price')
+                            ->andWhere('bp.max_price >= :min_price')
+                            ->setParameter('min_price', $filter['min_price']['val']);
+                }
+                if(isset($filter['max_price'])){
+                    $queryBuilder->andWhere('bp.min_price <= :max_price')
+                            ->andWhere('bp.max_price <= :max_price')
+                            ->setParameter('max_price', $filter['max_price']['val']);
+                }
             }
             if(isset($filter['location'])){
                 if(is_array($filter['location']['val'])){
