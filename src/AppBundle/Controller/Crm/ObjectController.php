@@ -450,6 +450,7 @@ class ObjectController extends Controller {
 //        
         $params = $object->getParamsArrayMap();
         foreach($params as $param){
+            if($param['param_id']==23)continue;
             switch($param['type']){
                 case 'text': 
                         $queryString[$param['param_id']] = $param['val'];

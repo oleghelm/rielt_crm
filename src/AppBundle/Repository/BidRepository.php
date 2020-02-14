@@ -202,7 +202,7 @@ class BidRepository extends EntityRepository
             $queryBuilder->andWhere('bp.status != :status')
                             ->setParameter('status', 'archive');
         }
-        
+        $queryBuilder->addOrderBy('bp.id','desc');
         $query = $queryBuilder->getQuery();
         return $query;
     }
