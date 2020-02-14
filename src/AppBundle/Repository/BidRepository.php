@@ -23,6 +23,12 @@ class BidRepository extends EntityRepository
         $queryBuilder->leftJoin('bp.client', 'client');
         $queryBuilder->leftJoin('bp.company', 'company');
 //        $queryBuilder->leftJoin('bp.location', 'location');
+        
+        $search_type = 'opt';
+        if(isset($filter['search_type']) && isset($filter['search_type']['val'])){
+            $search_type = $filter['search_type']['val'];
+        }
+        
         if($filter && is_array($filter)){
             if(isset($filter['name']) && $filter['name']['val'] !=""){
                 $queryBuilder->andWhere('bp.name LIKE :obname')
@@ -130,20 +136,31 @@ class BidRepository extends EntityRepository
                         $str[] = 'bp.rooms LIKE :rooms'.$k.'_3';
                         $queryBuilder->setParameter('rooms'.$k.'_3', '%,'.$loc.']%');
                     endforeach;
+                    if($search_type == 'not_opt'){
+                        $str[] = 'bp.rooms IS NULL';
+                    }
                     $queryBuilder->andWhere(''.implode(' OR ',$str).'');
                 }
-                elseif($filter['rooms']['val']!="")
-                    $queryBuilder->andWhere('bp.rooms = [:rooms]')
-                            ->setParameter('rooms', $filter['rooms']['val']);
+                elseif($filter['rooms']['val']!=""){
+                    if($search_type == 'not_opt'){
+                        $queryBuilder->andWhere('bp.rooms = [:rooms] OR bp.rooms IS NULL');
+                    } else {
+                        $queryBuilder->andWhere('bp.rooms = [:rooms]');
+                    }
+                    $queryBuilder->setParameter('rooms', $filter['rooms']['val']);
+                }
             }
             foreach($filter as $key=>$param){
                 if(is_numeric($key)){
                     switch ($param['type']){
                         case 'select':
                             $queryBuilder->leftJoin('bp.params', 'bid_param'.$key, 'WITH', 'bid_param'.$key.'.param = '.$key);
-                            $queryBuilder->andWhere('bid_param'.$key.'.property IN (:param'.$key.')')
-                                        ->setParameter('param'.$key, $param['val']);
-                            
+                            if($search_type == 'not_opt'){
+                                $queryBuilder->andWhere('bid_param'.$key.'.property IN (:param'.$key.') OR bid_param'.$key.'.property IS NULL');
+                            } else {
+                                $queryBuilder->andWhere('bid_param'.$key.'.property IN (:param'.$key.')');
+                            }
+                            $queryBuilder->setParameter('param'.$key, $param['val']);
 //                            $queryBuilder->leftJoin('bp.params', 'bid_param'.$key);
 //                            $queryBuilder->andWhere('bid_param'.$key.'.property IN (:param'.$key.')')
 //                                        ->setParameter('param'.$key, $param['val']);
@@ -155,8 +172,12 @@ class BidRepository extends EntityRepository
                             break;
                         case 'integer':
                             $queryBuilder->leftJoin('bp.params', 'bid_param'.$key);
-                            $queryBuilder->andWhere('bid_param'.$key.'.number = :param'.$key)
-                                        ->setParameter('param'.$key, $param['val']);
+                            if($search_type == 'not_opt'){
+                                $queryBuilder->andWhere('bid_param'.$key.'.number = :param'.$key,' OR bid_param'.$key.'.number IS NULL');
+                            } else {
+                                $queryBuilder->andWhere('bid_param'.$key.'.number = :param'.$key);
+                            }
+                            $queryBuilder->setParameter('param'.$key, $param['val']);
                             break;
                         case 'diapazon':
                             if(isset($param['val']['min']) && isset($param['val']['max'])){
@@ -165,17 +186,29 @@ class BidRepository extends EntityRepository
                                     $param['val']['min'] = $param['val']['min'] * 0.5;
                                 }
                                 $queryBuilder->leftJoin('bp.params', 'bid_param'.$key, 'WITH', 'bid_param'.$key.'.param = '.$key);
-                                $queryBuilder->andWhere('((bid_param'.$key.'.number <= :param'.$key.'_max AND bid_param'.$key.'.number >= :param'.$key.'_min) OR (bid_param'.$key.'.floatnumber <= :param'.$key.'_max AND bid_param'.$key.'.floatnumber >= :param'.$key.'_min))')
-                                            ->setParameter('param'.$key.'_max', $param['val']['max'])
-                                            ->setParameter('param'.$key.'_min', $param['val']['min']);
+                                if($search_type == 'not_opt'){
+                                    $queryBuilder->andWhere('((bid_param'.$key.'.number <= :param'.$key.'_max AND bid_param'.$key.'.number >= :param'.$key.'_min) OR (bid_param'.$key.'.floatnumber <= :param'.$key.'_max AND bid_param'.$key.'.floatnumber >= :param'.$key.'_min)) OR (bid_param'.$key.'.floatnumber IS NULL AND bid_param'.$key.'.number IS NULL)');
+                                } else {
+                                    $queryBuilder->andWhere('((bid_param'.$key.'.number <= :param'.$key.'_max AND bid_param'.$key.'.number >= :param'.$key.'_min) OR (bid_param'.$key.'.floatnumber <= :param'.$key.'_max AND bid_param'.$key.'.floatnumber >= :param'.$key.'_min))');
+                                }
+                                $queryBuilder->setParameter('param'.$key.'_max', $param['val']['max'])
+                                             ->setParameter('param'.$key.'_min', $param['val']['min']);
                             } elseif(isset($param['val']['min']) && !isset($param['val']['max'])){
                                 $queryBuilder->leftJoin('bp.params', 'bid_param'.$key, 'WITH', 'bid_param'.$key.'.param = '.$key);
-                                $queryBuilder->andWhere('bid_param'.$key.'.number >= :param'.$key.'_min')
-                                            ->setParameter('param'.$key.'_min', $param['val']['min']);
+                                if($search_type == 'not_opt'){
+                                    $queryBuilder->andWhere('bid_param'.$key.'.number >= :param'.$key.'_min OR bid_param'.$key.'.floatnumber >= :param'.$key.'_min OR bid_param'.$key.'.number IS NULL');
+                                } else {
+                                    $queryBuilder->andWhere('bid_param'.$key.'.number >= :param'.$key.'_min OR bid_param'.$key.'.floatnumber >= :param'.$key.'_min');
+                                }
+                                $queryBuilder->setParameter('param'.$key.'_min', $param['val']['min']);
                             } elseif(!isset($param['val']['min']) && isset($param['val']['max'])){
                                 $queryBuilder->leftJoin('bp.params', 'bid_param'.$key, 'WITH', 'bid_param'.$key.'.param = '.$key);
-                                $queryBuilder->andWhere('bid_param'.$key.'.number <= :param'.$key.'_max')
-                                            ->setParameter('param'.$key.'_max', $param['val']['max']);
+                                if($search_type == 'not_opt'){
+                                    $queryBuilder->andWhere('bid_param'.$key.'.number <= :param'.$key.'_max OR bid_param'.$key.'.floatnumber <= :param'.$key.'_max OR bid_param'.$key.'.number IS NULL');
+                                } else {
+                                    $queryBuilder->andWhere('bid_param'.$key.'.number <= :param'.$key.'_max OR bid_param'.$key.'.floatnumber <= :param'.$key.'_max');
+                                }
+                                $queryBuilder->setParameter('param'.$key.'_max', $param['val']['max']);
                             }
 //                            if(isset($param['val']['min']) && isset($param['val']['max'])){
 //                                $queryBuilder->leftJoin('bp.params', 'bid_param'.$key);

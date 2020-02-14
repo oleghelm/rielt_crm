@@ -161,7 +161,6 @@ class BidController extends Controller {
             
             //attach new client
             if($request->get('new_client','N')=='Y'){
-//                dump($request->get('new_client','N'));die;
                 $client = $clientForm->getData();
                 if($bid->getUser())
                     $client->setUser($bid->getUser());
@@ -268,7 +267,7 @@ class BidController extends Controller {
         $queryString['location'] = $bid->getLocation();
         $queryString['rooms'] = $bid->getRooms();
         $params = $bid->getParamsArrayMap();
-//dump($params);die;
+
         foreach($params as $param){
             if($param['param_id']==23)continue;
             switch($param['type']){
@@ -518,7 +517,6 @@ class BidController extends Controller {
      */
     public function getParamsFilterForm(){
         $formParams = $this->getParamsFilterFormParams();
-//        dump($formParams);
         return $this->generateParamsForm($formParams,['method'=>'GET']);
     }
     
@@ -558,6 +556,14 @@ class BidController extends Controller {
             'label' => 'Ріелтор',
             'multiple' => false,
             'choices' =>  $this->getDoctrine()->getRepository('AppBundle:User')->getUsersForFilter(),
+        ];
+        $formParams[] = [
+            'id' => 'search_type',
+            'type' => 'select',
+            'label' => 'Спосіб пошуку',
+            'multiple' => false,
+            'empty_data' => 'opt',
+            'choices' =>  ['Звичайний'=>'opt','Не строгий'=>'not_opt'],
         ];
         $formParams[] = [
             'id' => 'company',
