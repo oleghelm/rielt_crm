@@ -443,6 +443,7 @@ class ObjectController extends Controller {
         
         $queryString = [];
         
+        $queryString['search_type'] = 'not_opt';
         $queryString['type'] = $object->getType();
         $queryString['rooms'] = [$object->getRooms()];
         $queryString['min_price'] = $object->getPrice();

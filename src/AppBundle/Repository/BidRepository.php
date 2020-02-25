@@ -140,6 +140,8 @@ class BidRepository extends EntityRepository
                         $queryBuilder->setParameter('rooms'.$k.'_2', '%,'.$loc.',%');
                         $str[] = 'bp.rooms LIKE :rooms'.$k.'_3';
                         $queryBuilder->setParameter('rooms'.$k.'_3', '%,'.$loc.']%');
+                        $str[] = 'bp.rooms LIKE :rooms'.$k.'_4';
+                        $queryBuilder->setParameter('rooms'.$k.'_4', '%['.$loc.']%');
                     endforeach;
                     if($search_type == 'not_opt'){
                         $str[] = 'bp.rooms IS NULL';
