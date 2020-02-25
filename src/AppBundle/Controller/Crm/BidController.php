@@ -558,6 +558,12 @@ class BidController extends Controller {
             'choices' =>  $this->getDoctrine()->getRepository('AppBundle:User')->getUsersForFilter(),
         ];
         $formParams[] = [
+            'id' => 'clientstr',
+            'type' => 'text',
+            'label' => 'Власник(ім./тел.)',
+            'multiple' => false,
+        ];
+        $formParams[] = [
             'id' => 'search_type',
             'type' => 'select',
             'label' => 'Спосіб пошуку',

@@ -48,6 +48,11 @@ class BidRepository extends EntityRepository
                     $queryBuilder->andWhere('bp.client = :client')
                             ->setParameter('client', $filter['client']['val']);
             }
+            if(isset($filter['clientstr'])){
+                if($filter['clientstr']['val']!="")
+                    $queryBuilder->andWhere('(client.name LIKE :clientstr OR client.phones LIKE :clientstr)')
+                            ->setParameter('clientstr', '%'.$filter['clientstr']['val'].'%');
+            }
             if(isset($filter['company'])){
                 if(is_array($filter['company']['val']))
                     $queryBuilder->andWhere('company.id IN '.'('.implode(',',$filter['company']['val']).')');
