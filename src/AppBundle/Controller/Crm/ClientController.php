@@ -72,11 +72,10 @@ class ClientController extends Controller
             $user = $this->get('security.token_storage')->getToken()->getUser();
             $em = $this->getDoctrine()->getEntityManager();
             $query = $em->getRepository('AppBundle:Client')->searchByText($q);
-//            dump($query);die;
             $clients = $query->getQuery()->execute();
             foreach($clients as $client){
                 $name = $client->getName().' (№'.$client->getId();
-                if($this->getUser()){
+                if($client->getUser()){
                     $name .= ' від '.$client->getUser()->getName();
                 }
                 $name .= ') ';
@@ -84,7 +83,6 @@ class ClientController extends Controller
                     if($client->getPhones()){
                         $name .= implode(", ",$client->getPhones());
                     }
-//                $name = str_replace($q, '<span>'.$q.'</span>', $name);
                 $data[] = [
                     'id'=>$client->getId(),
                     'value'=>$name,
