@@ -92,11 +92,11 @@
         })
         
         $("a.edit_old_client").click(function(){
-            if($("#object_form_client").val()==="") {
+            if($(".client_id").val()==="") {
                 alert('Виберіть клієнта');
                 return false;
             }
-            var url = '/crm/clients/'+$("#object_form_client").val()+'/edit?ajax=Y';
+            var url = '/crm/clients/'+$(".client_id").val()+'/edit?ajax=Y';
             $.get(url,function(resp){
                 $('#ajax-page-popup').html(resp)
                 $.fancybox.close()
