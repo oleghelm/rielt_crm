@@ -39,6 +39,15 @@ class UserRepository extends EntityRepository
                 ->setParameter('nulluser', null)
                 ->getQuery()
                 ->execute();
+        $this->_em->getRepository('AppBundle:Object')
+                ->createQueryBuilder('object')
+                ->update()
+                ->set('object.created_by',':nulluser')
+                ->where('object.created_by = :user')
+                ->setParameter('user', $user)
+                ->setParameter('nulluser', null)
+                ->getQuery()
+                ->execute();
         $this->_em->getRepository('AppBundle:Bid')
                 ->createQueryBuilder('bid')
                 ->update()

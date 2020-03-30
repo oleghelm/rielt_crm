@@ -4,6 +4,7 @@
     <a href="javascript:void(0);" class="btn btn-primary btn-sm" onclick="window.history.back()" title="Повернутись"><i class="fa fa-arrow-left"></i></a>
     <a href="{{ path('crm_bid_edit', {'id': bid.id}) }}" class="btn btn-warning btn-sm" title="Редагувати"><i class="fa fa-edit"></i></a>
     <a href="{{path('crm_bid_changestatus', {'id': bid.id,'status':'archive'})}}"  title="В архів" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете перенести у архів?')) {} else {return false;}"><i class="fa fa-archive"></i></a>
+    <a href="{{path('crm_tools_lastActive_update_bid',{'id':bid.id,'ajax':'Y'})}}" class='btn btn-primary ajax-call-done btn-sm' data-for_hide="bid_row_{{bid.id}}" title="Оновити до сьогодні"><i class="fa fa-check"></i></a>
     <a href="{{path('crm_bid_delete', {'id': bid.id})}}" class="btn btn-danger btn-sm" onclick="if (confirm('Ви впевнені, що хочете видалити?')) {} else {return false;}" title="Видалити"><i class="fa fa-user-times"></i></a>
 </div>
 <h3>Загальні параметри</h3>
