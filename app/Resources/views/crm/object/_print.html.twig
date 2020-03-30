@@ -195,7 +195,7 @@
                     {%if('officialinfo' in form['params'].vars.value)%}
                         <div class="col-md-12 col-xs-12 object-opt"><span class="name">Опис</span><span class="val">{{object.officialinfo}}</span></div>
                     {% endif %}
-                    {% if(paramsMap['none'] is defined) %}
+                    {#{% if(paramsMap['none'] is defined) %}
                         {% set sectionParams = paramsMap['none'] %}
                         {% set break = false %}
                         {% for param in sectionParams if not break %}
@@ -205,7 +205,7 @@
                             {% endif %}
                         {% endfor %}
                         {{ include('crm/object/_params_section_print.html.twig') }}
-                    {% endif %}
+                    {% endif %}#}
                 </div>
             </div>
         </div>
