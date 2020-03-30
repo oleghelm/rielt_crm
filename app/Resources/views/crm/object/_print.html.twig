@@ -1,5 +1,5 @@
 {{ form_start(form, {'action': app.request.pathInfo,'attr':{id:'preprint_form'} }) }}
-<div class="container-fluid">
+<div class="container-fluid" style="font-size: 16px;">
     <div class="row">
         <div class="col-md-4 col-xs-5">
             {%if(object.company)%}
@@ -189,8 +189,11 @@
                     {%if('address' in form['params'].vars.value)%}
                         <div class="col-md-12 col-xs-12 object-opt"><span class="name">Адреса</span><span class="val">{{object.address}}</span></div>
                     {% endif %}
-                    {%if('info' in form['params'].vars.value)%}
+{#                    {%if('info' in form['params'].vars.value)%}
                         <div class="col-md-12 col-xs-12 object-opt"><span class="name">Опис</span><span class="val">{{object.info}}</span></div>
+                    {% endif %}#}
+                    {%if('officialinfo' in form['params'].vars.value)%}
+                        <div class="col-md-12 col-xs-12 object-opt"><span class="name">Опис</span><span class="val">{{object.officialinfo}}</span></div>
                     {% endif %}
                     {% if(paramsMap['none'] is defined) %}
                         {% set sectionParams = paramsMap['none'] %}

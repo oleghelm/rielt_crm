@@ -148,6 +148,7 @@
                 </div>
             </div>
         </div>
+        {%if(not app.request.get('ajax'))%}
         <div class="col-sm-12 col-xs-12">
             <div class="object-opts">
                 <div class="row">
@@ -162,5 +163,6 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 </div>

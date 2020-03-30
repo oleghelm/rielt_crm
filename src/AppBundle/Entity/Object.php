@@ -202,7 +202,7 @@ class Object
     }
 
     function getPhotos() {
-        return $this->photos;
+        return array_values($this->photos);
     }
 
     function getInfo() {
