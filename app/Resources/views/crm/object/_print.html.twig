@@ -210,12 +210,13 @@
             </div>
         </div>
         {% if(object.photos) %}
+            <div class="page-break"></div>
             <div class="col-sm-12 col-xs-12">
                 <div class="row">
                     <div class="col-sm-12 col-xs-12"></div>
                     {% for key,photo in object.photos %}
                         {%if(photo is not iterable)%}
-                            <div class="col-md-6 col-sm-6 col-xs-6 t-align-center {%if(photo not in form['photos'].vars.value)%}printer_hide{%endif%}">
+                            <div class="col-md-6 col-sm-6 col-xs-6 t-align-center print_photo {%if(photo not in form['photos'].vars.value)%}printer_hide{%endif%}">
                                 <div class="printer_hide">
                                     {{ form_row(form['photos'].children[key]) }}
                                 </div>

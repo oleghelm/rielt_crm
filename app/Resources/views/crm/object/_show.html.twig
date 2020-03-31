@@ -154,12 +154,10 @@
                     <div class="col-md-12 col-xs-12"><hr /></div>
                     <div class="col-md-12 col-xs-12 object-opt"><span class="name">Адреса</span><span class="val">{{object.address}}</span></div>
                     <div class="col-md-12 col-xs-12 object-opt"><span class="name">Опис</span><span class="val">{{object.info}}</span></div>
-                    {%if(not app.request.get('ajax'))%}
-                        <div class="col-lg-12"><h3>Інша інформація</h3></div>
-                        {% if(paramsMap['none'] is defined) %}
-                            {% set sectionParams = paramsMap['none'] %}
-                            {{ include('crm/object/_params_section.html.twig') }}
-                        {% endif %}
+                    <div class="col-lg-12"><h3>Інша інформація</h3></div>
+                    {% if(paramsMap['none'] is defined) %}
+                        {% set sectionParams = paramsMap['none'] %}
+                        {{ include('crm/object/_params_section.html.twig') }}
                     {% endif %}
                 </div>
             </div>
