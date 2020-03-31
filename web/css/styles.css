@@ -1075,7 +1075,7 @@ html,body{height: 100%;}
     .printer_hide{display:none!important;}
     .page-break{page-break-after: always;}
 }
-.print_photo{height:256px;}
+.print_photo{height: 240px;margin-bottom: 16px;}
 .print_photo img{height:auto;width:auto;max-width:100%;max-height:100%;}
 .ui-menu-item span{background: yellow;}
 .checkboxes-inline .checkbox{margin-top:0;display:inline-block;width:200px;}
