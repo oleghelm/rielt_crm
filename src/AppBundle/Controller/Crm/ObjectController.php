@@ -538,7 +538,8 @@ class ObjectController extends Controller {
         $ch_params['Розташування'] = 'location';
         $ch_params['Кількість кімнат'] = 'rooms';
         $ch_params['Адреса'] = 'address';
-        $ch_params['Опис'] = 'info';
+        $ch_params['Інформація'] = 'info';
+        $ch_params['Опис'] = 'officialinfo';
         $formParams[] = [
             'id' => 'params',
             'type' => 'checkbox',
