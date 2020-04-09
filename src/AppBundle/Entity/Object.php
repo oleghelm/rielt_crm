@@ -485,7 +485,7 @@ class Object
         foreach($params as $param){
             if($param->getParam()->getId() == $id){
                 switch ($param->getParam()->getType()){
-                    case 'select': $res[] = $param->getProperty()->getName();break;
+                    case 'select': if($param->getProperty()) $res[] = $param->getProperty()->getName();break;
                     case 'text': $res[] = $param->getString(); break;
                     case 'integer': $res[] = $param->getNumber(); break;
                     case 'float': $res[] = $param->getFloatnumber(); break;
