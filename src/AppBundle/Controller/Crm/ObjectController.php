@@ -560,7 +560,10 @@ class ObjectController extends Controller {
             'choices' =>  $photos,
             'choice_attr' => null
         ];
-        $form = $this->generateParamsForm($formParams,['data'=>['photos'=>$photos,'params'=>$ch_params,'user'=>[$object->getUser()->getId()]]]);
+        $user_id = false;
+        if($object->getUser())
+            $user_id = $object->getUser()->getId();
+        $form = $this->generateParamsForm($formParams,['data'=>['photos'=>$photos,'params'=>$ch_params,'user'=>[$user_id]]]);
         $form->handleRequest($request);
         $form_view = $form->getViewData();
         if(!empty($form_view['user']))
