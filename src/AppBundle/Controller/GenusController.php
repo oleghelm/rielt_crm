@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use AppBundle\Entity\Genus;
 use AppBundle\Entity\GenusNote;
-use AppBundle\Service\MarkdownTransformer;
+//use AppBundle\Service\MarkdownTransformer;
 
 class GenusController extends Controller
 {
@@ -66,8 +66,8 @@ class GenusController extends Controller
             throw $this->createNotFoundException('genus not found');
         }
 
-        $markdownParser = new MarkdownTransformer($this->get('markdown.parser'),$this->get('doctrine_cache.providers.my_markdown_cache'));
-        $funFact = $markdownParser->parse($genus->getFunFact());
+//        $markdownParser = new MarkdownTransformer($this->get('markdown.parser'),$this->get('doctrine_cache.providers.my_markdown_cache'));
+//        $funFact = $markdownParser->parse($genus->getFunFact());
         
         return $this->render('genus/show.html.twig', array(
             'genus' => $genus,

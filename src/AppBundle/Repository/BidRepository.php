@@ -114,6 +114,7 @@ class BidRepository extends EntityRepository
                 }
             }
             if(isset($filter['location'])){
+                dump($filter['location']);
                 if(is_array($filter['location']['val'])){
                     $str = [];
                     foreach($filter['location']['val'] as $k=>$loc):
@@ -123,6 +124,8 @@ class BidRepository extends EntityRepository
                         $queryBuilder->setParameter('location'.$k.'_2', '%,'.$loc.',%');
                         $str[] = 'bp.location LIKE :location'.$k.'_3';
                         $queryBuilder->setParameter('location'.$k.'_3', '%,'.$loc.']%');
+                        $str[] = 'bp.location LIKE :location'.$k.'_4';
+                        $queryBuilder->setParameter('location'.$k.'_4', '%['.$loc.']%');
                     endforeach;
                     $queryBuilder->andWhere(''.implode(' OR ',$str).'');
                 }
