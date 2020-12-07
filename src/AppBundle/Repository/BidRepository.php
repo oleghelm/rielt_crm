@@ -114,7 +114,6 @@ class BidRepository extends EntityRepository
                 }
             }
             if(isset($filter['location'])){
-                dump($filter['location']);
                 if(is_array($filter['location']['val'])){
                     $str = [];
                     foreach($filter['location']['val'] as $k=>$loc):
